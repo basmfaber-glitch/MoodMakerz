@@ -6,99 +6,37 @@
 <title>MoodMarket</title>
 <style>
   :root{--bg:#0b1020;--text:#eef2ff;--muted:#a6b0cf;--card:#12172a;--border:#2a2f45;}
-  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Arial;background:var(--bg);color:var(--text);}
-  .container{max-width:1100px;margin:auto;padding:20px}
-  h1{margin:0 0 6px}
-  .sub{margin:0 0 14px;color:var(--muted);font-size:13px;line-height:1.4}
-  .moods{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
-  .mood{padding:8px 14px;border-radius:999px;background:var(--card);border:1px solid var(--border);cursor:pointer;font-size:13px;user-select:none}
-  .mood.active{background:#7c83ff;color:#0b1020;font-weight:700;border-color:#7c83ff}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
-  .card{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 14px 36px rgba(0,0,0,.45);border:1px solid rgba(255,255,255,0.06)}
-  .thumb img{width:100%;height:160px;object-fit:cover;display:block}
-  .inner{padding:12px}
-  .title{font-weight:700;font-size:13px;margin:0 0 10px;line-height:1.2}
-  button{width:100%;padding:10px;border:none;border-radius:10px;background:linear-gradient(90deg,#7c83ff,#2dd4bf);font-weight:800;cursor:pointer;color:#0b1020}
-  .footer{margin:28px 0 10px;text-align:center;font-size:12px;color:#8b92b2;line-height:1.5}
-  .warn{max-width:1100px;margin:0 auto 12px auto;background:rgba(255,255,255,0.03);border:1px dashed rgba(255,255,255,0.12);border-radius:12px;padding:10px 12px;color:#a6b0cf;font-size:13px}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Arial;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
+  .container{max-width:1100px;margin:auto;padding:20px;flex:1;width:100%;}
+  h1{margin:0 0 10px;}
+  .moods{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px;}
+  .mood{padding:8px 14px;border-radius:999px;background:var(--card);border:1px solid var(--border);cursor:pointer;font-size:13px;user-select:none;}
+  .mood.active{background:#7c83ff;color:#0b1020;font-weight:700;border-color:#7c83ff;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
+  .card{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,0.06);}
+  .thumb{background:#0b1020;}
+  .thumb img{width:100%;height:160px;object-fit:cover;display:block;}
+  .inner{padding:12px;}
+  .title{font-weight:700;font-size:13px;margin:0 0 10px;color:#eef2ff;line-height:1.2;}
+  button{width:100%;padding:10px;border:none;border-radius:10px;background:linear-gradient(90deg,#7c83ff,#2dd4bf);font-weight:800;cursor:pointer;color:#0b1020;}
+  .footer-wrap{padding:18px 20px;border-top:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02);}
+  .footer{max-width:1100px;margin:0 auto;font-size:12px;color:#8b92b2;line-height:1.45;text-align:center;}
+  .disclaimer{margin-top:8px;}
 </style>
 </head>
 <body>
 <div class="container">
   <h1>MoodMarket</h1>
-  <p class="sub">Als je ooit een lege pagina ziet, komt dat bijna altijd door het uploaden van een ZIP i.p.v. <b>index.html</b>, of door caching. Dit bestand toont altijd minimaal content.</p>
-
   <div class="moods" id="moods"></div>
-  <div class="grid" id="grid">
-    <!-- Static fallback content (shows even if JS fails) -->
-    <div class="card">
-      <div class="thumb"><img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20width%3D'800'%20height%3D'450'%3E%3Crect%20width%3D'800'%20height%3D'450'%20fill%3D'%230b1020'/%3E%3Crect%20x%3D'0'%20y%3D'0'%20width%3D'800'%20height%3D'450'%20fill%3D'rgba(124%2C131%2C255%2C0.18)'/%3E%3Ctext%20x%3D'40'%20y%3D'140'%20fill%3D'%23eef2ff'%20font-size%3D'34'%20font-family%3D'Arial'%20font-weight%3D'800'%3EAromatherapy diffuser%3C/text%3E%3C/svg%3E" alt="Aromatherapy diffuser product image"></div>
-      <div class="inner">
-        <div class="title">Aromatherapy diffuser</div>
-        <button onclick="window.open('https://www.amazon.nl/s?k=Aromatherapy%20diffuser&tag=moodmakerz-21','_blank')">View on Amazon.nl</button>
-      </div>
-    </div><div class="card">
-      <div class="thumb"><img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20width%3D'800'%20height%3D'450'%3E%3Crect%20width%3D'800'%20height%3D'450'%20fill%3D'%230b1020'/%3E%3Crect%20x%3D'0'%20y%3D'0'%20width%3D'800'%20height%3D'450'%20fill%3D'rgba(124%2C131%2C255%2C0.18)'/%3E%3Ctext%20x%3D'40'%20y%3D'140'%20fill%3D'%23eef2ff'%20font-size%3D'34'%20font-family%3D'Arial'%20font-weight%3D'800'%3ELavender essential oil%3C/text%3E%3C/svg%3E" alt="Lavender essential oil product image"></div>
-      <div class="inner">
-        <div class="title">Lavender essential oil</div>
-        <button onclick="window.open('https://www.amazon.nl/s?k=Lavender%20essential%20oil&tag=moodmakerz-21','_blank')">View on Amazon.nl</button>
-      </div>
-    </div><div class="card">
-      <div class="thumb"><img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20width%3D'800'%20height%3D'450'%3E%3Crect%20width%3D'800'%20height%3D'450'%20fill%3D'%230b1020'/%3E%3Crect%20x%3D'0'%20y%3D'0'%20width%3D'800'%20height%3D'450'%20fill%3D'rgba(124%2C131%2C255%2C0.18)'/%3E%3Ctext%20x%3D'40'%20y%3D'140'%20fill%3D'%23eef2ff'%20font-size%3D'34'%20font-family%3D'Arial'%20font-weight%3D'800'%3EChamomile tea%3C/text%3E%3C/svg%3E" alt="Chamomile tea product image"></div>
-      <div class="inner">
-        <div class="title">Chamomile tea</div>
-        <button onclick="window.open('https://www.amazon.nl/s?k=Chamomile%20tea&tag=moodmakerz-21','_blank')">View on Amazon.nl</button>
-      </div>
-    </div><div class="card">
-      <div class="thumb"><img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20width%3D'800'%20height%3D'450'%3E%3Crect%20width%3D'800'%20height%3D'450'%20fill%3D'%230b1020'/%3E%3Crect%20x%3D'0'%20y%3D'0'%20width%3D'800'%20height%3D'450'%20fill%3D'rgba(124%2C131%2C255%2C0.18)'/%3E%3Ctext%20x%3D'40'%20y%3D'140'%20fill%3D'%23eef2ff'%20font-size%3D'34'%20font-family%3D'Arial'%20font-weight%3D'800'%3EScented candle set%3C/text%3E%3C/svg%3E" alt="Scented candle set product image"></div>
-      <div class="inner">
-        <div class="title">Scented candle set</div>
-        <button onclick="window.open('https://www.amazon.nl/s?k=Scented%20candle%20set&tag=moodmakerz-21','_blank')">View on Amazon.nl</button>
-      </div>
-    </div><div class="card">
-      <div class="thumb"><img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20width%3D'800'%20height%3D'450'%3E%3Crect%20width%3D'800'%20height%3D'450'%20fill%3D'%230b1020'/%3E%3Crect%20x%3D'0'%20y%3D'0'%20width%3D'800'%20height%3D'450'%20fill%3D'rgba(124%2C131%2C255%2C0.18)'/%3E%3Ctext%20x%3D'40'%20y%3D'140'%20fill%3D'%23eef2ff'%20font-size%3D'34'%20font-family%3D'Arial'%20font-weight%3D'800'%3EWeighted blanket%3C/text%3E%3C/svg%3E" alt="Weighted blanket product image"></div>
-      <div class="inner">
-        <div class="title">Weighted blanket</div>
-        <button onclick="window.open('https://www.amazon.nl/s?k=Weighted%20blanket&tag=moodmakerz-21','_blank')">View on Amazon.nl</button>
-      </div>
-    </div><div class="card">
-      <div class="thumb"><img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20width%3D'800'%20height%3D'450'%3E%3Crect%20width%3D'800'%20height%3D'450'%20fill%3D'%230b1020'/%3E%3Crect%20x%3D'0'%20y%3D'0'%20width%3D'800'%20height%3D'450'%20fill%3D'rgba(124%2C131%2C255%2C0.18)'/%3E%3Ctext%20x%3D'40'%20y%3D'140'%20fill%3D'%23eef2ff'%20font-size%3D'34'%20font-family%3D'Arial'%20font-weight%3D'800'%3ENeck massager%3C/text%3E%3C/svg%3E" alt="Neck massager product image"></div>
-      <div class="inner">
-        <div class="title">Neck massager</div>
-        <button onclick="window.open('https://www.amazon.nl/s?k=Neck%20massager&tag=moodmakerz-21','_blank')">View on Amazon.nl</button>
-      </div>
-    </div><div class="card">
-      <div class="thumb"><img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20width%3D'800'%20height%3D'450'%3E%3Crect%20width%3D'800'%20height%3D'450'%20fill%3D'%230b1020'/%3E%3Crect%20x%3D'0'%20y%3D'0'%20width%3D'800'%20height%3D'450'%20fill%3D'rgba(124%2C131%2C255%2C0.18)'/%3E%3Ctext%20x%3D'40'%20y%3D'140'%20fill%3D'%23eef2ff'%20font-size%3D'34'%20font-family%3D'Arial'%20font-weight%3D'800'%3EStress ball%3C/text%3E%3C/svg%3E" alt="Stress ball product image"></div>
-      <div class="inner">
-        <div class="title">Stress ball</div>
-        <button onclick="window.open('https://www.amazon.nl/s?k=Stress%20ball&tag=moodmakerz-21','_blank')">View on Amazon.nl</button>
-      </div>
-    </div><div class="card">
-      <div class="thumb"><img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20width%3D'800'%20height%3D'450'%3E%3Crect%20width%3D'800'%20height%3D'450'%20fill%3D'%230b1020'/%3E%3Crect%20x%3D'0'%20y%3D'0'%20width%3D'800'%20height%3D'450'%20fill%3D'rgba(124%2C131%2C255%2C0.18)'/%3E%3Ctext%20x%3D'40'%20y%3D'140'%20fill%3D'%23eef2ff'%20font-size%3D'34'%20font-family%3D'Arial'%20font-weight%3D'800'%3ESleep mask%3C/text%3E%3C/svg%3E" alt="Sleep mask product image"></div>
-      <div class="inner">
-        <div class="title">Sleep mask</div>
-        <button onclick="window.open('https://www.amazon.nl/s?k=Sleep%20mask&tag=moodmakerz-21','_blank')">View on Amazon.nl</button>
-      </div>
-    </div><div class="card">
-      <div class="thumb"><img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20width%3D'800'%20height%3D'450'%3E%3Crect%20width%3D'800'%20height%3D'450'%20fill%3D'%230b1020'/%3E%3Crect%20x%3D'0'%20y%3D'0'%20width%3D'800'%20height%3D'450'%20fill%3D'rgba(124%2C131%2C255%2C0.18)'/%3E%3Ctext%20x%3D'40'%20y%3D'140'%20fill%3D'%23eef2ff'%20font-size%3D'34'%20font-family%3D'Arial'%20font-weight%3D'800'%3EWhite noise machine%3C/text%3E%3C/svg%3E" alt="White noise machine product image"></div>
-      <div class="inner">
-        <div class="title">White noise machine</div>
-        <button onclick="window.open('https://www.amazon.nl/s?k=White%20noise%20machine&tag=moodmakerz-21','_blank')">View on Amazon.nl</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="footer">
-    ⚠️ Afbeeldingen zijn voorbeeldafbeeldingen (realistische productrenders/illustraties).<br>
-    As an Amazon Associate I earn from qualifying purchases.
-  </div>
+  <div class="grid" id="grid"></div>
 </div>
 
-<noscript>
-  <div class="warn">
-    JavaScript staat uit. Je ziet nu de fallback weergave. Zet JavaScript aan voor mood-knoppen en shuffle.
+<div class="footer-wrap">
+  <div class="footer">
+    <div class="example-note">⚠️ Afbeeldingen zijn <b>voorbeeldafbeeldingen</b> (random productfoto’s) en niet exact dezelfde producten als op Amazon. Deze worden later vervangen door echte Amazon-productafbeeldingen via ASIN.</div>
+    <div class="disclaimer">As an Amazon Associate I earn from qualifying purchases.</div>
   </div>
-</noscript>
+</div>
 
 <script>
 const TAG="moodmakerz-21";
@@ -109,137 +47,107 @@ const moodsEl=document.getElementById("moods");
 const grid=document.getElementById("grid");
 let currentMood=Object.keys(CATALOG)[0];
 
-function amazonUrl(t){return BASE+encodeURIComponent(t)+"&tag="+TAG;}
-function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
-
-function realisticImage(title){
-  const t=title.toLowerCase();
-  let shape="box";
-  if(t.includes("candle")) shape="candle";
-  else if(t.includes("blanket")) shape="blanket";
-  else if(t.includes("diffuser")) shape="diffuser";
-  else if(t.includes("oil")) shape="bottle";
-  else if(t.includes("tea")) shape="mug";
-  else if(t.includes("camera")) shape="camera";
-  else if(t.includes("speaker")) shape="speaker";
-  else if(t.includes("dumbbell")) shape="dumbbell";
-  else if(t.includes("yoga")) shape="mat";
-  else if(t.includes("water bottle")||t.includes("water")) shape="water";
-  else if(t.includes("lamp")) shape="lamp";
-  else if(t.includes("jump rope")) shape="jumprope";
-  else if(t.includes("bands")) shape="bands";
-  else if(t.includes("projector")) shape="projector";
-  else if(t.includes("board game")) shape="boardgame";
-  else if(t.includes("lego")) shape="blocks";
-  else if(t.includes("sleep mask")||t.includes("eye mask")) shape="mask";
-  else if(t.includes("neck pillow")||t.includes("pillow")) shape="pillow";
-  else if(t.includes("humidifier")) shape="humidifier";
-  else if(t.includes("massager")||t.includes("massage")) shape="massager";
-
-  const shapes={
-    candle:`<rect x="330" y="170" width="140" height="180" rx="18" fill="#eee"/>
-            <rect x="350" y="190" width="100" height="130" rx="14" fill="#fafafa"/>
-            <path d="M400 150 C390 170 395 180 400 190 C405 180 410 170 400 150Z" fill="#ffd27d"/>`,
-    blanket:`<rect x="290" y="210" width="220" height="110" rx="26" fill="#d8dbe6"/>`,
-    diffuser:`<ellipse cx="400" cy="300" rx="120" ry="40" fill="rgba(0,0,0,0.18)"/>
-              <rect x="330" y="160" width="140" height="160" rx="24" fill="#f5f5f5"/>
-              <path d="M400 140 C380 120 420 110 400 90" stroke="#fff" stroke-width="5"/>`,
-    bottle:`<rect x="360" y="150" width="80" height="200" rx="18" fill="#f0f0f0"/>
-            <rect x="372" y="130" width="56" height="30" rx="8" fill="#ddd"/>`,
-    mug:`<rect x="320" y="220" width="160" height="100" rx="22" fill="#f7f7f7"/>
-         <path d="M480 240 C520 250 520 300 480 310" stroke="#e0e0e0" stroke-width="10" fill="none"/>`,
-    camera:`<rect x="300" y="220" width="200" height="120" rx="18" fill="#2b2b2b"/>
-            <circle cx="400" cy="280" r="44" fill="#555"/>
-            <circle cx="400" cy="280" r="20" fill="#111"/>`,
-    speaker:`<rect x="330" y="200" width="140" height="160" rx="22" fill="#1f2937"/>
-             <circle cx="400" cy="280" r="44" fill="#374151"/>`,
-    dumbbell:`<rect x="330" y="270" width="140" height="20" rx="10" fill="#444"/>
-              <rect x="300" y="240" width="40" height="80" rx="10" fill="#666"/>
-              <rect x="460" y="240" width="40" height="80" rx="10" fill="#666"/>`,
-    mat:`<rect x="270" y="260" width="260" height="80" rx="40" fill="#4ade80"/>`,
-    water:`<rect x="365" y="150" width="70" height="200" rx="22" fill="#60a5fa"/>`,
-    lamp:`<rect x="360" y="280" width="80" height="90" rx="14" fill="#ddd"/>
-          <path d="M320 280 C340 220 460 220 480 280Z" fill="#fef3c7"/>`,
-    box:`<rect x="310" y="220" width="180" height="140" rx="18" fill="#e5e7eb"/>`,
-    jumprope:`<path d="M300 320 Q400 170 500 320" stroke="rgba(0,0,0,0.20)" stroke-width="14" fill="none"/>
-              <rect x="280" y="305" width="40" height="80" rx="14" fill="#e5e7eb"/>
-              <rect x="480" y="305" width="40" height="80" rx="14" fill="#e5e7eb"/>`,
-    bands:`<rect x="300" y="260" width="200" height="70" rx="35" fill="#e5e7eb"/>`,
-    projector:`<rect x="290" y="235" width="220" height="115" rx="20" fill="#e5e7eb"/>
-              <circle cx="430" cy="292" r="36" fill="#cbd5e1"/>
-              <circle cx="430" cy="292" r="16" fill="#334155"/>`,
-    boardgame:`<rect x="300" y="210" width="200" height="150" rx="18" fill="#e5e7eb"/>
-              <rect x="330" y="235" width="140" height="50" rx="12" fill="#cbd5e1"/>`,
-    blocks:`<rect x="305" y="260" width="90" height="90" rx="14" fill="#e5e7eb"/>
-            <rect x="410" y="230" width="90" height="120" rx="14" fill="#cbd5e1"/>`,
-    mask:`<path d="M280 260 C320 200 480 200 520 260 C480 320 320 320 280 260Z" fill="#e5e7eb"/>`,
-    pillow:`<path d="M280 260 C280 210 520 210 520 260 C520 310 280 310 280 260Z" fill="#e5e7eb"/>`,
-    humidifier:`<rect x="320" y="170" width="160" height="210" rx="26" fill="#e5e7eb"/>
-               <path d="M400 150 C380 130 420 120 400 95" stroke="#fff" stroke-width="5" fill="none"/>`,
-    massager:`<rect x="320" y="210" width="160" height="150" rx="40" fill="#e5e7eb"/>
-              <circle cx="360" cy="285" r="22" fill="#cbd5e1"/>
-              <circle cx="440" cy="285" r="22" fill="#cbd5e1"/>`
-  };
-
-  const svg=`
-  <svg xmlns="http://www.w3.org/2000/svg" width="800" height="450">
-    <defs>
-      <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#f8fafc"/>
-        <stop offset="1" stop-color="#e5e7eb"/>
-      </linearGradient>
-      <radialGradient id="v" cx="50%" cy="35%" r="70%">
-        <stop offset="0" stop-color="rgba(255,255,255,0.0)"/>
-        <stop offset="1" stop-color="rgba(0,0,0,0.10)"/>
-      </radialGradient>
-      <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
-        <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="rgba(0,0,0,0.35)"/>
-      </filter>
-      <filter id="grain">
-        <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="1" result="n"/>
-        <feColorMatrix type="saturate" values="0"/>
-        <feComponentTransfer><feFuncA type="linear" slope="0.05"/></feComponentTransfer>
-      </filter>
-    </defs>
-    <rect width="800" height="450" fill="url(#bg)"/>
-    <rect width="800" height="450" fill="url(#v)"/>
-    <g filter="url(#shadow)">${shapes[shape]||shapes.box}</g>
-    <rect width="800" height="450" filter="url(#grain)" opacity="0.18"/>
-  </svg>`;
-  return "data:image/svg+xml;charset=UTF-8,"+encodeURIComponent(svg.trim());
+function amazonUrl(title){
+  return BASE + encodeURIComponent(title) + "&tag=" + TAG;
 }
 
-function render(mood){
-  currentMood=mood||currentMood;
-  // Clear and render
+function svgFallback(title){
+  const safe = title.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  const svg = `
+  <svg xmlns="http://www.w3.org/2000/svg" width="800" height="450">
+    <defs>
+      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#7c83ff" stop-opacity="0.55"/>
+        <stop offset="1" stop-color="#2dd4bf" stop-opacity="0.35"/>
+      </linearGradient>
+    </defs>
+    <rect width="800" height="450" fill="#0b1020"/>
+    <rect width="800" height="450" fill="url(#g)"/>
+    <text x="40" y="140" font-family="Inter,system-ui,Arial" font-size="34" fill="#eef2ff" font-weight="800">${safe}</text>
+    <text x="40" y="390" font-family="Inter,system-ui,Arial" font-size="18" fill="#a6b0cf">Example image</text>
+  </svg>`;
+  return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg.trim());
+}
+
+// Multiple providers + fallback
+function imageCandidates(title){
+  const q = encodeURIComponent(title + " product");
+  const seed = Math.abs(hashCode(title)).toString(16);
+  // 1) picsum (very reliable)
+  const u1 = `https://picsum.photos/seed/${seed}/800/600`;
+  // 2) loremflickr (often works)
+  const u2 = `https://loremflickr.com/800/600/${q}`;
+  // 3) unsplash source (sometimes rate-limited)
+  const u3 = `https://source.unsplash.com/800x600/?${q}&sig=${Math.floor(Math.random()*10000)}`;
+  return [u1,u2,u3];
+}
+
+function setImgWithFallback(img, urls, fallback){
+  let i = 0;
+  const tryNext = () => {
+    if(i >= urls.length){
+      img.src = fallback;
+      return;
+    }
+    img.src = urls[i++];
+  };
+  img.onerror = tryNext;
+  tryNext();
+}
+
+function hashCode(str){
+  let hash=0;
+  for(let i=0;i<str.length;i++){
+    hash = str.charCodeAt(i) + ((hash<<5)-hash);
+    hash |= 0;
+  }
+  return hash;
+}
+
+function render(){
   grid.innerHTML="";
   CATALOG[currentMood].forEach(title=>{
     const card=document.createElement("div");
     card.className="card";
-    card.innerHTML=`
-      <div class="thumb"><img src="${realisticImage(title)}" alt="${esc(title)} product image"></div>
-      <div class="inner">
-        <div class="title">${esc(title)}</div>
-        <button onclick="window.open('${amazonUrl(title)}','_blank')">View on Amazon.nl</button>
-      </div>`;
+
+    const thumb=document.createElement("div");
+    thumb.className="thumb";
+    const img=document.createElement("img");
+    img.alt=title + " voorbeeldafbeelding";
+    img.loading="lazy";
+    setImgWithFallback(img, imageCandidates(title), svgFallback(title));
+    thumb.appendChild(img);
+
+    const inner=document.createElement("div");
+    inner.className="inner";
+    inner.innerHTML = `<div class="title">${title}</div>`;
+
+    const btn=document.createElement("button");
+    btn.textContent="View on Amazon.nl";
+    btn.onclick=()=>window.open(amazonUrl(title),"_blank");
+
+    inner.appendChild(btn);
+
+    card.appendChild(thumb);
+    card.appendChild(inner);
     grid.appendChild(card);
   });
 }
 
 Object.keys(CATALOG).forEach((m,i)=>{
   const b=document.createElement("div");
-  b.className="mood"+(m===currentMood?" active":"");
+  b.className="mood"+(i===0?" active":"");
   b.textContent=m;
   b.onclick=()=>{
     document.querySelectorAll(".mood").forEach(x=>x.classList.remove("active"));
     b.classList.add("active");
-    render(m);
+    currentMood=m;
+    render();
   };
   moodsEl.appendChild(b);
 });
 
-// Replace fallback content with JS-rendered content
-render(currentMood);
+render();
 </script>
 </body>
 </html>
