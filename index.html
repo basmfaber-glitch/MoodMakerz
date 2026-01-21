@@ -6,21 +6,17 @@
 <title>MoodMarket</title>
 <meta name="theme-color" content="#0b1020">
 <link rel="manifest" href="manifest.json">
-
 <style>
   :root{
     --bg:#0b1020;
-    --surface: rgba(255,255,255,0.06);
-    --surface2: rgba(255,255,255,0.08);
     --border: rgba(255,255,255,0.10);
     --text:#eef2ff;
     --muted:#a6b0cf;
-
-    /* Muted accents (less bright) */
-    --accent:#7c83ff;    /* soft indigo */
-    --accent2:#34d399;   /* soft green */
+    --accent:#7c83ff;
+    --accent2:#2dd4bf;
+    --danger:#fb7185;
+    --shadow: 0 18px 44px rgba(0,0,0,0.35);
   }
-
   *{ box-sizing:border-box; }
   html,body{ height:100%; }
   body{
@@ -28,67 +24,74 @@
     font-family: system-ui, -apple-system, Segoe UI, Inter, Arial, sans-serif;
     color:var(--text);
     background:
-      radial-gradient(900px 500px at 10% -10%, rgba(124,131,255,0.18), transparent 55%),
-      radial-gradient(700px 420px at 90% 0%, rgba(52,211,153,0.12), transparent 60%),
+      radial-gradient(900px 500px at 10% -10%, rgba(124,131,255,0.16), transparent 55%),
+      radial-gradient(700px 420px at 90% 0%, rgba(45,212,191,0.12), transparent 60%),
       var(--bg);
   }
-
-  /* Website-like centered layout */
   .container{
-    max-width: 1040px;
+    max-width: 1080px;
     margin: 0 auto;
-    padding: 18px 16px 56px;
+    padding: 18px 16px 80px;
   }
-
   header{
-    padding: 10px 0 4px;
+    padding: 10px 0 10px;
     display:flex;
     align-items:flex-end;
     justify-content:space-between;
     gap:12px;
   }
-
   .brand h1{
     margin:0;
     font-size: clamp(18px, 2.2vw, 22px);
     letter-spacing:-0.02em;
-    font-weight: 700;
+    font-weight: 750;
   }
   .brand p{
     margin:6px 0 0;
     font-size: 13px;
     color: var(--muted);
     line-height: 1.35;
+    max-width: 58ch;
   }
-
   .toplinks{
     display:flex;
     gap:10px;
     align-items:center;
     font-size:13px;
-    color: var(--muted);
   }
-  .toplinks a{
-    color: var(--muted);
+  .pill{
+    color: var(--text);
     text-decoration:none;
     padding: 8px 10px;
     border-radius: 999px;
-    border: 1px solid transparent;
-  }
-  .toplinks a:hover{
-    border-color: var(--border);
+    border: 1px solid var(--border);
     background: rgba(255,255,255,0.04);
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    user-select:none;
   }
+  .pill:hover{
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.14);
+  }
+  .pill:active{ transform: translateY(1px); }
+  .pill.primary{
+    border: none;
+    color:#0b1020;
+    background: linear-gradient(90deg, rgba(124,131,255,0.85), rgba(45,212,191,0.75));
+    font-weight: 750;
+  }
+  .pill.primary:hover{ filter: brightness(0.98); }
 
-  /* Mood row */
   .moods-wrap{
-    margin-top: 16px;
+    margin-top: 6px;
     padding: 10px;
     border: 1px solid var(--border);
     background: rgba(255,255,255,0.035);
     border-radius: 16px;
   }
-
   .moods{
     display:flex;
     gap:8px;
@@ -126,18 +129,17 @@
     background: rgba(124,131,255,0.10);
   }
 
-  /* Feed */
   .feed-head{
     display:flex;
     align-items:baseline;
     justify-content:space-between;
     gap:12px;
-    margin-top: 18px;
+    margin-top: 16px;
   }
   .feed-head h2{
     margin:0;
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--text);
     letter-spacing: 0.01em;
   }
@@ -153,7 +155,6 @@
     grid-template-columns: repeat(12, 1fr);
     gap: 12px;
   }
-  /* 3 columns desktop, 2 columns tablet, 1 column mobile */
   .card{ grid-column: span 4; }
   @media (max-width: 900px){ .card{ grid-column: span 6; } }
   @media (max-width: 560px){ .card{ grid-column: span 12; } }
@@ -163,29 +164,28 @@
     border: 1px solid rgba(255,255,255,0.09);
     border-radius: 18px;
     overflow:hidden;
-    box-shadow: 0 18px 44px rgba(0,0,0,0.35);
+    box-shadow: var(--shadow);
   }
 
   .thumb{
     width:100%;
     aspect-ratio: 16/9;
     display:block;
-    background: radial-gradient(700px 280px at 40% 0%, rgba(124,131,255,0.25), transparent 55%),
-                radial-gradient(700px 280px at 70% 10%, rgba(52,211,153,0.18), transparent 60%),
-                rgba(255,255,255,0.04);
+    background:
+      radial-gradient(700px 280px at 40% 0%, rgba(124,131,255,0.18), transparent 55%),
+      radial-gradient(700px 280px at 70% 10%, rgba(45,212,191,0.14), transparent 60%),
+      rgba(255,255,255,0.04);
     border-bottom: 1px solid rgba(255,255,255,0.08);
   }
 
-  .card-inner{
-    padding: 12px 12px 14px;
-  }
+  .card-inner{ padding: 12px 12px 14px; }
 
   .badge{
     display:inline-flex;
     align-items:center;
     gap:6px;
     font-size: 11px;
-    font-weight: 650;
+    font-weight: 750;
     color: rgba(255,255,255,0.92);
     background: rgba(124,131,255,0.14);
     border: 1px solid rgba(124,131,255,0.25);
@@ -217,10 +217,10 @@
     border: none;
     border-radius: 12px;
     cursor:pointer;
-    font-weight: 700;
+    font-weight: 800;
     font-size: 13px;
     color: #0b1020;
-    background: linear-gradient(90deg, rgba(124,131,255,0.85), rgba(52,211,153,0.75));
+    background: linear-gradient(90deg, rgba(124,131,255,0.85), rgba(45,212,191,0.75));
   }
   .buy:hover{ filter: brightness(0.98); }
   .buy:active{ transform: translateY(1px); }
@@ -233,30 +233,116 @@
     background: rgba(255,255,255,0.05);
     color: rgba(255,255,255,0.9);
     cursor:pointer;
+    display:grid;
+    place-items:center;
   }
   .iconbtn:hover{ background: rgba(255,255,255,0.07); }
+  .iconbtn:active{ transform: translateY(1px); }
 
-  /* Small footer */
+  .toast{
+    position: fixed;
+    left: 50%;
+    bottom: 16px;
+    transform: translateX(-50%);
+    background: rgba(2,6,23,0.75);
+    border: 1px solid rgba(255,255,255,0.12);
+    backdrop-filter: blur(10px);
+    color: rgba(255,255,255,0.92);
+    padding: 10px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    display:none;
+    max-width: calc(100% - 24px);
+    box-shadow: 0 14px 34px rgba(0,0,0,0.45);
+    z-index: 50;
+  }
+
+  .modalBackdrop{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    display:none;
+    z-index: 60;
+  }
+  .modal{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: min(920px, calc(100% - 24px));
+    background: rgba(18,23,42,0.92);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 18px;
+    box-shadow: 0 26px 80px rgba(0,0,0,0.6);
+    display:none;
+    z-index: 61;
+  }
+  .modalHeader{
+    padding: 12px 12px 10px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.10);
+  }
+  .modalHeader h3{
+    margin:0;
+    font-size: 14px;
+    letter-spacing: -0.01em;
+  }
+  .modalHeader .sub{
+    margin: 4px 0 0;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .modalBody{ padding: 12px; }
+  .favGrid{
+    display:grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 12px;
+  }
+  .favCard{ grid-column: span 4; }
+  @media (max-width: 900px){ .favCard{ grid-column: span 6; } }
+  @media (max-width: 560px){ .favCard{ grid-column: span 12; } }
+
+  .favCard{
+    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 16px;
+    overflow:hidden;
+  }
+  .favInner{ padding: 12px; }
+  .favTitle{
+    font-weight: 800;
+    font-size: 13.5px;
+    margin: 0 0 6px;
+  }
+  .favDesc{
+    margin: 0 0 10px;
+    color: var(--muted);
+    font-size: 12.5px;
+    line-height: 1.35;
+  }
+  .danger{
+    background: rgba(251,113,133,0.14) !important;
+    border: 1px solid rgba(251,113,133,0.30) !important;
+    color: rgba(255,255,255,0.92) !important;
+  }
+  .modalFooter{
+    padding: 10px 12px 12px;
+    border-top: 1px solid rgba(255,255,255,0.10);
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    align-items:center;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
   footer{
-    margin-top: 18px;
+    margin-top: 14px;
     color: rgba(255,255,255,0.45);
     font-size: 12px;
     text-align:center;
-  }
-
-  /* Optional “Add to Home” subtle */
-  .install{
-    position:fixed;
-    bottom: 14px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.14);
-    color: rgba(255,255,255,0.85);
-    padding: 8px 12px;
-    border-radius: 999px;
-    font-size: 12px;
-    backdrop-filter: blur(10px);
   }
 </style>
 </head>
@@ -266,10 +352,11 @@
     <header>
       <div class="brand">
         <h1>MoodMarket</h1>
-        <p>Pick a mood. Get a few smart suggestions. Buy only what fits right now.</p>
+        <p>Pick a mood. Get fresh suggestions every time. Save favorites. Click “View / Buy” to test your affiliate flow.</p>
       </div>
       <div class="toplinks">
-        <a href="#" id="openFavorites">Favorites</a>
+        <button class="pill primary" id="shuffleBtn" type="button">Shuffle suggestions</button>
+        <button class="pill" id="openFavorites" type="button">Favorites <span id="favCount" style="opacity:.85">(0)</span></button>
       </div>
     </header>
 
@@ -285,69 +372,139 @@
 
     <div class="feed-head">
       <h2 id="feedTitle">Recommended for: Stressed</h2>
-      <p class="hint">Tap a mood to refresh suggestions.</p>
+      <p class="hint">Click the same mood again, or use Shuffle, to load new options.</p>
     </div>
 
     <div class="feed" id="feed"></div>
 
     <footer>
-      MoodMarket © Affiliate links may earn a commission.
+      MoodMarket © Affiliate links may earn a commission. Replace placeholders with your real affiliate links.
     </footer>
   </div>
 
-  <div class="install">Add to Home Screen</div>
+  <div class="toast" id="toast"></div>
+
+  <div class="modalBackdrop" id="modalBackdrop"></div>
+  <div class="modal" id="favModal" role="dialog" aria-modal="true" aria-label="Favorites">
+    <div class="modalHeader">
+      <div>
+        <h3>Favorites</h3>
+        <div class="sub">Saved items are stored on this device (localStorage).</div>
+      </div>
+      <button class="pill" id="closeFavorites" type="button">Close</button>
+    </div>
+    <div class="modalBody">
+      <div class="favGrid" id="favGrid"></div>
+    </div>
+    <div class="modalFooter">
+      <div id="favFooterText">0 saved</div>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <button class="pill danger" id="clearFavorites" type="button">Clear all</button>
+      </div>
+    </div>
+  </div>
 
 <script>
-  // More options per mood (you can expand this list anytime)
-  // Monetization: replace AFF_LINK with your real affiliate deep links
-  const AFF_LINK = "https://example.com?aff=YOURID";
+  const AFFILIATE_BASE = "https://example.com?aff=YOURID&item=";
+  const CARDS_PER_REFRESH = 9;
+  const LS_FAV = "moodmarket_favorites_v1";
+  const LS_FB  = "moodmarket_feedback_v1";
 
-  const DATA = {
-    Stressed: [
-      { tag: "AI pick", title: "Calming Tea", desc: "A quick ritual that lowers tension." },
-      { tag: "Trending", title: "Breathing App", desc: "3-minute guided reset." },
-      { tag: "Top rated", title: "Weighted Blanket", desc: "Deep-pressure comfort at night." },
-      { tag: "Recommended", title: "Aromatherapy Oil", desc: "Subtle scent to unwind." },
-      { tag: "AI pick", title: "Desk Zen Kit", desc: "Small tools for calm focus." },
-      { tag: "Best seller", title: "Stress Journal", desc: "Unload thoughts fast." }
-    ],
-    Happy: [
-      { tag: "Trending", title: "Instant Camera", desc: "Capture the moment." },
-      { tag: "AI pick", title: "Dance Workout", desc: "Move your joy in 10 minutes." },
-      { tag: "Recommended", title: "Memory Journal", desc: "Keep the feeling longer." },
-      { tag: "Best seller", title: "Mocktail Kit", desc: "Fun, social, no alcohol needed." },
-      { tag: "AI pick", title: "Mini Photo Printer", desc: "Print and share instantly." },
-      { tag: "Top rated", title: "Board Game Night Pick", desc: "Fast fun with friends." }
-    ],
-    Energetic: [
-      { tag: "AI pick", title: "HIIT Program", desc: "Burn energy fast." },
-      { tag: "Best seller", title: "Protein Bars", desc: "Clean fuel, easy." },
-      { tag: "Trending", title: "Jump Rope", desc: "Anywhere cardio." },
-      { tag: "Recommended", title: "Electrolyte Mix", desc: "Hydrate like an athlete." },
-      { tag: "AI pick", title: "Running Playlist", desc: "Tempo-boost tracks." },
-      { tag: "Top rated", title: "Resistance Bands", desc: "Quick strength set." }
-    ],
-    Creative: [
-      { tag: "AI pick", title: "AI Art Tool", desc: "Create instantly." },
-      { tag: "Top rated", title: "Sketch Set", desc: "Premium materials." },
-      { tag: "Recommended", title: "Writing Prompts", desc: "Beat creative block." },
-      { tag: "Trending", title: "Watercolor Kit", desc: "Relaxing creative flow." },
-      { tag: "AI pick", title: "Design Micro-Course", desc: "Improve taste and output." },
-      { tag: "Best seller", title: "Craft Starter Box", desc: "Hands-on creativity." }
-    ],
-    Tired: [
-      { tag: "AI pick", title: "Sleep Sounds App", desc: "Fall asleep faster." },
-      { tag: "Best seller", title: "Neck Pillow", desc: "Travel & home comfort." },
-      { tag: "Recommended", title: "Evening Stretch", desc: "Release tension gently." },
-      { tag: "Top rated", title: "Blue Light Glasses", desc: "Reduce eye fatigue." },
-      { tag: "AI pick", title: "Magnesium (check label)", desc: "Common nighttime routine." },
-      { tag: "Trending", title: "Warm Eye Mask", desc: "Instant calm." }
-    ]
+  function slugify(s){ return s.toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,""); }
+
+  const toastEl = document.getElementById("toast");
+  let toastTimer = null;
+  function toast(msg){
+    toastEl.textContent = msg;
+    toastEl.style.display = "block";
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=>{ toastEl.style.display="none"; }, 1600);
+  }
+
+  function buildPool(mood) {
+    const base = {
+      Stressed: {
+        tags: ["AI pick", "Trending", "Top rated", "Best seller", "Recommended"],
+        verbs: ["Unwind with", "Reset using", "Calm down with", "De-stress via", "Slow down with", "Ground yourself with"],
+        items: [
+          "herbal tea", "breathing timer", "guided meditation", "aromatherapy oil", "weighted blanket",
+          "stress journal", "noise reduction earbuds", "5-min body scan", "candle set", "sleep mask",
+          "desk zen kit", "calm focus music", "neck massager", "soothing room spray", "gentle yoga flow",
+          "mindful coloring", "anti-stress squeeze ball", "short walk plan", "hot bath salts", "guided relaxation audio"
+        ],
+        benefits: ["lower tension fast", "quiet your mind", "feel grounded", "reduce overwhelm", "sleep easier", "focus better", "relax your body", "slow your thoughts"]
+      },
+      Happy: {
+        tags: ["Trending", "AI pick", "Recommended", "Best seller", "Top rated"],
+        verbs: ["Celebrate with", "Boost joy with", "Share a moment using", "Play with", "Make memories with", "Light up the day with"],
+        items: [
+          "instant camera", "mini photo printer", "dance playlist", "fun card game", "mocktail kit",
+          "gratitude journal", "mini adventure list", "comedy special", "party lights", "photo memory book",
+          "friendship activity deck", "cook-together recipe", "portable speaker", "craft night kit", "movie night box",
+          "board game pick", "funny podcast", "surprise gift idea", "weekend plan generator", "music discovery pack"
+        ],
+        benefits: ["make the day brighter", "create memories", "share laughs", "feel more connected", "keep momentum", "add playful energy", "turn today special"]
+      },
+      Energetic: {
+        tags: ["AI pick", "Trending", "Best seller", "Top rated", "Recommended"],
+        verbs: ["Channel energy into", "Go harder with", "Fuel up using", "Level up with", "Push forward with", "Focus your energy through"],
+        items: [
+          "HIIT timer", "jump rope", "resistance bands", "running playlist", "electrolyte mix",
+          "protein snack box", "mobility routine", "push-up challenge", "dance cardio",
+          "boxing workout", "cycling plan", "stretch + strength split", "step goal plan",
+          "interval training guide", "5k training plan", "core routine", "home workout set", "pre-workout warmup"
+        ],
+        benefits: ["burn energy fast", "boost performance", "stay consistent", "recover better", "train smarter", "feel unstoppable", "build momentum"]
+      },
+      Creative: {
+        tags: ["AI pick", "Recommended", "Trending", "Top rated", "Best seller"],
+        verbs: ["Create with", "Unlock ideas using", "Start a project with", "Break a block with", "Explore with", "Get into flow with"],
+        items: [
+          "writing prompts", "sketch set", "watercolor kit", "AI art tool", "design micro-course",
+          "photo challenge list", "storytelling template", "idea journal", "collage kit",
+          "creative timer", "poetry prompt deck", "color palette generator", "moodboard starter",
+          "beginner animation lesson", "DIY craft box", "zine-making kit", "songwriting prompts", "creative warmup routine"
+        ],
+        benefits: ["spark new ideas", "ship something today", "find your style", "get into flow", "improve taste", "make progress fast", "start creating now"]
+      },
+      Tired: {
+        tags: ["AI pick", "Best seller", "Recommended", "Top rated", "Trending"],
+        verbs: ["Recharge with", "Recover using", "Wind down with", "Refresh via", "Reset with", "Support recovery with"],
+        items: [
+          "sleep sounds", "evening stretch", "warm eye mask", "neck pillow", "blue light glasses",
+          "power nap routine", "screen-off ritual", "early bedtime plan", "calm audiobook",
+          "low-light lamp", "foot soak routine", "rest day checklist", "morning sunlight habit",
+          "sleep mask", "gentle yoga", "breathing for sleep", "wind-down tea", "white noise machine"
+        ],
+        benefits: ["feel refreshed", "sleep deeper", "reduce fatigue", "release tension", "recover faster", "calm your nervous system", "restore energy"]
+      }
+    };
+
+    const cfg = base[mood];
+    const out = new Set();
+    while (out.size < 55) {
+      const tag = cfg.tags[Math.floor(Math.random() * cfg.tags.length)];
+      const verb = cfg.verbs[Math.floor(Math.random() * cfg.verbs.length)];
+      const item = cfg.items[Math.floor(Math.random() * cfg.items.length)];
+      const benefit = cfg.benefits[Math.floor(Math.random() * cfg.benefits.length)];
+
+      const title = item.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+      const desc = `${verb} ${item} to ${benefit}.`;
+      out.add(JSON.stringify({ tag, title, desc, mood }));
+    }
+    return Array.from(out).map(x => JSON.parse(x));
+  }
+
+  const POOLS = {
+    Stressed: buildPool("Stressed"),
+    Happy: buildPool("Happy"),
+    Energetic: buildPool("Energetic"),
+    Creative: buildPool("Creative"),
+    Tired: buildPool("Tired")
   };
 
-  // Lightweight “AI” ranking: rotate + prioritize tags and variety
-  function aiRecommend(mood, k=6){
-    const items = [...DATA[mood]];
+  function aiRecommend(mood, k=9){
+    const items = [...POOLS[mood]];
     const score = (tag) => (
       tag.includes("AI") ? 4 :
       tag.includes("Trending") ? 3 :
@@ -355,45 +512,105 @@
       tag.includes("Top") ? 2 : 1
     );
     items.sort((a,b)=>score(b.tag)-score(a.tag));
-    // add slight shuffle within same score
-    let i=0;
-    while(i<items.length-1){
+
+    for(let i=0;i<items.length-1;i++){
       const sA=score(items[i].tag), sB=score(items[i+1].tag);
-      if(sA===sB && Math.random()>0.5){ [items[i],items[i+1]]=[items[i+1],items[i]]; }
-      i++;
+      if(sA===sB && Math.random()>0.55){
+        const tmp=items[i]; items[i]=items[i+1]; items[i+1]=tmp;
+      }
     }
-    return items.slice(0,k);
+
+    const picked=[];
+    const used=new Set();
+    while(picked.length<k && used.size<items.length){
+      const idx = Math.floor(Math.random()*items.length);
+      if(used.has(idx)) continue;
+      used.add(idx);
+      picked.push(items[idx]);
+    }
+    return picked;
   }
 
-  const feed = document.getElementById("feed");
-  const feedTitle = document.getElementById("feedTitle");
+  function loadJSON(key, fallback){
+    try{ const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; }
+    catch(e){ return fallback; }
+  }
+  function saveJSON(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
+
+  let favorites = loadJSON(LS_FAV, []);
+  let feedback  = loadJSON(LS_FB, {});
+
+  function itemId(mood, title){ return mood + "::" + title.toLowerCase(); }
+  function makeAffiliateLink(item){ return AFFILIATE_BASE + encodeURIComponent(slugify(item.mood + "-" + item.title)); }
+
+  function favCountUpdate(){
+    document.getElementById("favCount").textContent = `(${favorites.length})`;
+    const footerText = document.getElementById("favFooterText");
+    if(footerText) footerText.textContent = `${favorites.length} saved`;
+  }
+
+  const feedEl = document.getElementById("feed");
+  const feedTitleEl = document.getElementById("feedTitle");
+  let currentMood = "Stressed";
 
   function render(mood){
-    feedTitle.textContent = `Recommended for: ${mood}`;
-    feed.innerHTML = "";
-    const recs = aiRecommend(mood, 6);
+    currentMood = mood;
+    feedTitleEl.textContent = `Recommended for: ${mood}`;
+    feedEl.innerHTML = "";
+    const recs = aiRecommend(mood, CARDS_PER_REFRESH);
 
-    for(const p of recs){
+    for(const item of recs){
+      const id = itemId(item.mood, item.title);
+      const link = makeAffiliateLink(item);
+      const isFav = favorites.some(f=>f.id===id);
+
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `
         <div class="thumb" aria-hidden="true"></div>
         <div class="card-inner">
-          <span class="badge">${p.tag}</span>
-          <h3>${p.title}</h3>
-          <p>${p.desc}</p>
+          <span class="badge">${item.tag}</span>
+          <h3>${item.title}</h3>
+          <p>${item.desc}</p>
           <div class="actions">
-            <button class="buy" onclick="window.open('${AFF_LINK}','_blank')">View / Buy</button>
-            <button class="iconbtn" title="Like" onclick="alert('Saved feedback: 👍')">👍</button>
-            <button class="iconbtn" title="Save" onclick="alert('Saved to favorites')">★</button>
+            <button class="buy" type="button" data-link="${link}">View / Buy</button>
+            <button class="iconbtn" type="button" title="Like" data-like="${id}" aria-label="Like">👍</button>
+            <button class="iconbtn" type="button" title="Save" data-save="${id}" aria-label="Save">${isFav ? "★" : "☆"}</button>
           </div>
         </div>
       `;
-      feed.appendChild(card);
+
+      card.querySelector(".buy").addEventListener("click", (e)=>{
+        window.open(e.currentTarget.getAttribute("data-link"), "_blank");
+      });
+
+      card.querySelector(`[data-like="${id}"]`).addEventListener("click", ()=>{
+        feedback[id] = (feedback[id]===1) ? 0 : 1;
+        saveJSON(LS_FB, feedback);
+        toast(feedback[id]===1 ? "Saved feedback: 👍" : "Feedback removed");
+      });
+
+      card.querySelector(`[data-save="${id}"]`).addEventListener("click", (e)=>{
+        const idx = favorites.findIndex(f=>f.id===id);
+        if(idx>=0){
+          favorites.splice(idx,1);
+          saveJSON(LS_FAV, favorites);
+          e.currentTarget.textContent = "☆";
+          toast("Removed from favorites");
+        }else{
+          favorites.push({ id, title:item.title, desc:item.desc, mood:item.mood, link });
+          saveJSON(LS_FAV, favorites);
+          e.currentTarget.textContent = "★";
+          toast("Saved to favorites");
+        }
+        favCountUpdate();
+      });
+
+      feedEl.appendChild(card);
     }
   }
 
-  // Mood selection
+  // Mood clicks always refresh (even same mood)
   document.querySelectorAll(".mood").forEach(btn=>{
     btn.addEventListener("click", ()=>{
       document.querySelectorAll(".mood").forEach(b=>b.classList.remove("active"));
@@ -402,7 +619,78 @@
     });
   });
 
-  // Initial render
+  document.getElementById("shuffleBtn").addEventListener("click", ()=>{
+    render(currentMood);
+    toast("New suggestions loaded");
+  });
+
+  // Favorites modal
+  const modal = document.getElementById("favModal");
+  const backdrop = document.getElementById("modalBackdrop");
+  const favGrid = document.getElementById("favGrid");
+
+  function openFavorites(){
+    backdrop.style.display = "block";
+    modal.style.display = "block";
+    renderFavoritesGrid();
+  }
+  function closeFavorites(){
+    backdrop.style.display = "none";
+    modal.style.display = "none";
+  }
+
+  function renderFavoritesGrid(){
+    favGrid.innerHTML = "";
+    if(favorites.length===0){
+      favGrid.innerHTML = `<div style="grid-column: span 12; color: var(--muted); font-size: 13px; padding: 6px;">No favorites yet. Tap ☆ on an item to save it.</div>`;
+      favCountUpdate();
+      return;
+    }
+
+    favorites.forEach(f=>{
+      const card = document.createElement("div");
+      card.className = "favCard";
+      card.innerHTML = `
+        <div class="thumb" aria-hidden="true"></div>
+        <div class="favInner">
+          <div class="favTitle">${f.title}</div>
+          <div class="favDesc">${f.desc}</div>
+          <div class="actions">
+            <button class="buy" type="button" data-link="${f.link}">View / Buy</button>
+            <button class="iconbtn danger" type="button" title="Remove" aria-label="Remove">✕</button>
+          </div>
+        </div>
+      `;
+
+      card.querySelector(".buy").addEventListener("click", ()=> window.open(f.link, "_blank"));
+      card.querySelector(".iconbtn").addEventListener("click", ()=>{
+        favorites = favorites.filter(x=>x.id!==f.id);
+        saveJSON(LS_FAV, favorites);
+        toast("Removed from favorites");
+        favCountUpdate();
+        renderFavoritesGrid();
+      });
+
+      favGrid.appendChild(card);
+    });
+
+    favCountUpdate();
+  }
+
+  document.getElementById("openFavorites").addEventListener("click", openFavorites);
+  document.getElementById("closeFavorites").addEventListener("click", closeFavorites);
+  document.getElementById("modalBackdrop").addEventListener("click", closeFavorites);
+
+  document.getElementById("clearFavorites").addEventListener("click", ()=>{
+    favorites = [];
+    saveJSON(LS_FAV, favorites);
+    toast("Favorites cleared");
+    favCountUpdate();
+    renderFavoritesGrid();
+  });
+
+  // Initial
+  favCountUpdate();
   render("Stressed");
 </script>
 </body>
