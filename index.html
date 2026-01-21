@@ -18,7 +18,6 @@
     --shadow: 0 18px 44px rgba(0,0,0,0.35);
   }
   *{ box-sizing:border-box; }
-  html,body{ height:100%; }
   body{
     margin:0;
     font-family: system-ui, -apple-system, Segoe UI, Inter, Arial, sans-serif;
@@ -28,40 +27,13 @@
       radial-gradient(700px 420px at 90% 0%, rgba(45,212,191,0.12), transparent 60%),
       var(--bg);
   }
-  .container{
-    max-width: 1080px;
-    margin: 0 auto;
-    padding: 18px 16px 80px;
-  }
-  header{
-    padding: 10px 0 10px;
-    display:flex;
-    align-items:flex-end;
-    justify-content:space-between;
-    gap:12px;
-  }
-  .brand h1{
-    margin:0;
-    font-size: clamp(18px, 2.2vw, 22px);
-    letter-spacing:-0.02em;
-    font-weight: 750;
-  }
-  .brand p{
-    margin:6px 0 0;
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.35;
-    max-width: 58ch;
-  }
-  .toplinks{
-    display:flex;
-    gap:10px;
-    align-items:center;
-    font-size:13px;
-  }
+  .container{ max-width: 1080px; margin:0 auto; padding: 18px 16px 80px; }
+  header{ display:flex; align-items:flex-end; justify-content:space-between; gap:12px; padding: 10px 0; }
+  .brand h1{ margin:0; font-size: clamp(18px, 2.2vw, 22px); letter-spacing:-0.02em; font-weight: 750; }
+  .brand p{ margin:6px 0 0; font-size: 13px; color: var(--muted); line-height: 1.35; max-width: 62ch; }
+  .toplinks{ display:flex; gap:10px; align-items:center; }
   .pill{
     color: var(--text);
-    text-decoration:none;
     padding: 8px 10px;
     border-radius: 999px;
     border: 1px solid var(--border);
@@ -72,10 +44,7 @@
     gap:8px;
     user-select:none;
   }
-  .pill:hover{
-    background: rgba(255,255,255,0.06);
-    border-color: rgba(255,255,255,0.14);
-  }
+  .pill:hover{ background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.14); }
   .pill:active{ transform: translateY(1px); }
   .pill.primary{
     border: none;
@@ -101,7 +70,6 @@
   }
   .moods::-webkit-scrollbar{ height: 8px; }
   .moods::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.10); border-radius: 999px; }
-
   .mood{
     flex:0 0 auto;
     cursor:pointer;
@@ -118,16 +86,10 @@
     line-height: 1;
     transition: transform .12s ease, background .12s ease, border-color .12s ease;
   }
-  .mood:hover{
-    background: rgba(255,255,255,0.07);
-    border-color: rgba(255,255,255,0.12);
-  }
+  .mood:hover{ background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.12); }
   .mood:active{ transform: scale(0.98); }
   .mood .emoji{ font-size: 14px; opacity: 0.95; }
-  .mood.active{
-    border-color: rgba(124,131,255,0.50);
-    background: rgba(124,131,255,0.10);
-  }
+  .mood.active{ border-color: rgba(124,131,255,0.50); background: rgba(124,131,255,0.10); }
 
   .feed-head{
     display:flex;
@@ -136,18 +98,8 @@
     gap:12px;
     margin-top: 16px;
   }
-  .feed-head h2{
-    margin:0;
-    font-size: 14px;
-    font-weight: 800;
-    color: var(--text);
-    letter-spacing: 0.01em;
-  }
-  .feed-head .hint{
-    margin:0;
-    font-size: 12.5px;
-    color: var(--muted);
-  }
+  .feed-head h2{ margin:0; font-size: 14px; font-weight: 800; letter-spacing: 0.01em; }
+  .feed-head .hint{ margin:0; font-size: 12.5px; color: var(--muted); }
 
   .feed{
     margin-top: 12px;
@@ -170,11 +122,9 @@
   .thumb{
     width:100%;
     aspect-ratio: 16/9;
+    object-fit: cover;
     display:block;
-    background:
-      radial-gradient(700px 280px at 40% 0%, rgba(124,131,255,0.18), transparent 55%),
-      radial-gradient(700px 280px at 70% 10%, rgba(45,212,191,0.14), transparent 60%),
-      rgba(255,255,255,0.04);
+    background: rgba(255,255,255,0.04);
     border-bottom: 1px solid rgba(255,255,255,0.08);
   }
 
@@ -182,8 +132,6 @@
 
   .badge{
     display:inline-flex;
-    align-items:center;
-    gap:6px;
     font-size: 11px;
     font-weight: 750;
     color: rgba(255,255,255,0.92);
@@ -193,23 +141,10 @@
     border-radius: 999px;
   }
 
-  .card h3{
-    margin: 10px 0 6px;
-    font-size: 14px;
-    letter-spacing:-0.01em;
-  }
-  .card p{
-    margin: 0 0 10px;
-    font-size: 12.5px;
-    color: var(--muted);
-    line-height: 1.35;
-  }
+  .card h3{ margin: 10px 0 6px; font-size: 14px; letter-spacing:-0.01em; }
+  .card p{ margin: 0 0 10px; font-size: 12.5px; color: var(--muted); line-height: 1.35; }
 
-  .actions{
-    display:flex;
-    gap:10px;
-    align-items:center;
-  }
+  .actions{ display:flex; gap:10px; align-items:center; }
 
   .buy{
     flex:1;
@@ -257,13 +192,8 @@
     z-index: 50;
   }
 
-  .modalBackdrop{
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.55);
-    display:none;
-    z-index: 60;
-  }
+  /* Favorites modal */
+  .modalBackdrop{ position: fixed; inset: 0; background: rgba(0,0,0,0.55); display:none; z-index: 60; }
   .modal{
     position: fixed;
     top: 50%;
@@ -284,16 +214,8 @@
     justify-content:space-between;
     border-bottom: 1px solid rgba(255,255,255,0.10);
   }
-  .modalHeader h3{
-    margin:0;
-    font-size: 14px;
-    letter-spacing: -0.01em;
-  }
-  .modalHeader .sub{
-    margin: 4px 0 0;
-    font-size: 12px;
-    color: var(--muted);
-  }
+  .modalHeader h3{ margin:0; font-size: 14px; letter-spacing: -0.01em; }
+  .modalHeader .sub{ margin: 4px 0 0; font-size: 12px; color: var(--muted); }
   .modalBody{ padding: 12px; }
   .favGrid{
     display:grid;
@@ -303,7 +225,6 @@
   .favCard{ grid-column: span 4; }
   @media (max-width: 900px){ .favCard{ grid-column: span 6; } }
   @media (max-width: 560px){ .favCard{ grid-column: span 12; } }
-
   .favCard{
     background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
     border: 1px solid rgba(255,255,255,0.09);
@@ -311,22 +232,9 @@
     overflow:hidden;
   }
   .favInner{ padding: 12px; }
-  .favTitle{
-    font-weight: 800;
-    font-size: 13.5px;
-    margin: 0 0 6px;
-  }
-  .favDesc{
-    margin: 0 0 10px;
-    color: var(--muted);
-    font-size: 12.5px;
-    line-height: 1.35;
-  }
-  .danger{
-    background: rgba(251,113,133,0.14) !important;
-    border: 1px solid rgba(251,113,133,0.30) !important;
-    color: rgba(255,255,255,0.92) !important;
-  }
+  .favTitle{ font-weight: 800; font-size: 13.5px; margin: 0 0 6px; }
+  .favDesc{ margin: 0 0 10px; color: var(--muted); font-size: 12.5px; line-height: 1.35; }
+  .danger{ background: rgba(251,113,133,0.14) !important; border: 1px solid rgba(251,113,133,0.30) !important; }
   .modalFooter{
     padding: 10px 12px 12px;
     border-top: 1px solid rgba(255,255,255,0.10);
@@ -338,12 +246,7 @@
     font-size: 12px;
   }
 
-  footer{
-    margin-top: 14px;
-    color: rgba(255,255,255,0.45);
-    font-size: 12px;
-    text-align:center;
-  }
+  footer{ margin-top: 14px; color: rgba(255,255,255,0.45); font-size: 12px; text-align:center; }
 </style>
 </head>
 
@@ -352,7 +255,7 @@
     <header>
       <div class="brand">
         <h1>MoodMarket</h1>
-        <p>Pick a mood. Get fresh suggestions every time. Save favorites. Click “View / Buy” to test your affiliate flow.</p>
+        <p>Each mood has a fixed list of 50 items. Shuffle cycles through without duplicates on the same page.</p>
       </div>
       <div class="toplinks">
         <button class="pill primary" id="shuffleBtn" type="button">Shuffle suggestions</button>
@@ -372,13 +275,13 @@
 
     <div class="feed-head">
       <h2 id="feedTitle">Recommended for: Stressed</h2>
-      <p class="hint">Click the same mood again, or use Shuffle, to load new options.</p>
+      <p class="hint">Click the same mood again or press Shuffle for a new batch.</p>
     </div>
 
     <div class="feed" id="feed"></div>
 
     <footer>
-      MoodMarket © Affiliate links may earn a commission. Replace placeholders with your real affiliate links.
+      MoodMarket © Affiliate links may earn a commission. Fill affiliate_links.csv to map each item to a real URL.
     </footer>
   </div>
 
@@ -405,13 +308,290 @@
   </div>
 
 <script>
-  const AFFILIATE_BASE = "https://example.com?aff=YOURID&item=";
+  /***********************
+   * 1) Catalog (50 fixed items per mood)
+   * 2) No duplicates on page (batch is unique)
+   * 3) Cycles through all 50 before repeating
+   * 4) Images: uses Unsplash Source with query (works without hosting images)
+   ************************/
+
   const CARDS_PER_REFRESH = 9;
-  const LS_FAV = "moodmarket_favorites_v1";
-  const LS_FB  = "moodmarket_feedback_v1";
+
+  // Affiliate mapping placeholder:
+  // For now we generate a predictable URL. Replace using affiliate_links.csv later.
+  const AFFILIATE_BASE = "https://example.com?aff=YOURID&item=";
+
+  const CATALOG = {
+  "Stressed": [
+    "Herbal Tea",
+    "Breathing Timer",
+    "Guided Meditation",
+    "Aromatherapy Oil",
+    "Weighted Blanket",
+    "Stress Journal",
+    "Noise-Reducing Earbuds",
+    "Body Scan Audio",
+    "Candle Set",
+    "Sleep Mask",
+    "Desk Zen Kit",
+    "Calm Focus Music",
+    "Neck Massager",
+    "Room Spray",
+    "Gentle Yoga Flow",
+    "Mindful Coloring Book",
+    "Stress Ball",
+    "Short Walk Plan",
+    "Bath Salts",
+    "Relaxation Soundscape",
+    "Herbal Tea \u2014 Chamomile",
+    "Herbal Tea \u2014 Lavender",
+    "Herbal Tea \u2014 Peppermint",
+    "Herbal Tea \u2014 5-minute",
+    "Herbal Tea \u2014 10-minute",
+    "Herbal Tea \u2014 Beginner-friendly",
+    "Herbal Tea \u2014 Travel size",
+    "Herbal Tea \u2014 Budget pick",
+    "Herbal Tea \u2014 Premium pick",
+    "Herbal Tea \u2014 Night routine",
+    "Breathing Timer \u2014 Chamomile",
+    "Breathing Timer \u2014 Lavender",
+    "Breathing Timer \u2014 Peppermint",
+    "Breathing Timer \u2014 5-minute",
+    "Breathing Timer \u2014 10-minute",
+    "Breathing Timer \u2014 Beginner-friendly",
+    "Breathing Timer \u2014 Travel size",
+    "Breathing Timer \u2014 Budget pick",
+    "Breathing Timer \u2014 Premium pick",
+    "Breathing Timer \u2014 Night routine",
+    "Guided Meditation \u2014 Chamomile",
+    "Guided Meditation \u2014 Lavender",
+    "Guided Meditation \u2014 Peppermint",
+    "Guided Meditation \u2014 5-minute",
+    "Guided Meditation \u2014 10-minute",
+    "Guided Meditation \u2014 Beginner-friendly",
+    "Guided Meditation \u2014 Travel size",
+    "Guided Meditation \u2014 Budget pick",
+    "Guided Meditation \u2014 Premium pick",
+    "Guided Meditation \u2014 Night routine"
+  ],
+  "Happy": [
+    "Instant Camera",
+    "Mini Photo Printer",
+    "Dance Playlist",
+    "Fun Card Game",
+    "Mocktail Kit",
+    "Gratitude Journal",
+    "Mini Adventure List",
+    "Comedy Special",
+    "Party Lights",
+    "Photo Memory Book",
+    "Friendship Activity Deck",
+    "Cook-Together Recipe Kit",
+    "Portable Speaker",
+    "Craft Night Kit",
+    "Movie Night Box",
+    "Board Game Pick",
+    "Funny Podcast",
+    "Surprise Gift Idea",
+    "Weekend Plan Generator",
+    "Music Discovery Pack",
+    "Instant Camera \u2014 For couples",
+    "Instant Camera \u2014 For friends",
+    "Instant Camera \u2014 Solo",
+    "Instant Camera \u2014 Under $20",
+    "Instant Camera \u2014 Premium",
+    "Instant Camera \u2014 Outdoor",
+    "Instant Camera \u2014 Indoor",
+    "Instant Camera \u2014 15-minute",
+    "Instant Camera \u2014 30-minute",
+    "Instant Camera \u2014 Instant",
+    "Mini Photo Printer \u2014 For couples",
+    "Mini Photo Printer \u2014 For friends",
+    "Mini Photo Printer \u2014 Solo",
+    "Mini Photo Printer \u2014 Under $20",
+    "Mini Photo Printer \u2014 Premium",
+    "Mini Photo Printer \u2014 Outdoor",
+    "Mini Photo Printer \u2014 Indoor",
+    "Mini Photo Printer \u2014 15-minute",
+    "Mini Photo Printer \u2014 30-minute",
+    "Mini Photo Printer \u2014 Instant",
+    "Dance Playlist \u2014 For couples",
+    "Dance Playlist \u2014 For friends",
+    "Dance Playlist \u2014 Solo",
+    "Dance Playlist \u2014 Under $20",
+    "Dance Playlist \u2014 Premium",
+    "Dance Playlist \u2014 Outdoor",
+    "Dance Playlist \u2014 Indoor",
+    "Dance Playlist \u2014 15-minute",
+    "Dance Playlist \u2014 30-minute",
+    "Dance Playlist \u2014 Instant"
+  ],
+  "Energetic": [
+    "HIIT Timer",
+    "Jump Rope",
+    "Resistance Bands",
+    "Running Playlist",
+    "Electrolyte Mix",
+    "Protein Snack Box",
+    "Mobility Routine",
+    "Push-Up Challenge",
+    "Dance Cardio",
+    "Boxing Workout",
+    "Cycling Plan",
+    "Stretch + Strength Split",
+    "Step Goal Plan",
+    "Interval Training Guide",
+    "5K Training Plan",
+    "Core Routine",
+    "Home Workout Set",
+    "Pre-Workout Warmup",
+    "Hydration Tracker",
+    "Fitness Habit Tracker",
+    "HIIT Timer \u2014 10-minute",
+    "HIIT Timer \u2014 20-minute",
+    "HIIT Timer \u2014 Beginner",
+    "HIIT Timer \u2014 Intermediate",
+    "HIIT Timer \u2014 No equipment",
+    "HIIT Timer \u2014 Home",
+    "HIIT Timer \u2014 Gym",
+    "HIIT Timer \u2014 Low impact",
+    "HIIT Timer \u2014 High intensity",
+    "HIIT Timer \u2014 Recovery-focused",
+    "Jump Rope \u2014 10-minute",
+    "Jump Rope \u2014 20-minute",
+    "Jump Rope \u2014 Beginner",
+    "Jump Rope \u2014 Intermediate",
+    "Jump Rope \u2014 No equipment",
+    "Jump Rope \u2014 Home",
+    "Jump Rope \u2014 Gym",
+    "Jump Rope \u2014 Low impact",
+    "Jump Rope \u2014 High intensity",
+    "Jump Rope \u2014 Recovery-focused",
+    "Resistance Bands \u2014 10-minute",
+    "Resistance Bands \u2014 20-minute",
+    "Resistance Bands \u2014 Beginner",
+    "Resistance Bands \u2014 Intermediate",
+    "Resistance Bands \u2014 No equipment",
+    "Resistance Bands \u2014 Home",
+    "Resistance Bands \u2014 Gym",
+    "Resistance Bands \u2014 Low impact",
+    "Resistance Bands \u2014 High intensity",
+    "Resistance Bands \u2014 Recovery-focused"
+  ],
+  "Creative": [
+    "Writing Prompts",
+    "Sketch Set",
+    "Watercolor Kit",
+    "AI Art Tool",
+    "Design Micro-Course",
+    "Photo Challenge List",
+    "Storytelling Template",
+    "Idea Journal",
+    "Collage Kit",
+    "Creative Timer",
+    "Poetry Prompt Deck",
+    "Color Palette Generator",
+    "Moodboard Starter",
+    "Beginner Animation Lesson",
+    "DIY Craft Box",
+    "Zine-Making Kit",
+    "Songwriting Prompts",
+    "Creative Warmup Routine",
+    "Logo Practice Set",
+    "Typography Mini-Lesson",
+    "Writing Prompts \u2014 Beginner",
+    "Writing Prompts \u2014 15-minute",
+    "Writing Prompts \u2014 30-minute",
+    "Writing Prompts \u2014 Daily",
+    "Writing Prompts \u2014 Weekend",
+    "Writing Prompts \u2014 Minimal tools",
+    "Writing Prompts \u2014 Digital",
+    "Writing Prompts \u2014 Analog",
+    "Writing Prompts \u2014 For creators",
+    "Writing Prompts \u2014 For fun",
+    "Sketch Set \u2014 Beginner",
+    "Sketch Set \u2014 15-minute",
+    "Sketch Set \u2014 30-minute",
+    "Sketch Set \u2014 Daily",
+    "Sketch Set \u2014 Weekend",
+    "Sketch Set \u2014 Minimal tools",
+    "Sketch Set \u2014 Digital",
+    "Sketch Set \u2014 Analog",
+    "Sketch Set \u2014 For creators",
+    "Sketch Set \u2014 For fun",
+    "Watercolor Kit \u2014 Beginner",
+    "Watercolor Kit \u2014 15-minute",
+    "Watercolor Kit \u2014 30-minute",
+    "Watercolor Kit \u2014 Daily",
+    "Watercolor Kit \u2014 Weekend",
+    "Watercolor Kit \u2014 Minimal tools",
+    "Watercolor Kit \u2014 Digital",
+    "Watercolor Kit \u2014 Analog",
+    "Watercolor Kit \u2014 For creators",
+    "Watercolor Kit \u2014 For fun"
+  ],
+  "Tired": [
+    "Sleep Sounds",
+    "Evening Stretch",
+    "Warm Eye Mask",
+    "Neck Pillow",
+    "Blue Light Glasses",
+    "Power Nap Routine",
+    "Screen-Off Ritual",
+    "Early Bedtime Plan",
+    "Calm Audiobook",
+    "Low-Light Lamp",
+    "Foot Soak Routine",
+    "Rest Day Checklist",
+    "Morning Sunlight Habit",
+    "Sleep Mask",
+    "Gentle Yoga",
+    "Breathing for Sleep",
+    "Wind-Down Tea",
+    "White Noise Machine",
+    "Light Reading List",
+    "Relaxing Playlist",
+    "Sleep Sounds \u2014 10-minute",
+    "Sleep Sounds \u2014 15-minute",
+    "Sleep Sounds \u2014 No screen",
+    "Sleep Sounds \u2014 Travel",
+    "Sleep Sounds \u2014 Home",
+    "Sleep Sounds \u2014 Budget",
+    "Sleep Sounds \u2014 Premium",
+    "Sleep Sounds \u2014 Quick reset",
+    "Sleep Sounds \u2014 Deep rest",
+    "Sleep Sounds \u2014 Gentle",
+    "Evening Stretch \u2014 10-minute",
+    "Evening Stretch \u2014 15-minute",
+    "Evening Stretch \u2014 No screen",
+    "Evening Stretch \u2014 Travel",
+    "Evening Stretch \u2014 Home",
+    "Evening Stretch \u2014 Budget",
+    "Evening Stretch \u2014 Premium",
+    "Evening Stretch \u2014 Quick reset",
+    "Evening Stretch \u2014 Deep rest",
+    "Evening Stretch \u2014 Gentle",
+    "Warm Eye Mask \u2014 10-minute",
+    "Warm Eye Mask \u2014 15-minute",
+    "Warm Eye Mask \u2014 No screen",
+    "Warm Eye Mask \u2014 Travel",
+    "Warm Eye Mask \u2014 Home",
+    "Warm Eye Mask \u2014 Budget",
+    "Warm Eye Mask \u2014 Premium",
+    "Warm Eye Mask \u2014 Quick reset",
+    "Warm Eye Mask \u2014 Deep rest",
+    "Warm Eye Mask \u2014 Gentle"
+  ]
+};
+
+  // localStorage keys
+  const LS_FAV = "moodmarket_favorites_v2";
+  const LS_ORDER = "moodmarket_order_v1";
+  const LS_INDEX = "moodmarket_index_v1";
 
   function slugify(s){ return s.toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,""); }
 
+  // Toast
   const toastEl = document.getElementById("toast");
   let toastTimer = null;
   function toast(msg){
@@ -421,127 +601,15 @@
     toastTimer = setTimeout(()=>{ toastEl.style.display="none"; }, 1600);
   }
 
-  function buildPool(mood) {
-    const base = {
-      Stressed: {
-        tags: ["AI pick", "Trending", "Top rated", "Best seller", "Recommended"],
-        verbs: ["Unwind with", "Reset using", "Calm down with", "De-stress via", "Slow down with", "Ground yourself with"],
-        items: [
-          "herbal tea", "breathing timer", "guided meditation", "aromatherapy oil", "weighted blanket",
-          "stress journal", "noise reduction earbuds", "5-min body scan", "candle set", "sleep mask",
-          "desk zen kit", "calm focus music", "neck massager", "soothing room spray", "gentle yoga flow",
-          "mindful coloring", "anti-stress squeeze ball", "short walk plan", "hot bath salts", "guided relaxation audio"
-        ],
-        benefits: ["lower tension fast", "quiet your mind", "feel grounded", "reduce overwhelm", "sleep easier", "focus better", "relax your body", "slow your thoughts"]
-      },
-      Happy: {
-        tags: ["Trending", "AI pick", "Recommended", "Best seller", "Top rated"],
-        verbs: ["Celebrate with", "Boost joy with", "Share a moment using", "Play with", "Make memories with", "Light up the day with"],
-        items: [
-          "instant camera", "mini photo printer", "dance playlist", "fun card game", "mocktail kit",
-          "gratitude journal", "mini adventure list", "comedy special", "party lights", "photo memory book",
-          "friendship activity deck", "cook-together recipe", "portable speaker", "craft night kit", "movie night box",
-          "board game pick", "funny podcast", "surprise gift idea", "weekend plan generator", "music discovery pack"
-        ],
-        benefits: ["make the day brighter", "create memories", "share laughs", "feel more connected", "keep momentum", "add playful energy", "turn today special"]
-      },
-      Energetic: {
-        tags: ["AI pick", "Trending", "Best seller", "Top rated", "Recommended"],
-        verbs: ["Channel energy into", "Go harder with", "Fuel up using", "Level up with", "Push forward with", "Focus your energy through"],
-        items: [
-          "HIIT timer", "jump rope", "resistance bands", "running playlist", "electrolyte mix",
-          "protein snack box", "mobility routine", "push-up challenge", "dance cardio",
-          "boxing workout", "cycling plan", "stretch + strength split", "step goal plan",
-          "interval training guide", "5k training plan", "core routine", "home workout set", "pre-workout warmup"
-        ],
-        benefits: ["burn energy fast", "boost performance", "stay consistent", "recover better", "train smarter", "feel unstoppable", "build momentum"]
-      },
-      Creative: {
-        tags: ["AI pick", "Recommended", "Trending", "Top rated", "Best seller"],
-        verbs: ["Create with", "Unlock ideas using", "Start a project with", "Break a block with", "Explore with", "Get into flow with"],
-        items: [
-          "writing prompts", "sketch set", "watercolor kit", "AI art tool", "design micro-course",
-          "photo challenge list", "storytelling template", "idea journal", "collage kit",
-          "creative timer", "poetry prompt deck", "color palette generator", "moodboard starter",
-          "beginner animation lesson", "DIY craft box", "zine-making kit", "songwriting prompts", "creative warmup routine"
-        ],
-        benefits: ["spark new ideas", "ship something today", "find your style", "get into flow", "improve taste", "make progress fast", "start creating now"]
-      },
-      Tired: {
-        tags: ["AI pick", "Best seller", "Recommended", "Top rated", "Trending"],
-        verbs: ["Recharge with", "Recover using", "Wind down with", "Refresh via", "Reset with", "Support recovery with"],
-        items: [
-          "sleep sounds", "evening stretch", "warm eye mask", "neck pillow", "blue light glasses",
-          "power nap routine", "screen-off ritual", "early bedtime plan", "calm audiobook",
-          "low-light lamp", "foot soak routine", "rest day checklist", "morning sunlight habit",
-          "sleep mask", "gentle yoga", "breathing for sleep", "wind-down tea", "white noise machine"
-        ],
-        benefits: ["feel refreshed", "sleep deeper", "reduce fatigue", "release tension", "recover faster", "calm your nervous system", "restore energy"]
-      }
-    };
-
-    const cfg = base[mood];
-    const out = new Set();
-    while (out.size < 55) {
-      const tag = cfg.tags[Math.floor(Math.random() * cfg.tags.length)];
-      const verb = cfg.verbs[Math.floor(Math.random() * cfg.verbs.length)];
-      const item = cfg.items[Math.floor(Math.random() * cfg.items.length)];
-      const benefit = cfg.benefits[Math.floor(Math.random() * cfg.benefits.length)];
-
-      const title = item.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-      const desc = `${verb} ${item} to ${benefit}.`;
-      out.add(JSON.stringify({ tag, title, desc, mood }));
-    }
-    return Array.from(out).map(x => JSON.parse(x));
-  }
-
-  const POOLS = {
-    Stressed: buildPool("Stressed"),
-    Happy: buildPool("Happy"),
-    Energetic: buildPool("Energetic"),
-    Creative: buildPool("Creative"),
-    Tired: buildPool("Tired")
-  };
-
-  function aiRecommend(mood, k=9){
-    const items = [...POOLS[mood]];
-    const score = (tag) => (
-      tag.includes("AI") ? 4 :
-      tag.includes("Trending") ? 3 :
-      tag.includes("Best") ? 3 :
-      tag.includes("Top") ? 2 : 1
-    );
-    items.sort((a,b)=>score(b.tag)-score(a.tag));
-
-    for(let i=0;i<items.length-1;i++){
-      const sA=score(items[i].tag), sB=score(items[i+1].tag);
-      if(sA===sB && Math.random()>0.55){
-        const tmp=items[i]; items[i]=items[i+1]; items[i+1]=tmp;
-      }
-    }
-
-    const picked=[];
-    const used=new Set();
-    while(picked.length<k && used.size<items.length){
-      const idx = Math.floor(Math.random()*items.length);
-      if(used.has(idx)) continue;
-      used.add(idx);
-      picked.push(items[idx]);
-    }
-    return picked;
-  }
-
   function loadJSON(key, fallback){
     try{ const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; }
     catch(e){ return fallback; }
   }
   function saveJSON(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
 
-  let favorites = loadJSON(LS_FAV, []);
-  let feedback  = loadJSON(LS_FB, {});
-
+  // Favorites
+  let favorites = loadJSON(LS_FAV, []); // {id, mood, title, link, img}
   function itemId(mood, title){ return mood + "::" + title.toLowerCase(); }
-  function makeAffiliateLink(item){ return AFFILIATE_BASE + encodeURIComponent(slugify(item.mood + "-" + item.title)); }
 
   function favCountUpdate(){
     document.getElementById("favCount").textContent = `(${favorites.length})`;
@@ -549,6 +617,68 @@
     if(footerText) footerText.textContent = `${favorites.length} saved`;
   }
 
+  // --- Ordering system per mood: shuffle once, then take next batch (no repeats until exhausted) ---
+  // order[mood] = array of indices 0..49
+  let order = loadJSON(LS_ORDER, {});
+  let idx   = loadJSON(LS_INDEX, {});
+
+  function ensureOrder(mood){
+    const n = CATALOG[mood].length;
+    if(!order[mood] || order[mood].length !== n){
+      order[mood] = Array.from({length:n}, (_,i)=>i);
+      // Fisher–Yates shuffle
+      for(let i=n-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [order[mood][i], order[mood][j]] = [order[mood][j], order[mood][i]];
+      }
+      idx[mood] = 0;
+      saveJSON(LS_ORDER, order);
+      saveJSON(LS_INDEX, idx);
+    }
+    if(typeof idx[mood] !== "number") idx[mood]=0;
+  }
+
+  function nextBatch(mood, k){
+    ensureOrder(mood);
+    const n = CATALOG[mood].length;
+    const result = [];
+    const usedTitles = new Set(); // extra safety: never duplicate within same page
+
+    while(result.length < k){
+      if(idx[mood] >= n){
+        // reshuffle when exhausted
+        order[mood] = Array.from({length:n}, (_,i)=>i);
+        for(let i=n-1;i>0;i--){
+          const j = Math.floor(Math.random()*(i+1));
+          [order[mood][i], order[mood][j]] = [order[mood][j], order[mood][i]];
+        }
+        idx[mood] = 0;
+      }
+      const pickIndex = order[mood][idx[mood]++];
+      const title = CATALOG[mood][pickIndex];
+      const key = title.toLowerCase();
+      if(usedTitles.has(key)) continue;
+      usedTitles.add(key);
+      result.push({ mood, title });
+    }
+    saveJSON(LS_ORDER, order);
+    saveJSON(LS_INDEX, idx);
+    return result;
+  }
+
+  // Images: Unsplash Source returns a photo for query.
+  // If Unsplash is blocked in a region, it still won't be blank because we have a gradient fallback.
+  function imageUrlFor(item){
+    const q = encodeURIComponent(`${item.title} ${item.mood}`);
+    // "source.unsplash.com" returns a random matching image; size chosen for 16:9
+    return `https://source.unsplash.com/featured/800x450?${q}`;
+  }
+
+  function affiliateLinkFor(item){
+    return AFFILIATE_BASE + encodeURIComponent(slugify(item.mood + "-" + item.title));
+  }
+
+  // Render
   const feedEl = document.getElementById("feed");
   const feedTitleEl = document.getElementById("feedTitle");
   let currentMood = "Stressed";
@@ -557,24 +687,32 @@
     currentMood = mood;
     feedTitleEl.textContent = `Recommended for: ${mood}`;
     feedEl.innerHTML = "";
-    const recs = aiRecommend(mood, CARDS_PER_REFRESH);
 
-    for(const item of recs){
+    const batch = nextBatch(mood, CARDS_PER_REFRESH);
+
+    for(const item of batch){
       const id = itemId(item.mood, item.title);
-      const link = makeAffiliateLink(item);
+      const link = affiliateLinkFor(item);
+      const img = imageUrlFor(item);
       const isFav = favorites.some(f=>f.id===id);
 
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `
-        <div class="thumb" aria-hidden="true"></div>
+        <img class="thumb" src="${img}" alt="${item.title}" loading="lazy"
+             onerror="this.style.display='none'; this.parentElement.querySelector('.thumbFallback').style.display='block';" />
+        <div class="thumbFallback" style="display:none; width:100%; aspect-ratio:16/9; background:
+          radial-gradient(700px 280px at 40% 0%, rgba(124,131,255,0.18), transparent 55%),
+          radial-gradient(700px 280px at 70% 10%, rgba(45,212,191,0.14), transparent 60%),
+          rgba(255,255,255,0.04);
+          border-bottom: 1px solid rgba(255,255,255,0.08);"></div>
+
         <div class="card-inner">
-          <span class="badge">${item.tag}</span>
+          <span class="badge">${mood} pick</span>
           <h3>${item.title}</h3>
-          <p>${item.desc}</p>
+          <p>Tap “View / Buy” to test affiliate clicks. Use ★ to save.</p>
           <div class="actions">
             <button class="buy" type="button" data-link="${link}">View / Buy</button>
-            <button class="iconbtn" type="button" title="Like" data-like="${id}" aria-label="Like">👍</button>
             <button class="iconbtn" type="button" title="Save" data-save="${id}" aria-label="Save">${isFav ? "★" : "☆"}</button>
           </div>
         </div>
@@ -584,21 +722,15 @@
         window.open(e.currentTarget.getAttribute("data-link"), "_blank");
       });
 
-      card.querySelector(`[data-like="${id}"]`).addEventListener("click", ()=>{
-        feedback[id] = (feedback[id]===1) ? 0 : 1;
-        saveJSON(LS_FB, feedback);
-        toast(feedback[id]===1 ? "Saved feedback: 👍" : "Feedback removed");
-      });
-
       card.querySelector(`[data-save="${id}"]`).addEventListener("click", (e)=>{
-        const idx = favorites.findIndex(f=>f.id===id);
-        if(idx>=0){
-          favorites.splice(idx,1);
+        const fidx = favorites.findIndex(f=>f.id===id);
+        if(fidx>=0){
+          favorites.splice(fidx,1);
           saveJSON(LS_FAV, favorites);
           e.currentTarget.textContent = "☆";
           toast("Removed from favorites");
         }else{
-          favorites.push({ id, title:item.title, desc:item.desc, mood:item.mood, link });
+          favorites.push({ id, mood:item.mood, title:item.title, link, img });
           saveJSON(LS_FAV, favorites);
           e.currentTarget.textContent = "★";
           toast("Saved to favorites");
@@ -651,12 +783,19 @@
       const card = document.createElement("div");
       card.className = "favCard";
       card.innerHTML = `
-        <div class="thumb" aria-hidden="true"></div>
+        <img class="thumb" src="${f.img}" alt="${f.title}" loading="lazy"
+             onerror="this.style.display='none'; this.parentElement.querySelector('.thumbFallback').style.display='block';" />
+        <div class="thumbFallback" style="display:none; width:100%; aspect-ratio:16/9; background:
+          radial-gradient(700px 280px at 40% 0%, rgba(124,131,255,0.18), transparent 55%),
+          radial-gradient(700px 280px at 70% 10%, rgba(45,212,191,0.14), transparent 60%),
+          rgba(255,255,255,0.04);
+          border-bottom: 1px solid rgba(255,255,255,0.08);"></div>
+
         <div class="favInner">
           <div class="favTitle">${f.title}</div>
-          <div class="favDesc">${f.desc}</div>
+          <div class="favDesc">${f.mood}</div>
           <div class="actions">
-            <button class="buy" type="button" data-link="${f.link}">View / Buy</button>
+            <button class="buy" type="button">View / Buy</button>
             <button class="iconbtn danger" type="button" title="Remove" aria-label="Remove">✕</button>
           </div>
         </div>
