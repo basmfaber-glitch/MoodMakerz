@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,70 +6,150 @@
 <title>MoodMarket</title>
 <meta name="theme-color" content="#0b1020">
 <style>
-body{
- margin:0;font-family:system-ui,-apple-system,Segoe UI,Inter,Arial,sans-serif;
- background:#0b1020;color:#eef2ff;
-}
-.container{max-width:1100px;margin:auto;padding:20px}
-h1{margin:0 0 6px}
-p{color:#a6b0cf;margin:0 0 16px}
-.moods{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
-.mood{padding:8px 14px;border-radius:999px;background:#12172a;border:1px solid #2a2f45;
-cursor:pointer;font-size:13px}
-.mood.active{background:#7c83ff;color:#0b1020;font-weight:700}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
-.card{background:#12172a;border-radius:14px;overflow:hidden}
-.card img{width:100%;height:160px;object-fit:cover}
-.card .inner{padding:12px}
-.card h3{margin:0 0 6px;font-size:14px}
-.card button{width:100%;padding:10px;border:none;border-radius:10px;
-background:linear-gradient(90deg,#7c83ff,#2dd4bf);color:#0b1020;font-weight:800;cursor:pointer}
-footer{margin-top:40px;font-size:12px;color:#8b92b2;text-align:center}
+  :root{ --bg:#0b1020; --text:#eef2ff; --muted:#a6b0cf; --card:#12172a; --border:#2a2f45; }
+  body{ margin:0; font-family:system-ui,-apple-system,Segoe UI,Inter,Arial,sans-serif; background:var(--bg); color:var(--text);}
+  .container{ max-width:1100px; margin:auto; padding:20px;}
+  h1{ margin:0 0 6px; }
+  p{ margin:0 0 14px; color:var(--muted);}
+  .row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin: 10px 0 16px;}
+  .moods{ display:flex; gap:8px; flex-wrap:wrap; }
+  .mood{ padding:8px 14px; border-radius:999px; background:var(--card); border:1px solid var(--border); cursor:pointer; font-size:13px; }
+  .mood.active{ background:#7c83ff; color:#0b1020; font-weight:700; border-color:#7c83ff; }
+  .btn{ padding:8px 14px; border-radius:999px; background:linear-gradient(90deg,#7c83ff,#2dd4bf); border:none; cursor:pointer; font-weight:800; color:#0b1020; }
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px; }
+  .card{ background:var(--card); border-radius:14px; overflow:hidden; border:1px solid #1c2237; }
+  .thumb{ width:100%; height:160px; object-fit:cover; display:block; }
+  .inner{ padding:12px; }
+  .inner h3{ margin:0 0 6px; font-size:14px; }
+  .inner .small{ margin:0 0 10px; font-size:12.5px; color:var(--muted); line-height:1.35; }
+  .buy{ width:100%; padding:10px; border:none; border-radius:10px; font-weight:800; cursor:pointer;
+        background:linear-gradient(90deg,#7c83ff,#2dd4bf); color:#0b1020; }
+  footer{ margin-top:40px; font-size:12px; color:#8b92b2; text-align:center; }
 </style>
 </head>
 <body>
 <div class="container">
-<h1>MoodMarket</h1>
-<p>Select your mood to see curated Amazon.nl recommendations.</p>
+  <h1>MoodMarket</h1>
+  <p>Choose a mood. Press Shuffle to show new items. Images are generated locally (so they always show).</p>
 
-<div class="moods" id="moods"></div>
-<div class="grid" id="grid"></div>
+  <div class="row">
+    <div class="moods" id="moods"></div>
+    <button class="btn" id="shuffle">Shuffle</button>
+  </div>
 
-<footer>
-As an Amazon Associate I earn from qualifying purchases.
-</footer>
+  <div class="grid" id="grid"></div>
+
+  <footer>As an Amazon Associate I earn from qualifying purchases.</footer>
 </div>
 
 <script>
 const TAG = "moodmakerz-21";
 const BASE = "https://www.amazon.nl/s?k=";
-const CATALOG = {"Stressed": ["Herbal Tea", "Breathing Timer", "Guided Meditation", "Aromatherapy Oil", "Weighted Blanket", "Stress Journal", "Noise-Reducing Earbuds", "Body Scan Audio", "Candle Set", "Sleep Mask", "Desk Zen Kit", "Calm Focus Music", "Neck Massager", "Room Spray", "Gentle Yoga Flow", "Mindful Coloring Book", "Stress Ball", "Short Walk Plan", "Bath Salts", "Relaxation Soundscape", "Herbal Tea — Chamomile", "Herbal Tea — Lavender", "Herbal Tea — Peppermint", "Herbal Tea — 5-minute", "Herbal Tea — 10-minute", "Herbal Tea — Beginner-friendly", "Herbal Tea — Travel size", "Herbal Tea — Budget pick", "Herbal Tea — Premium pick", "Herbal Tea — Night routine", "Breathing Timer — Chamomile", "Breathing Timer — Lavender", "Breathing Timer — Peppermint", "Breathing Timer — 5-minute", "Breathing Timer — 10-minute", "Breathing Timer — Beginner-friendly", "Breathing Timer — Travel size", "Breathing Timer — Budget pick", "Breathing Timer — Premium pick", "Breathing Timer — Night routine", "Guided Meditation — Chamomile", "Guided Meditation — Lavender", "Guided Meditation — Peppermint", "Guided Meditation — 5-minute", "Guided Meditation — 10-minute", "Guided Meditation — Beginner-friendly", "Guided Meditation — Travel size", "Guided Meditation — Budget pick", "Guided Meditation — Premium pick", "Guided Meditation — Night routine"], "Happy": ["Instant Camera", "Mini Photo Printer", "Dance Playlist", "Fun Card Game", "Mocktail Kit", "Gratitude Journal", "Mini Adventure List", "Comedy Special", "Party Lights", "Photo Memory Book", "Friendship Activity Deck", "Cook-Together Recipe Kit", "Portable Speaker", "Craft Night Kit", "Movie Night Box", "Board Game Pick", "Funny Podcast", "Surprise Gift Idea", "Weekend Plan Generator", "Music Discovery Pack", "Instant Camera — For couples", "Instant Camera — For friends", "Instant Camera — Solo", "Instant Camera — Under €20", "Instant Camera — Premium", "Instant Camera — Outdoor", "Instant Camera — Indoor", "Instant Camera — 15-minute", "Instant Camera — 30-minute", "Instant Camera — Instant", "Mini Photo Printer — For couples", "Mini Photo Printer — For friends", "Mini Photo Printer — Solo", "Mini Photo Printer — Under €20", "Mini Photo Printer — Premium", "Mini Photo Printer — Outdoor", "Mini Photo Printer — Indoor", "Mini Photo Printer — 15-minute", "Mini Photo Printer — 30-minute", "Mini Photo Printer — Instant", "Dance Playlist — For couples", "Dance Playlist — For friends", "Dance Playlist — Solo", "Dance Playlist — Under €20", "Dance Playlist — Premium", "Dance Playlist — Outdoor", "Dance Playlist — Indoor", "Dance Playlist — 15-minute", "Dance Playlist — 30-minute", "Dance Playlist — Instant"], "Energetic": ["HIIT Timer", "Jump Rope", "Resistance Bands", "Running Playlist", "Electrolyte Mix", "Protein Snack Box", "Mobility Routine", "Push-Up Challenge", "Dance Cardio", "Boxing Workout", "Cycling Plan", "Stretch + Strength Split", "Step Goal Plan", "Interval Training Guide", "5K Training Plan", "Core Routine", "Home Workout Set", "Pre-Workout Warmup", "Hydration Tracker", "Fitness Habit Tracker", "HIIT Timer — 10-minute", "HIIT Timer — 20-minute", "HIIT Timer — Beginner", "HIIT Timer — Intermediate", "HIIT Timer — No equipment", "HIIT Timer — Home", "HIIT Timer — Gym", "HIIT Timer — Low impact", "HIIT Timer — High intensity", "HIIT Timer — Recovery-focused", "Jump Rope — 10-minute", "Jump Rope — 20-minute", "Jump Rope — Beginner", "Jump Rope — Intermediate", "Jump Rope — No equipment", "Jump Rope — Home", "Jump Rope — Gym", "Jump Rope — Low impact", "Jump Rope — High intensity", "Jump Rope — Recovery-focused", "Resistance Bands — 10-minute", "Resistance Bands — 20-minute", "Resistance Bands — Beginner", "Resistance Bands — Intermediate", "Resistance Bands — No equipment", "Resistance Bands — Home", "Resistance Bands — Gym", "Resistance Bands — Low impact", "Resistance Bands — High intensity", "Resistance Bands — Recovery-focused"], "Creative": ["Writing Prompts", "Sketch Set", "Watercolor Kit", "AI Art Tool", "Design Micro-Course", "Photo Challenge List", "Storytelling Template", "Idea Journal", "Collage Kit", "Creative Timer", "Poetry Prompt Deck", "Color Palette Generator", "Moodboard Starter", "Beginner Animation Lesson", "DIY Craft Box", "Zine-Making Kit", "Songwriting Prompts", "Creative Warmup Routine", "Logo Practice Set", "Typography Mini-Lesson", "Writing Prompts — Beginner", "Writing Prompts — 15-minute", "Writing Prompts — 30-minute", "Writing Prompts — Daily", "Writing Prompts — Weekend", "Writing Prompts — Minimal tools", "Writing Prompts — Digital", "Writing Prompts — Analog", "Writing Prompts — For creators", "Writing Prompts — For fun", "Sketch Set — Beginner", "Sketch Set — 15-minute", "Sketch Set — 30-minute", "Sketch Set — Daily", "Sketch Set — Weekend", "Sketch Set — Minimal tools", "Sketch Set — Digital", "Sketch Set — Analog", "Sketch Set — For creators", "Sketch Set — For fun", "Watercolor Kit — Beginner", "Watercolor Kit — 15-minute", "Watercolor Kit — 30-minute", "Watercolor Kit — Daily", "Watercolor Kit — Weekend", "Watercolor Kit — Minimal tools", "Watercolor Kit — Digital", "Watercolor Kit — Analog", "Watercolor Kit — For creators", "Watercolor Kit — For fun"], "Tired": ["Sleep Sounds", "Evening Stretch", "Warm Eye Mask", "Neck Pillow", "Blue Light Glasses", "Power Nap Routine", "Screen-Off Ritual", "Early Bedtime Plan", "Calm Audiobook", "Low-Light Lamp", "Foot Soak Routine", "Rest Day Checklist", "Morning Sunlight Habit", "Sleep Mask", "Gentle Yoga", "Breathing for Sleep", "Wind-Down Tea", "White Noise Machine", "Light Reading List", "Relaxing Playlist", "Sleep Sounds — 10-minute", "Sleep Sounds — 15-minute", "Sleep Sounds — No screen", "Sleep Sounds — Travel", "Sleep Sounds — Home", "Sleep Sounds — Budget", "Sleep Sounds — Premium", "Sleep Sounds — Quick reset", "Sleep Sounds — Deep rest", "Sleep Sounds — Gentle", "Evening Stretch — 10-minute", "Evening Stretch — 15-minute", "Evening Stretch — No screen", "Evening Stretch — Travel", "Evening Stretch — Home", "Evening Stretch — Budget", "Evening Stretch — Premium", "Evening Stretch — Quick reset", "Evening Stretch — Deep rest", "Evening Stretch — Gentle", "Warm Eye Mask — 10-minute", "Warm Eye Mask — 15-minute", "Warm Eye Mask — No screen", "Warm Eye Mask — Travel", "Warm Eye Mask — Home", "Warm Eye Mask — Budget", "Warm Eye Mask — Premium", "Warm Eye Mask — Quick reset", "Warm Eye Mask — Deep rest", "Warm Eye Mask — Gentle"]};
+const CATALOG = {"Stressed": ["Herbal Tea", "Breathing Timer", "Guided Meditation", "Aromatherapy Oil", "Weighted Blanket", "Stress Journal", "Noise-Reducing Earbuds", "Body Scan Audio", "Candle Set", "Sleep Mask", "Desk Zen Kit", "Calm Focus Music", "Neck Massager", "Room Spray", "Gentle Yoga Flow", "Mindful Coloring Book", "Stress Ball", "Short Walk Plan", "Bath Salts", "Relaxation Soundscape", "Herbal Tea — Chamomile", "Herbal Tea — Lavender", "Herbal Tea — Peppermint", "Breathing Timer — 5-minute", "Breathing Timer — 10-minute", "Guided Meditation — Beginner-friendly", "Aromatherapy Oil — Travel size", "Weighted Blanket — Budget pick", "Weighted Blanket — Premium pick", "Stress Journal — Night routine", "Noise-Reducing Earbuds — Travel size", "Body Scan Audio — 10-minute", "Candle Set — Lavender", "Sleep Mask — Travel size", "Desk Zen Kit — Budget pick", "Calm Focus Music — 5-minute", "Neck Massager — Premium pick", "Room Spray — Lavender", "Gentle Yoga Flow — 10-minute", "Mindful Coloring Book — Beginner-friendly", "Stress Ball — Budget pick", "Short Walk Plan — 10-minute", "Bath Salts — Lavender", "Relaxation Soundscape — Night routine", "Guided Meditation — 10-minute", "Aromatherapy Oil — Premium pick", "Sleep Mask — Premium pick", "Calm Focus Music — Night routine", "Body Scan Audio — 5-minute"], "Happy": ["Instant Camera", "Mini Photo Printer", "Dance Playlist", "Fun Card Game", "Mocktail Kit", "Gratitude Journal", "Mini Adventure List", "Comedy Special", "Party Lights", "Photo Memory Book", "Friendship Activity Deck", "Cook-Together Recipe Kit", "Portable Speaker", "Craft Night Kit", "Movie Night Box", "Board Game Pick", "Funny Podcast", "Surprise Gift Idea", "Weekend Plan Generator", "Music Discovery Pack", "Instant Camera — For couples", "Instant Camera — For friends", "Mini Photo Printer — Solo", "Dance Playlist — Under €20", "Fun Card Game — Premium", "Mocktail Kit — Outdoor", "Gratitude Journal — Indoor", "Mini Adventure List — 15-minute", "Comedy Special — 30-minute", "Party Lights — Instant", "Photo Memory Book — For couples", "Friendship Activity Deck — For friends", "Cook-Together Recipe Kit — Solo", "Portable Speaker — Under €20", "Craft Night Kit — Premium", "Movie Night Box — Outdoor", "Board Game Pick — Indoor", "Funny Podcast — 15-minute", "Surprise Gift Idea — 30-minute", "Weekend Plan Generator — Instant", "Music Discovery Pack — For couples", "Dance Playlist — For friends", "Gratitude Journal — Solo", "Mocktail Kit — Under €20", "Photo Memory Book — Premium", "Portable Speaker — Outdoor", "Craft Night Kit — Indoor", "Board Game Pick — 15-minute", "Comedy Special — Instant", "Mini Adventure List — Premium"], "Energetic": ["HIIT Timer", "Jump Rope", "Resistance Bands", "Running Playlist", "Electrolyte Mix", "Protein Snack Box", "Mobility Routine", "Push-Up Challenge", "Dance Cardio", "Boxing Workout", "Cycling Plan", "Stretch + Strength Split", "Step Goal Plan", "Interval Training Guide", "5K Training Plan", "Core Routine", "Home Workout Set", "Pre-Workout Warmup", "Hydration Tracker", "Fitness Habit Tracker", "HIIT Timer — 10-minute", "HIIT Timer — 20-minute", "Jump Rope — Beginner", "Resistance Bands — Intermediate", "Running Playlist — No equipment", "Electrolyte Mix — Home", "Protein Snack Box — Gym", "Mobility Routine — Low impact", "Push-Up Challenge — High intensity", "Dance Cardio — Recovery-focused", "Boxing Workout — 10-minute", "Cycling Plan — 20-minute", "Stretch + Strength Split — Beginner", "Step Goal Plan — Intermediate", "Interval Training Guide — No equipment", "5K Training Plan — Home", "Core Routine — Gym", "Home Workout Set — Low impact", "Pre-Workout Warmup — High intensity", "Hydration Tracker — Recovery-focused", "Fitness Habit Tracker — 10-minute", "Jump Rope — 20-minute", "Resistance Bands — Beginner", "Running Playlist — Gym", "Electrolyte Mix — High intensity", "Protein Snack Box — Recovery-focused", "Mobility Routine — 10-minute", "Push-Up Challenge — Beginner", "Dance Cardio — Home", "Boxing Workout — Low impact"], "Creative": ["Writing Prompts", "Sketch Set", "Watercolor Kit", "AI Art Tool", "Design Micro-Course", "Photo Challenge List", "Storytelling Template", "Idea Journal", "Collage Kit", "Creative Timer", "Poetry Prompt Deck", "Color Palette Generator", "Moodboard Starter", "Beginner Animation Lesson", "DIY Craft Box", "Zine-Making Kit", "Songwriting Prompts", "Creative Warmup Routine", "Logo Practice Set", "Typography Mini-Lesson", "Writing Prompts — Beginner", "Writing Prompts — 15-minute", "Sketch Set — 30-minute", "Watercolor Kit — Daily", "AI Art Tool — Weekend", "Design Micro-Course — Minimal tools", "Photo Challenge List — Digital", "Storytelling Template — Analog", "Idea Journal — For creators", "Collage Kit — For fun", "Creative Timer — Beginner", "Poetry Prompt Deck — 15-minute", "Color Palette Generator — 30-minute", "Moodboard Starter — Daily", "Beginner Animation Lesson — Weekend", "DIY Craft Box — Minimal tools", "Zine-Making Kit — Digital", "Songwriting Prompts — Analog", "Creative Warmup Routine — For creators", "Logo Practice Set — For fun", "Typography Mini-Lesson — Beginner", "Sketch Set — Daily", "Watercolor Kit — Weekend", "AI Art Tool — Digital", "Design Micro-Course — For creators", "Idea Journal — Analog", "Collage Kit — Minimal tools", "Photo Challenge List — For fun", "Storytelling Template — 30-minute", "Creative Timer — Daily"], "Tired": ["Sleep Sounds", "Evening Stretch", "Warm Eye Mask", "Neck Pillow", "Blue Light Glasses", "Power Nap Routine", "Screen-Off Ritual", "Early Bedtime Plan", "Calm Audiobook", "Low-Light Lamp", "Foot Soak Routine", "Rest Day Checklist", "Morning Sunlight Habit", "Sleep Mask", "Gentle Yoga", "Breathing for Sleep", "Wind-Down Tea", "White Noise Machine", "Light Reading List", "Relaxing Playlist", "Sleep Sounds — 10-minute", "Sleep Sounds — 15-minute", "Evening Stretch — No screen", "Warm Eye Mask — Travel", "Neck Pillow — Home", "Blue Light Glasses — Budget", "Power Nap Routine — Premium", "Screen-Off Ritual — Quick reset", "Early Bedtime Plan — Deep rest", "Calm Audiobook — Gentle", "Low-Light Lamp — 10-minute", "Foot Soak Routine — 15-minute", "Rest Day Checklist — No screen", "Morning Sunlight Habit — Travel", "Sleep Mask — Home", "Gentle Yoga — Budget", "Breathing for Sleep — Premium", "Wind-Down Tea — Quick reset", "White Noise Machine — Deep rest", "Light Reading List — Gentle", "Relaxing Playlist — 10-minute", "Warm Eye Mask — Home", "Neck Pillow — Travel", "Sleep Sounds — Budget", "Evening Stretch — Gentle", "Blue Light Glasses — Premium", "Power Nap Routine — 15-minute", "Calm Audiobook — Deep rest", "Low-Light Lamp — Quick reset", "Wind-Down Tea — Gentle"]};
+const CARDS_PER_REFRESH = 9;
+
 const moodsEl = document.getElementById("moods");
 const grid = document.getElementById("grid");
+const shuffleBtn = document.getElementById("shuffle");
 
-let currentMood = null;
+let currentMood = Object.keys(CATALOG)[0];
 
-function renderMood(mood){
-  currentMood = mood;
-  grid.innerHTML = "";
-  document.querySelectorAll(".mood").forEach(m=>m.classList.remove("active"));
-  document.querySelector(`[data-mood='${mood}']`).classList.add("active");
+// Keep a shuffled order per mood and an index, so we don't repeat until all 50 are used
+const order = {};
+const idx = {};
 
+function ensureOrder(mood){
+  const n = CATALOG[mood].length;
+  if(!order[mood] || order[mood].length !== n){
+    order[mood] = Array.from({length:n}, (_,i)=>i);
+    for(let i=n-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [order[mood][i], order[mood][j]] = [order[mood][j], order[mood][i]];
+    }
+    idx[mood] = 0;
+  }
+}
+
+function nextBatch(mood, k){
+  ensureOrder(mood);
+  const n = CATALOG[mood].length;
   const used = new Set();
-  CATALOG[mood].slice(0,9).forEach(title=>{
-    if(used.has(title)) return;
-    used.add(title);
-    const q = encodeURIComponent(title.replace("—"," "));
-    const url = `${BASE}${q}&tag=${TAG}`;
+  const out = [];
+
+  while(out.length < k){
+    if(idx[mood] >= n){
+      order[mood] = Array.from({length:n}, (_,i)=>i);
+      for(let i=n-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [order[mood][i], order[mood][j]] = [order[mood][j], order[mood][i]];
+      }
+      idx[mood] = 0;
+    }
+    const pickIndex = order[mood][idx[mood]++];
+    const title = CATALOG[mood][pickIndex];
+    const key = title.toLowerCase();
+    if(used.has(key)) continue; // no duplicates on same page
+    used.add(key);
+    out.push(title);
+  }
+  return out;
+}
+
+// Local SVG thumbnails (always show, no external calls)
+function svgThumb(title, mood){
+  const safe = title.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  const safeMood = mood.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  const svg = `
+  <svg xmlns="http://www.w3.org/2000/svg" width="800" height="450">
+    <defs>
+      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#7c83ff" stop-opacity="0.55"/>
+        <stop offset="1" stop-color="#2dd4bf" stop-opacity="0.35"/>
+      </linearGradient>
+      <radialGradient id="r" cx="30%" cy="0%" r="80%">
+        <stop offset="0" stop-color="#ffffff" stop-opacity="0.10"/>
+        <stop offset="1" stop-color="#000000" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <rect width="800" height="450" fill="#0b1020"/>
+    <rect width="800" height="450" fill="url(#g)"/>
+    <rect width="800" height="450" fill="url(#r)"/>
+    <text x="40" y="90" font-family="Inter, system-ui, Arial" font-size="34" fill="#eef2ff" font-weight="800">${safeMood}</text>
+    <text x="40" y="160" font-family="Inter, system-ui, Arial" font-size="30" fill="#eef2ff" font-weight="700">${safe}</text>
+    <text x="40" y="390" font-family="Inter, system-ui, Arial" font-size="18" fill="#a6b0cf">View on Amazon.nl (affiliate)</text>
+  </svg>`;
+  return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg.trim());
+}
+
+function amazonUrl(title){
+  const q = encodeURIComponent(title.replace("—"," "));
+  return `${BASE}${q}&tag=${TAG}`;
+}
+
+function setActiveMood(mood){
+  currentMood = mood;
+  document.querySelectorAll(".mood").forEach(b=>b.classList.remove("active"));
+  document.querySelector(`[data-mood="${mood}"]`).classList.add("active");
+  render();
+}
+
+function render(){
+  grid.innerHTML = "";
+  const batch = nextBatch(currentMood, CARDS_PER_REFRESH);
+  batch.forEach(title => {
+    const url = amazonUrl(title);
+    const img = svgThumb(title, currentMood);
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
-      <img src="https://source.unsplash.com/400x300?${q}" alt="${title}">
+      <img class="thumb" src="${img}" alt="${title}" loading="lazy">
       <div class="inner">
         <h3>${title}</h3>
-        <button onclick="window.open('${url}','_blank')">View on Amazon.nl</button>
+        <div class="small">Amazon.nl affiliate link with tag <b>${TAG}</b>.</div>
+        <button class="buy" type="button">View on Amazon.nl</button>
       </div>
     `;
+    card.querySelector(".buy").addEventListener("click", ()=> window.open(url, "_blank"));
     grid.appendChild(card);
   });
 }
@@ -78,13 +157,17 @@ function renderMood(mood){
 // Build mood buttons
 Object.keys(CATALOG).forEach((m,i)=>{
   const btn = document.createElement("div");
-  btn.className = "mood" + (i===0 ? " active":"");
+  btn.className = "mood" + (i===0 ? " active" : "");
   btn.textContent = m;
   btn.dataset.mood = m;
-  btn.onclick = ()=>renderMood(m);
+  btn.addEventListener("click", ()=> setActiveMood(m));
   moodsEl.appendChild(btn);
-  if(i===0) renderMood(m);
 });
+
+shuffleBtn.addEventListener("click", render);
+
+// Initial render
+render();
 </script>
 </body>
 </html>
