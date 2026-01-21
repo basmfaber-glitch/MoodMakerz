@@ -1,150 +1,409 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <title>MoodMarket</title>
-<meta name="theme-color" content="#2575fc">
+<meta name="theme-color" content="#0b1020">
 <link rel="manifest" href="manifest.json">
+
 <style>
-body {
-  margin:0;
-  font-family: system-ui, Arial, sans-serif;
-  background:#0f172a;
-  color:#fff;
-}
-header {
-  padding:1rem;
-  text-align:center;
-  background:linear-gradient(135deg,#6a11cb,#2575fc);
-}
-h1 { margin:0; }
-.tagline { font-size:0.9rem; opacity:0.9; }
-.moods {
-  display:flex;
-  gap:0.8rem;
-  overflow-x:auto;
-  padding:1rem;
-}
-.mood {
-  flex:0 0 auto;
-  padding:0.8rem 1rem;
-  border-radius:999px;
-  background:#1e293b;
-  cursor:pointer;
-  white-space:nowrap;
-}
-.feed {
-  padding:1rem;
-  display:flex;
-  flex-direction:column;
-  gap:1rem;
-}
-.card {
-  background:#020617;
-  border-radius:18px;
-  padding:1rem;
-  box-shadow:0 10px 30px rgba(0,0,0,0.4);
-}
-.card img {
-  width:100%;
-  border-radius:14px;
-}
-.card button {
-  width:100%;
-  margin-top:0.6rem;
-  padding:0.7rem;
-  border:none;
-  border-radius:12px;
-  background:#22c55e;
-  color:#000;
-  font-weight:bold;
-}
-.badge {
-  font-size:0.75rem;
-  background:#22c55e;
-  color:#000;
-  display:inline-block;
-  padding:0.2rem 0.5rem;
-  border-radius:6px;
-  margin-bottom:0.3rem;
-}
-.install {
-  position:fixed;
-  bottom:1rem;
-  right:1rem;
-  background:#2575fc;
-  padding:0.7rem 1rem;
-  border-radius:999px;
-  font-size:0.8rem;
-}
+  :root{
+    --bg:#0b1020;
+    --surface: rgba(255,255,255,0.06);
+    --surface2: rgba(255,255,255,0.08);
+    --border: rgba(255,255,255,0.10);
+    --text:#eef2ff;
+    --muted:#a6b0cf;
+
+    /* Muted accents (less bright) */
+    --accent:#7c83ff;    /* soft indigo */
+    --accent2:#34d399;   /* soft green */
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    font-family: system-ui, -apple-system, Segoe UI, Inter, Arial, sans-serif;
+    color:var(--text);
+    background:
+      radial-gradient(900px 500px at 10% -10%, rgba(124,131,255,0.18), transparent 55%),
+      radial-gradient(700px 420px at 90% 0%, rgba(52,211,153,0.12), transparent 60%),
+      var(--bg);
+  }
+
+  /* Website-like centered layout */
+  .container{
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 18px 16px 56px;
+  }
+
+  header{
+    padding: 10px 0 4px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:12px;
+  }
+
+  .brand h1{
+    margin:0;
+    font-size: clamp(18px, 2.2vw, 22px);
+    letter-spacing:-0.02em;
+    font-weight: 700;
+  }
+  .brand p{
+    margin:6px 0 0;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.35;
+  }
+
+  .toplinks{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    font-size:13px;
+    color: var(--muted);
+  }
+  .toplinks a{
+    color: var(--muted);
+    text-decoration:none;
+    padding: 8px 10px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+  }
+  .toplinks a:hover{
+    border-color: var(--border);
+    background: rgba(255,255,255,0.04);
+  }
+
+  /* Mood row */
+  .moods-wrap{
+    margin-top: 16px;
+    padding: 10px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.035);
+    border-radius: 16px;
+  }
+
+  .moods{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 2px;
+  }
+  .moods::-webkit-scrollbar{ height: 8px; }
+  .moods::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.10); border-radius: 999px; }
+
+  .mood{
+    flex:0 0 auto;
+    cursor:pointer;
+    user-select:none;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1;
+    transition: transform .12s ease, background .12s ease, border-color .12s ease;
+  }
+  .mood:hover{
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(255,255,255,0.12);
+  }
+  .mood:active{ transform: scale(0.98); }
+  .mood .emoji{ font-size: 14px; opacity: 0.95; }
+  .mood.active{
+    border-color: rgba(124,131,255,0.50);
+    background: rgba(124,131,255,0.10);
+  }
+
+  /* Feed */
+  .feed-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:12px;
+    margin-top: 18px;
+  }
+  .feed-head h2{
+    margin:0;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.01em;
+  }
+  .feed-head .hint{
+    margin:0;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+
+  .feed{
+    margin-top: 12px;
+    display:grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 12px;
+  }
+  /* 3 columns desktop, 2 columns tablet, 1 column mobile */
+  .card{ grid-column: span 4; }
+  @media (max-width: 900px){ .card{ grid-column: span 6; } }
+  @media (max-width: 560px){ .card{ grid-column: span 12; } }
+
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 18px;
+    overflow:hidden;
+    box-shadow: 0 18px 44px rgba(0,0,0,0.35);
+  }
+
+  .thumb{
+    width:100%;
+    aspect-ratio: 16/9;
+    display:block;
+    background: radial-gradient(700px 280px at 40% 0%, rgba(124,131,255,0.25), transparent 55%),
+                radial-gradient(700px 280px at 70% 10%, rgba(52,211,153,0.18), transparent 60%),
+                rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .card-inner{
+    padding: 12px 12px 14px;
+  }
+
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size: 11px;
+    font-weight: 650;
+    color: rgba(255,255,255,0.92);
+    background: rgba(124,131,255,0.14);
+    border: 1px solid rgba(124,131,255,0.25);
+    padding: 4px 8px;
+    border-radius: 999px;
+  }
+
+  .card h3{
+    margin: 10px 0 6px;
+    font-size: 14px;
+    letter-spacing:-0.01em;
+  }
+  .card p{
+    margin: 0 0 10px;
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.35;
+  }
+
+  .actions{
+    display:flex;
+    gap:10px;
+    align-items:center;
+  }
+
+  .buy{
+    flex:1;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 12px;
+    cursor:pointer;
+    font-weight: 700;
+    font-size: 13px;
+    color: #0b1020;
+    background: linear-gradient(90deg, rgba(124,131,255,0.85), rgba(52,211,153,0.75));
+  }
+  .buy:hover{ filter: brightness(0.98); }
+  .buy:active{ transform: translateY(1px); }
+
+  .iconbtn{
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.9);
+    cursor:pointer;
+  }
+  .iconbtn:hover{ background: rgba(255,255,255,0.07); }
+
+  /* Small footer */
+  footer{
+    margin-top: 18px;
+    color: rgba(255,255,255,0.45);
+    font-size: 12px;
+    text-align:center;
+  }
+
+  /* Optional “Add to Home” subtle */
+  .install{
+    position:fixed;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
+    color: rgba(255,255,255,0.85);
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    backdrop-filter: blur(10px);
+  }
 </style>
 </head>
+
 <body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <h1>MoodMarket</h1>
+        <p>Pick a mood. Get a few smart suggestions. Buy only what fits right now.</p>
+      </div>
+      <div class="toplinks">
+        <a href="#" id="openFavorites">Favorites</a>
+      </div>
+    </header>
 
-<header>
-<h1>MoodMarket</h1>
-<div class="tagline">Scroll less. Feel better.</div>
-</header>
+    <div class="moods-wrap">
+      <div class="moods" id="moods">
+        <div class="mood active" data-mood="Stressed"><span class="emoji">😫</span>Stressed</div>
+        <div class="mood" data-mood="Happy"><span class="emoji">😃</span>Happy</div>
+        <div class="mood" data-mood="Energetic"><span class="emoji">⚡</span>Energetic</div>
+        <div class="mood" data-mood="Creative"><span class="emoji">🎨</span>Creative</div>
+        <div class="mood" data-mood="Tired"><span class="emoji">😴</span>Tired</div>
+      </div>
+    </div>
 
-<div class="moods">
-  <div class="mood">😫 Stressed</div>
-  <div class="mood">😃 Happy</div>
-  <div class="mood">⚡ Energetic</div>
-  <div class="mood">🎨 Creative</div>
-  <div class="mood">😴 Tired</div>
-</div>
+    <div class="feed-head">
+      <h2 id="feedTitle">Recommended for: Stressed</h2>
+      <p class="hint">Tap a mood to refresh suggestions.</p>
+    </div>
 
-<div class="feed" id="feed"></div>
+    <div class="feed" id="feed"></div>
 
-<div class="install">➕ Add to Home</div>
+    <footer>
+      MoodMarket © Affiliate links may earn a commission.
+    </footer>
+  </div>
+
+  <div class="install">Add to Home Screen</div>
 
 <script>
-const data = {
- "😫 Stressed":[
-  {name:"Calming Tea",tag:"Best seller"},
-  {name:"Breathing App",tag:"AI pick"},
-  {name:"Weighted Blanket",tag:"Top rated"}
- ],
- "😃 Happy":[
-  {name:"Instant Camera",tag:"Trending"},
-  {name:"Dance Workout",tag:"AI pick"},
-  {name:"Memory Journal",tag:"Recommended"}
- ],
- "⚡ Energetic":[
-  {name:"HIIT Program",tag:"AI pick"},
-  {name:"Protein Bars",tag:"Best seller"},
-  {name:"Jump Rope",tag:"Trending"}
- ],
- "🎨 Creative":[
-  {name:"AI Art Tool",tag:"AI pick"},
-  {name:"Sketch Set",tag:"Top rated"},
-  {name:"Writing Prompts",tag:"Recommended"}
- ],
- "😴 Tired":[
-  {name:"Sleep Sounds App",tag:"AI pick"},
-  {name:"Neck Pillow",tag:"Best seller"},
-  {name:"Evening Stretch",tag:"Recommended"}
- ]
-};
+  // More options per mood (you can expand this list anytime)
+  // Monetization: replace AFF_LINK with your real affiliate deep links
+  const AFF_LINK = "https://example.com?aff=YOURID";
 
-const feed=document.getElementById("feed");
-document.querySelectorAll(".mood").forEach(m=>{
- m.onclick=()=>{
-  feed.innerHTML="";
-  data[m.textContent].forEach(p=>{
-   feed.innerHTML+=`
-   <div class="card">
-     <div class="badge">${p.tag}</div>
-     <img src="https://via.placeholder.com/400x220?text=${p.name}">
-     <h3>${p.name}</h3>
-     <button onclick="window.open('https://example.com?aff=YOURID')">Buy / Try</button>
-   </div>`;
+  const DATA = {
+    Stressed: [
+      { tag: "AI pick", title: "Calming Tea", desc: "A quick ritual that lowers tension." },
+      { tag: "Trending", title: "Breathing App", desc: "3-minute guided reset." },
+      { tag: "Top rated", title: "Weighted Blanket", desc: "Deep-pressure comfort at night." },
+      { tag: "Recommended", title: "Aromatherapy Oil", desc: "Subtle scent to unwind." },
+      { tag: "AI pick", title: "Desk Zen Kit", desc: "Small tools for calm focus." },
+      { tag: "Best seller", title: "Stress Journal", desc: "Unload thoughts fast." }
+    ],
+    Happy: [
+      { tag: "Trending", title: "Instant Camera", desc: "Capture the moment." },
+      { tag: "AI pick", title: "Dance Workout", desc: "Move your joy in 10 minutes." },
+      { tag: "Recommended", title: "Memory Journal", desc: "Keep the feeling longer." },
+      { tag: "Best seller", title: "Mocktail Kit", desc: "Fun, social, no alcohol needed." },
+      { tag: "AI pick", title: "Mini Photo Printer", desc: "Print and share instantly." },
+      { tag: "Top rated", title: "Board Game Night Pick", desc: "Fast fun with friends." }
+    ],
+    Energetic: [
+      { tag: "AI pick", title: "HIIT Program", desc: "Burn energy fast." },
+      { tag: "Best seller", title: "Protein Bars", desc: "Clean fuel, easy." },
+      { tag: "Trending", title: "Jump Rope", desc: "Anywhere cardio." },
+      { tag: "Recommended", title: "Electrolyte Mix", desc: "Hydrate like an athlete." },
+      { tag: "AI pick", title: "Running Playlist", desc: "Tempo-boost tracks." },
+      { tag: "Top rated", title: "Resistance Bands", desc: "Quick strength set." }
+    ],
+    Creative: [
+      { tag: "AI pick", title: "AI Art Tool", desc: "Create instantly." },
+      { tag: "Top rated", title: "Sketch Set", desc: "Premium materials." },
+      { tag: "Recommended", title: "Writing Prompts", desc: "Beat creative block." },
+      { tag: "Trending", title: "Watercolor Kit", desc: "Relaxing creative flow." },
+      { tag: "AI pick", title: "Design Micro-Course", desc: "Improve taste and output." },
+      { tag: "Best seller", title: "Craft Starter Box", desc: "Hands-on creativity." }
+    ],
+    Tired: [
+      { tag: "AI pick", title: "Sleep Sounds App", desc: "Fall asleep faster." },
+      { tag: "Best seller", title: "Neck Pillow", desc: "Travel & home comfort." },
+      { tag: "Recommended", title: "Evening Stretch", desc: "Release tension gently." },
+      { tag: "Top rated", title: "Blue Light Glasses", desc: "Reduce eye fatigue." },
+      { tag: "AI pick", title: "Magnesium (check label)", desc: "Common nighttime routine." },
+      { tag: "Trending", title: "Warm Eye Mask", desc: "Instant calm." }
+    ]
+  };
+
+  // Lightweight “AI” ranking: rotate + prioritize tags and variety
+  function aiRecommend(mood, k=6){
+    const items = [...DATA[mood]];
+    const score = (tag) => (
+      tag.includes("AI") ? 4 :
+      tag.includes("Trending") ? 3 :
+      tag.includes("Best") ? 3 :
+      tag.includes("Top") ? 2 : 1
+    );
+    items.sort((a,b)=>score(b.tag)-score(a.tag));
+    // add slight shuffle within same score
+    let i=0;
+    while(i<items.length-1){
+      const sA=score(items[i].tag), sB=score(items[i+1].tag);
+      if(sA===sB && Math.random()>0.5){ [items[i],items[i+1]]=[items[i+1],items[i]]; }
+      i++;
+    }
+    return items.slice(0,k);
+  }
+
+  const feed = document.getElementById("feed");
+  const feedTitle = document.getElementById("feedTitle");
+
+  function render(mood){
+    feedTitle.textContent = `Recommended for: ${mood}`;
+    feed.innerHTML = "";
+    const recs = aiRecommend(mood, 6);
+
+    for(const p of recs){
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="thumb" aria-hidden="true"></div>
+        <div class="card-inner">
+          <span class="badge">${p.tag}</span>
+          <h3>${p.title}</h3>
+          <p>${p.desc}</p>
+          <div class="actions">
+            <button class="buy" onclick="window.open('${AFF_LINK}','_blank')">View / Buy</button>
+            <button class="iconbtn" title="Like" onclick="alert('Saved feedback: 👍')">👍</button>
+            <button class="iconbtn" title="Save" onclick="alert('Saved to favorites')">★</button>
+          </div>
+        </div>
+      `;
+      feed.appendChild(card);
+    }
+  }
+
+  // Mood selection
+  document.querySelectorAll(".mood").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      document.querySelectorAll(".mood").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      render(btn.dataset.mood);
+    });
   });
- };
-});
-</script>
 
+  // Initial render
+  render("Stressed");
+</script>
 </body>
 </html>
