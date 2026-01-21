@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -6,67 +5,103 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MoodMarket</title>
 <style>
-body{
-  margin:0;font-family:system-ui,-apple-system,Segoe UI,Arial;
-  background:#0b1020;color:#eef2ff
-}
-.container{max-width:1100px;margin:auto;padding:20px}
-h1{margin-bottom:6px}
-.notice{
-  background:#12172a;border:1px dashed #2a2f45;border-radius:12px;
-  padding:10px 12px;margin-bottom:14px;font-size:13px;color:#a6b0cf
-}
-.moods{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-.mood{padding:8px 14px;border-radius:999px;background:#12172a;
-border:1px solid #2a2f45;cursor:pointer;font-size:13px}
-.mood.active{background:#7c83ff;color:#0b1020;font-weight:700}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
-.card{background:#12172a;border-radius:16px;overflow:hidden;
-box-shadow:0 12px 30px rgba(0,0,0,.35)}
-.thumb img{width:100%;height:160px;object-fit:cover;display:block}
-.inner{padding:12px}
-button{
-  width:100%;padding:10px;border:none;border-radius:10px;
-  background:linear-gradient(90deg,#7c83ff,#2dd4bf);
-  font-weight:800;cursor:pointer;color:#0b1020
-}
-footer{margin-top:40px;font-size:12px;color:#8b92b2;text-align:center}
+  :root{--bg:#0b1020;--text:#eef2ff;--muted:#a6b0cf;--card:#12172a;--border:#2a2f45;}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Arial;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
+  .container{max-width:1100px;margin:auto;padding:20px;flex:1;width:100%;}
+  h1{margin:0 0 10px;}
+  .moods{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px;}
+  .mood{padding:8px 14px;border-radius:999px;background:var(--card);border:1px solid var(--border);cursor:pointer;font-size:13px;user-select:none;}
+  .mood.active{background:#7c83ff;color:#0b1020;font-weight:700;border-color:#7c83ff;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
+  .card{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,0.06);}
+  .thumb{background:#0b1020;}
+  .thumb img{width:100%;height:160px;object-fit:cover;display:block;}
+  .inner{padding:12px;}
+  .title{font-weight:700;font-size:13px;margin:0 0 10px;color:#eef2ff;line-height:1.2;}
+  button{width:100%;padding:10px;border:none;border-radius:10px;background:linear-gradient(90deg,#7c83ff,#2dd4bf);font-weight:800;cursor:pointer;color:#0b1020;}
+  .footer-wrap{padding:18px 20px;border-top:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02);}
+  .footer{max-width:1100px;margin:0 auto;font-size:12px;color:#8b92b2;line-height:1.45;text-align:center;}
+  .disclaimer{margin-top:8px;}
 </style>
 </head>
 <body>
 <div class="container">
-<h1>MoodMarket</h1>
-
-<div class="notice">
-<b>Let op:</b> Afbeeldingen zijn <u>voorbeelden</u> (random productfoto’s),
-niet exact dezelfde producten als op Amazon.
-Deze worden later vervangen door echte Amazon-productafbeeldingen via ASIN.
+  <h1>MoodMarket</h1>
+  <div class="moods" id="moods"></div>
+  <div class="grid" id="grid"></div>
 </div>
 
-<div class="moods" id="moods"></div>
-<div class="grid" id="grid"></div>
-
-<footer>As an Amazon Associate I earn from qualifying purchases.</footer>
+<div class="footer-wrap">
+  <div class="footer">
+    <div class="example-note">⚠️ Afbeeldingen zijn <b>voorbeeldafbeeldingen</b> (random productfoto’s) en niet exact dezelfde producten als op Amazon. Deze worden later vervangen door echte Amazon-productafbeeldingen via ASIN.</div>
+    <div class="disclaimer">As an Amazon Associate I earn from qualifying purchases.</div>
+  </div>
 </div>
 
 <script>
-const TAG = "moodmakerz-21";
-const BASE = "https://www.amazon.nl/s?k=";
-const CATALOG = {"Stressed": ["Aromatherapy diffuser", "Lavender essential oil", "Chamomile tea", "Scented candle set", "Weighted blanket", "Neck massager", "Stress ball", "Sleep mask", "White noise machine"], "Happy": ["Instant camera", "Bluetooth speaker", "Board game", "Mini projector", "Party lights", "Photo album", "Craft kit", "Popcorn maker", "LEGO set"], "Energetic": ["Jump rope", "Resistance bands", "Adjustable dumbbells", "Yoga mat", "Foam roller", "Massage gun", "Gym bag", "Water bottle", "Fitness tracker"], "Creative": ["Sketchbook", "Marker set", "Watercolor paint", "Canvas panels", "Calligraphy set", "Clay kit", "Embroidery kit", "Ring light", "Label maker"], "Tired": ["Blackout sleep mask", "White noise machine", "Neck pillow", "Weighted eye mask", "Humidifier", "Electric blanket", "Foot massager", "Sleep tea", "Bedside lamp"]};
+const TAG="moodmakerz-21";
+const BASE="https://www.amazon.nl/s?k=";
+const CATALOG={"Stressed": ["Aromatherapy diffuser", "Lavender essential oil", "Chamomile tea", "Scented candle set", "Weighted blanket", "Neck massager", "Stress ball", "Sleep mask", "White noise machine"], "Happy": ["Instant camera", "Bluetooth speaker", "Board game", "Mini projector", "Party lights", "Photo album", "Craft kit", "Popcorn maker", "LEGO set"], "Energetic": ["Jump rope", "Resistance bands", "Adjustable dumbbells", "Yoga mat", "Foam roller", "Massage gun", "Gym bag", "Water bottle", "Fitness tracker"], "Creative": ["Sketchbook", "Marker set", "Watercolor paint", "Canvas panels", "Calligraphy set", "Clay kit", "Embroidery kit", "Ring light", "Label maker"], "Tired": ["Blackout sleep mask", "White noise machine", "Neck pillow", "Weighted eye mask", "Humidifier", "Electric blanket", "Foot massager", "Sleep tea", "Bedside lamp"]};
 
-const moodsEl = document.getElementById("moods");
-const grid = document.getElementById("grid");
-let currentMood = Object.keys(CATALOG)[0];
+const moodsEl=document.getElementById("moods");
+const grid=document.getElementById("grid");
+let currentMood=Object.keys(CATALOG)[0];
 
 function amazonUrl(title){
   return BASE + encodeURIComponent(title) + "&tag=" + TAG;
 }
 
-// Random photo per load (keyword-based)
-function imageUrl(title){
+function svgFallback(title){
+  const safe = title.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  const svg = `
+  <svg xmlns="http://www.w3.org/2000/svg" width="800" height="450">
+    <defs>
+      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#7c83ff" stop-opacity="0.55"/>
+        <stop offset="1" stop-color="#2dd4bf" stop-opacity="0.35"/>
+      </linearGradient>
+    </defs>
+    <rect width="800" height="450" fill="#0b1020"/>
+    <rect width="800" height="450" fill="url(#g)"/>
+    <text x="40" y="140" font-family="Inter,system-ui,Arial" font-size="34" fill="#eef2ff" font-weight="800">${safe}</text>
+    <text x="40" y="390" font-family="Inter,system-ui,Arial" font-size="18" fill="#a6b0cf">Example image</text>
+  </svg>`;
+  return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg.trim());
+}
+
+// Multiple providers + fallback
+function imageCandidates(title){
   const q = encodeURIComponent(title + " product");
-  const r = Math.floor(Math.random()*10000);
-  return `https://source.unsplash.com/800x600/?${q}&sig=${r}`;
+  const seed = Math.abs(hashCode(title)).toString(16);
+  // 1) picsum (very reliable)
+  const u1 = `https://picsum.photos/seed/${seed}/800/600`;
+  // 2) loremflickr (often works)
+  const u2 = `https://loremflickr.com/800/600/${q}`;
+  // 3) unsplash source (sometimes rate-limited)
+  const u3 = `https://source.unsplash.com/800x600/?${q}&sig=${Math.floor(Math.random()*10000)}`;
+  return [u1,u2,u3];
+}
+
+function setImgWithFallback(img, urls, fallback){
+  let i = 0;
+  const tryNext = () => {
+    if(i >= urls.length){
+      img.src = fallback;
+      return;
+    }
+    img.src = urls[i++];
+  };
+  img.onerror = tryNext;
+  tryNext();
+}
+
+function hashCode(str){
+  let hash=0;
+  for(let i=0;i<str.length;i++){
+    hash = str.charCodeAt(i) + ((hash<<5)-hash);
+    hash |= 0;
+  }
+  return hash;
 }
 
 function render(){
@@ -74,16 +109,27 @@ function render(){
   CATALOG[currentMood].forEach(title=>{
     const card=document.createElement("div");
     card.className="card";
-    card.innerHTML=`
-      <div class="thumb">
-        <img src="${imageUrl(title)}" alt="${title} example image">
-      </div>
-      <div class="inner">
-        <button onclick="window.open('${amazonUrl(title)}','_blank')">
-          View on Amazon
-        </button>
-      </div>
-    `;
+
+    const thumb=document.createElement("div");
+    thumb.className="thumb";
+    const img=document.createElement("img");
+    img.alt=title + " voorbeeldafbeelding";
+    img.loading="lazy";
+    setImgWithFallback(img, imageCandidates(title), svgFallback(title));
+    thumb.appendChild(img);
+
+    const inner=document.createElement("div");
+    inner.className="inner";
+    inner.innerHTML = `<div class="title">${title}</div>`;
+
+    const btn=document.createElement("button");
+    btn.textContent="View on Amazon.nl";
+    btn.onclick=()=>window.open(amazonUrl(title),"_blank");
+
+    inner.appendChild(btn);
+
+    card.appendChild(thumb);
+    card.appendChild(inner);
     grid.appendChild(card);
   });
 }
