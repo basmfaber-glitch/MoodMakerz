@@ -1,71 +1,83 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>MoodMarket</title>
+<meta name="theme-color" content="#2575fc">
+<link rel="manifest" href="manifest.json">
 <style>
-:root {
-  --stressed:#ff6b6b;
-  --happy:#ffd93d;
-  --energetic:#4dabf7;
-  --creative:#b197fc;
-  --tired:#adb5bd;
-}
 body {
-  font-family: Arial, sans-serif;
   margin:0;
-  background:#f4f6fb;
-}
-header {
-  padding:1rem 2rem;
-  background:linear-gradient(90deg,#6a11cb,#2575fc);
+  font-family: system-ui, Arial, sans-serif;
+  background:#0f172a;
   color:#fff;
 }
-section { padding:2rem; }
-.mood-selector {
-  display:flex;
-  gap:1rem;
-  flex-wrap:wrap;
-}
-.mood-card {
-  flex:1 0 140px;
-  padding:1.2rem;
-  border-radius:16px;
+header {
+  padding:1rem;
   text-align:center;
-  cursor:pointer;
-  font-weight:bold;
-  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+  background:linear-gradient(135deg,#6a11cb,#2575fc);
 }
-.stressed { background:var(--stressed); }
-.happy { background:var(--happy); }
-.energetic { background:var(--energetic); }
-.creative { background:var(--creative); }
-.tired { background:var(--tired); }
+h1 { margin:0; }
+.tagline { font-size:0.9rem; opacity:0.9; }
+.moods {
+  display:flex;
+  gap:0.8rem;
+  overflow-x:auto;
+  padding:1rem;
+}
+.mood {
+  flex:0 0 auto;
+  padding:0.8rem 1rem;
+  border-radius:999px;
+  background:#1e293b;
+  cursor:pointer;
+  white-space:nowrap;
+}
 .feed {
-  margin-top:2rem;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:1.2rem;
+  padding:1rem;
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
 }
 .card {
-  background:#fff;
+  background:#020617;
   border-radius:18px;
   padding:1rem;
-  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+  box-shadow:0 10px 30px rgba(0,0,0,0.4);
 }
 .card img {
   width:100%;
-  border-radius:12px;
+  border-radius:14px;
 }
 .card button {
   width:100%;
-  margin-top:0.5rem;
-  padding:0.5rem;
+  margin-top:0.6rem;
+  padding:0.7rem;
   border:none;
-  border-radius:10px;
+  border-radius:12px;
+  background:#22c55e;
+  color:#000;
+  font-weight:bold;
+}
+.badge {
+  font-size:0.75rem;
+  background:#22c55e;
+  color:#000;
+  display:inline-block;
+  padding:0.2rem 0.5rem;
+  border-radius:6px;
+  margin-bottom:0.3rem;
+}
+.install {
+  position:fixed;
+  bottom:1rem;
+  right:1rem;
   background:#2575fc;
-  color:#fff;
+  padding:0.7rem 1rem;
+  border-radius:999px;
+  font-size:0.8rem;
 }
 </style>
 </head>
@@ -73,43 +85,64 @@ section { padding:2rem; }
 
 <header>
 <h1>MoodMarket</h1>
+<div class="tagline">Scroll less. Feel better.</div>
 </header>
 
-<section>
-<h2>Select your mood</h2>
-<div class="mood-selector">
-  <div class="mood-card stressed" data-mood="Stressed">😫 Stressed</div>
-  <div class="mood-card happy" data-mood="Happy">😃 Happy</div>
-  <div class="mood-card energetic" data-mood="Energetic">⚡ Energetic</div>
-  <div class="mood-card creative" data-mood="Creative">🎨 Creative</div>
-  <div class="mood-card tired" data-mood="Tired">😴 Tired</div>
+<div class="moods">
+  <div class="mood">😫 Stressed</div>
+  <div class="mood">😃 Happy</div>
+  <div class="mood">⚡ Energetic</div>
+  <div class="mood">🎨 Creative</div>
+  <div class="mood">😴 Tired</div>
 </div>
 
 <div class="feed" id="feed"></div>
-</section>
+
+<div class="install">➕ Add to Home</div>
 
 <script>
-const products = {
-  Stressed:["Herbal Tea","Meditation App","Aromatherapy Candles","Breathing Guide"],
-  Happy:["Comedy Tickets","Smoothie Maker","Dance Class","Photo Book"],
-  Energetic:["HIIT Plan","Protein Snacks","Running Playlist","Jump Rope"],
-  Creative:["Painting Set","DIY Kit","Writing Prompts","Design Course"],
-  Tired:["Nap Pillow","Sleep Music","Stretching Routine","Blue Light Glasses"]
+const data = {
+ "😫 Stressed":[
+  {name:"Calming Tea",tag:"Best seller"},
+  {name:"Breathing App",tag:"AI pick"},
+  {name:"Weighted Blanket",tag:"Top rated"}
+ ],
+ "😃 Happy":[
+  {name:"Instant Camera",tag:"Trending"},
+  {name:"Dance Workout",tag:"AI pick"},
+  {name:"Memory Journal",tag:"Recommended"}
+ ],
+ "⚡ Energetic":[
+  {name:"HIIT Program",tag:"AI pick"},
+  {name:"Protein Bars",tag:"Best seller"},
+  {name:"Jump Rope",tag:"Trending"}
+ ],
+ "🎨 Creative":[
+  {name:"AI Art Tool",tag:"AI pick"},
+  {name:"Sketch Set",tag:"Top rated"},
+  {name:"Writing Prompts",tag:"Recommended"}
+ ],
+ "😴 Tired":[
+  {name:"Sleep Sounds App",tag:"AI pick"},
+  {name:"Neck Pillow",tag:"Best seller"},
+  {name:"Evening Stretch",tag:"Recommended"}
+ ]
 };
 
 const feed=document.getElementById("feed");
-
-document.querySelectorAll(".mood-card").forEach(card=>{
-  card.onclick=()=>{
-    feed.innerHTML="";
-    products[card.dataset.mood].forEach(p=>{
-      feed.innerHTML+=`<div class="card">
-      <img src="https://via.placeholder.com/300x160?text=${p}">
-      <h4>${p}</h4>
-      <button>View</button>
-      </div>`;
-    });
-  };
+document.querySelectorAll(".mood").forEach(m=>{
+ m.onclick=()=>{
+  feed.innerHTML="";
+  data[m.textContent].forEach(p=>{
+   feed.innerHTML+=`
+   <div class="card">
+     <div class="badge">${p.tag}</div>
+     <img src="https://via.placeholder.com/400x220?text=${p.name}">
+     <h3>${p.name}</h3>
+     <button onclick="window.open('https://example.com?aff=YOURID')">Buy / Try</button>
+   </div>`;
+  });
+ };
 });
 </script>
 

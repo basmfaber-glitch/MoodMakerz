@@ -1,0 +1,10 @@
+
+{
+  "name": "MoodMarket",
+  "short_name": "MoodMarket",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#2575fc",
+  "icons": []
+}
