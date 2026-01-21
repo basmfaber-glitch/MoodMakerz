@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -5,223 +6,82 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MoodMarket</title>
 <style>
-  :root{--bg:#0b1020;--text:#eef2ff;--muted:#a6b0cf;--card:#12172a;--border:#2a2f45;}
-  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Arial;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
-  .container{max-width:1100px;margin:auto;padding:20px;flex:1;width:100%;}
-  h1{margin:0 0 10px;}
-  .moods{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px;}
-  .mood{padding:8px 14px;border-radius:999px;background:var(--card);border:1px solid var(--border);cursor:pointer;font-size:13px;user-select:none;}
-  .mood.active{background:#7c83ff;color:#0b1020;font-weight:700;border-color:#7c83ff;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
-  .card{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,0.06);}
-  .thumb{background:#0b1020;}
-  .thumb img{width:100%;height:160px;object-fit:cover;display:block;}
-  .inner{padding:12px;}
-  .title{font-weight:700;font-size:13px;margin:0 0 10px;color:#eef2ff;line-height:1.2;}
-  button{width:100%;padding:10px;border:none;border-radius:10px;background:linear-gradient(90deg,#7c83ff,#2dd4bf);font-weight:800;cursor:pointer;color:#0b1020;}
-  .footer-wrap{padding:18px 20px;border-top:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02);}
-  .footer{max-width:1100px;margin:0 auto;font-size:12px;color:#8b92b2;line-height:1.45;text-align:center;}
-  .disclaimer{margin-top:8px;}
+:root{--bg:#0b1020;--card:#12172a;--border:#2a2f45;--text:#eef2ff;--muted:#a6b0cf;}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Arial;background:var(--bg);color:var(--text);}
+.container{max-width:1200px;margin:auto;padding:24px}
+h1{margin-bottom:10px}
+.moods{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.mood{padding:8px 14px;border-radius:999px;background:var(--card);border:1px solid var(--border);cursor:pointer;font-size:13px}
+.mood.active{background:#7c83ff;color:#0b1020;font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.card{background:var(--card);border-radius:18px;overflow:hidden;
+box-shadow:0 20px 50px rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.06)}
+.thumb img{width:100%;height:190px;object-fit:contain;background:#f5f6fa}
+.inner{padding:14px}
+.title{font-weight:700;font-size:14px;margin-bottom:12px}
+button{width:100%;padding:12px;border:none;border-radius:12px;
+background:linear-gradient(90deg,#7c83ff,#2dd4bf);font-weight:900;cursor:pointer;color:#0b1020}
+footer{margin-top:40px;font-size:12px;color:#8b92b2;text-align:center}
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>MoodMarket</h1>
-  <div class="moods" id="moods"></div>
-  <div class="grid" id="grid"></div>
-</div>
-
-<div class="footer-wrap">
-  <div class="footer">
-    <div class="example-note">⚠️ Afbeeldingen zijn <b>voorbeeldafbeeldingen</b> (product-illustraties) en niet exact dezelfde producten als op Amazon. Deze worden later vervangen door echte Amazon-productafbeeldingen via ASIN.</div>
-    <div class="disclaimer">As an Amazon Associate I earn from qualifying purchases.</div>
-  </div>
+<h1>MoodMarket</h1>
+<div class="moods" id="moods"></div>
+<div class="grid" id="grid"></div>
+<footer>
+⚠️ Afbeeldingen zijn realistische mockups (voorbeeld).<br>
+As an Amazon Associate I earn from qualifying purchases.
+</footer>
 </div>
 
 <script>
 const TAG="moodmakerz-21";
 const BASE="https://www.amazon.nl/s?k=";
-const CATALOG={"Stressed": ["Aromatherapy diffuser", "Lavender essential oil", "Chamomile tea", "Scented candle set", "Weighted blanket", "Neck massager", "Stress ball", "Sleep mask", "White noise machine"], "Happy": ["Instant camera", "Bluetooth speaker", "Board game", "Mini projector", "Party lights", "Photo album", "Craft kit", "Popcorn maker", "LEGO set"], "Energetic": ["Jump rope", "Resistance bands", "Adjustable dumbbells", "Yoga mat", "Foam roller", "Massage gun", "Gym bag", "Water bottle", "Fitness tracker"], "Creative": ["Sketchbook", "Marker set", "Watercolor paint", "Canvas panels", "Calligraphy set", "Clay kit", "Embroidery kit", "Ring light", "Label maker"], "Tired": ["Blackout sleep mask", "White noise machine", "Neck pillow", "Weighted eye mask", "Humidifier", "Electric blanket", "Foot massager", "Sleep tea", "Bedside lamp"]};
+const CATALOG={"Stressed": ["Aromatherapy diffuser", "Scented candle set", "Weighted blanket", "Neck massager", "Sleep mask"], "Happy": ["Instant camera", "Bluetooth speaker", "Board game", "Mini projector", "LEGO set"], "Energetic": ["Adjustable dumbbells", "Yoga mat", "Massage gun", "Gym bag", "Water bottle"], "Creative": ["Sketchbook", "Marker set", "Watercolor paint", "Canvas panels", "Ring light"], "Tired": ["White noise machine", "Neck pillow", "Humidifier", "Electric blanket", "Bedside lamp"]}";
 
 const moodsEl=document.getElementById("moods");
 const grid=document.getElementById("grid");
 let currentMood=Object.keys(CATALOG)[0];
 
 function amazonUrl(title){
-  return BASE + encodeURIComponent(title) + "&tag=" + TAG;
+  return BASE+encodeURIComponent(title)+"&tag="+TAG;
 }
 
-function esc(s){
-  return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-}
+// Ultra‑realistic SVG studio mockup
+function productImage(title){
+  const t=title.toLowerCase();
+  let shape="rect x='260' y='90' width='280' height='220' rx='28'";
+  if(t.includes("candle")) shape="rect x='300' y='80' width='200' height='260' rx='40'";
+  if(t.includes("camera")) shape="rect x='240' y='120' width='320' height='200' rx='32'";
+  if(t.includes("blanket")) shape="rect x='220' y='150' width='360' height='160' rx='60'";
+  if(t.includes("dumbbell")) shape="rect x='240' y='200' width='320' height='60' rx='30'";
+  if(t.includes("lamp")) shape="rect x='360' y='180' width='80' height='160' rx='20'";
+  if(t.includes("speaker")) shape="rect x='300' y='110' width='200' height='260' rx='28'";
+  if(t.includes("bottle")) shape="rect x='360' y='90' width='80' height='260' rx='40'";
 
-// Deterministic “product image” (local SVG illustration based on the product type)
-function productSvg(title){
-  const t = title.toLowerCase();
-  let icon = "box";
-  if(t.includes("candle")) icon="candle";
-  else if(t.includes("blanket")) icon="blanket";
-  else if(t.includes("diffuser")) icon="diffuser";
-  else if(t.includes("oil")) icon="oil";
-  else if(t.includes("tea")) icon="tea";
-  else if(t.includes("massager") || t.includes("massage")) icon="massager";
-  else if(t.includes("ball")) icon="ball";
-  else if(t.includes("sleep mask")) icon="mask";
-  else if(t.includes("noise")) icon="speaker";
-  else if(t.includes("camera")) icon="camera";
-  else if(t.includes("speaker") || t.includes("bluetooth")) icon="speaker";
-  else if(t.includes("board game")) icon="boardgame";
-  else if(t.includes("projector")) icon="projector";
-  else if(t.includes("lights")) icon="lights";
-  else if(t.includes("album")) icon="album";
-  else if(t.includes("popcorn")) icon="popcorn";
-  else if(t.includes("lego")) icon="blocks";
-  else if(t.includes("jump rope")) icon="jumprope";
-  else if(t.includes("bands")) icon="bands";
-  else if(t.includes("dumbbells")) icon="dumbbell";
-  else if(t.includes("yoga mat")) icon="mat";
-  else if(t.includes("roller")) icon="roller";
-  else if(t.includes("gym bag")) icon="bag";
-  else if(t.includes("water bottle")) icon="bottle";
-  else if(t.includes("tracker") || t.includes("fitness")) icon="watch";
-  else if(t.includes("sketchbook")) icon="book";
-  else if(t.includes("marker")) icon="marker";
-  else if(t.includes("watercolor")) icon="palette";
-  else if(t.includes("canvas")) icon="canvas";
-  else if(t.includes("calligraphy")) icon="pen";
-  else if(t.includes("clay")) icon="clay";
-  else if(t.includes("embroidery")) icon="needle";
-  else if(t.includes("ring light")) icon="ringlight";
-  else if(t.includes("label maker")) icon="label";
-  else if(t.includes("pillow")) icon="pillow";
-  else if(t.includes("humidifier")) icon="humidifier";
-  else if(t.includes("electric blanket")) icon="blanket";
-  else if(t.includes("lamp")) icon="lamp";
-
-  const safeTitle = esc(title);
-
-  const shapes = {
-    candle: `<rect x="330" y="150" width="140" height="200" rx="18" fill="rgba(255,255,255,0.18)"/>
-             <rect x="350" y="170" width="100" height="150" rx="14" fill="rgba(255,255,255,0.22)"/>
-             <path d="M400 120 C390 135 390 145 400 155 C410 145 410 135 400 120Z" fill="rgba(255,255,255,0.65)"/>`,
-    blanket:`<rect x="290" y="170" width="220" height="150" rx="26" fill="rgba(255,255,255,0.22)"/>
-             <path d="M290 220 Q400 180 510 220" stroke="rgba(255,255,255,0.35)" stroke-width="6" fill="none"/>`,
-    diffuser:`<ellipse cx="400" cy="265" rx="110" ry="70" fill="rgba(255,255,255,0.22)"/>
-              <rect x="330" y="140" width="140" height="140" rx="24" fill="rgba(255,255,255,0.16)"/>
-              <path d="M400 120 C380 100 420 90 400 70" stroke="rgba(255,255,255,0.45)" stroke-width="6" fill="none"/>`,
-    oil:`<rect x="360" y="140" width="80" height="220" rx="18" fill="rgba(255,255,255,0.20)"/>
-         <rect x="372" y="120" width="56" height="30" rx="8" fill="rgba(255,255,255,0.28)"/>`,
-    tea:`<rect x="310" y="190" width="180" height="130" rx="22" fill="rgba(255,255,255,0.20)"/>
-         <path d="M490 215 C535 225 535 285 490 295" stroke="rgba(255,255,255,0.35)" stroke-width="10" fill="none"/>
-         <path d="M370 150 C350 125 400 105 370 80" stroke="rgba(255,255,255,0.35)" stroke-width="6" fill="none"/>`,
-    massager:`<rect x="320" y="170" width="160" height="160" rx="40" fill="rgba(255,255,255,0.20)"/>
-              <circle cx="360" cy="250" r="26" fill="rgba(255,255,255,0.35)"/>
-              <circle cx="440" cy="250" r="26" fill="rgba(255,255,255,0.35)"/>`,
-    ball:`<circle cx="400" cy="240" r="90" fill="rgba(255,255,255,0.22)"/>
-          <path d="M310 240 Q400 180 490 240 Q400 300 310 240Z" fill="rgba(255,255,255,0.10)"/>`,
-    mask:`<path d="M280 240 C320 170 480 170 520 240 C480 310 320 310 280 240Z" fill="rgba(255,255,255,0.22)"/>
-          <circle cx="350" cy="240" r="26" fill="rgba(0,0,0,0.18)"/>
-          <circle cx="450" cy="240" r="26" fill="rgba(0,0,0,0.18)"/>`,
-    speaker:`<rect x="330" y="160" width="140" height="200" rx="24" fill="rgba(255,255,255,0.20)"/>
-             <circle cx="400" cy="240" r="48" fill="rgba(255,255,255,0.30)"/>
-             <circle cx="400" cy="240" r="22" fill="rgba(0,0,0,0.18)"/>`,
-    camera:`<rect x="290" y="180" width="220" height="160" rx="22" fill="rgba(255,255,255,0.20)"/>
-            <circle cx="400" cy="260" r="52" fill="rgba(255,255,255,0.30)"/>
-            <circle cx="400" cy="260" r="24" fill="rgba(0,0,0,0.18)"/>
-            <rect x="320" y="155" width="90" height="40" rx="12" fill="rgba(255,255,255,0.18)"/>`,
-    boardgame:`<rect x="300" y="160" width="200" height="200" rx="18" fill="rgba(255,255,255,0.20)"/>
-              <rect x="330" y="190" width="140" height="140" rx="14" fill="rgba(255,255,255,0.12)"/>
-              <circle cx="360" cy="220" r="10" fill="rgba(255,255,255,0.45)"/>
-              <circle cx="400" cy="260" r="10" fill="rgba(255,255,255,0.45)"/>
-              <circle cx="440" cy="300" r="10" fill="rgba(255,255,255,0.45)"/>`,
-    projector:`<rect x="280" y="200" width="240" height="140" rx="22" fill="rgba(255,255,255,0.20)"/>
-              <circle cx="430" cy="270" r="44" fill="rgba(255,255,255,0.30)"/>
-              <circle cx="430" cy="270" r="18" fill="rgba(0,0,0,0.18)"/>
-              <rect x="300" y="230" width="70" height="80" rx="14" fill="rgba(255,255,255,0.12)"/>`,
-    lights:`<path d="M240 210 Q400 120 560 210" stroke="rgba(255,255,255,0.28)" stroke-width="8" fill="none"/>
-            <circle cx="300" cy="190" r="10" fill="rgba(255,255,255,0.55)"/>
-            <circle cx="360" cy="160" r="10" fill="rgba(255,255,255,0.55)"/>
-            <circle cx="440" cy="160" r="10" fill="rgba(255,255,255,0.55)"/>
-            <circle cx="500" cy="190" r="10" fill="rgba(255,255,255,0.55)"/>`,
-    album:`<rect x="300" y="160" width="200" height="220" rx="18" fill="rgba(255,255,255,0.20)"/>
-           <rect x="325" y="190" width="150" height="40" rx="12" fill="rgba(255,255,255,0.18)"/>`,
-    popcorn:`<rect x="330" y="190" width="140" height="170" rx="18" fill="rgba(255,255,255,0.20)"/>
-             <path d="M330 220 L470 220" stroke="rgba(255,255,255,0.25)" stroke-width="10"/>
-             <circle cx="355" cy="175" r="18" fill="rgba(255,255,255,0.45)"/>
-             <circle cx="400" cy="160" r="18" fill="rgba(255,255,255,0.45)"/>
-             <circle cx="445" cy="175" r="18" fill="rgba(255,255,255,0.45)"/>`,
-    blocks:`<rect x="300" y="230" width="90" height="90" rx="14" fill="rgba(255,255,255,0.22)"/>
-            <rect x="410" y="200" width="90" height="120" rx="14" fill="rgba(255,255,255,0.16)"/>`,
-    jumprope:`<path d="M300 320 Q400 150 500 320" stroke="rgba(255,255,255,0.28)" stroke-width="10" fill="none"/>
-              <rect x="280" y="310" width="40" height="70" rx="14" fill="rgba(255,255,255,0.22)"/>
-              <rect x="480" y="310" width="40" height="70" rx="14" fill="rgba(255,255,255,0.22)"/>`,
-    bands:`<rect x="300" y="250" width="200" height="70" rx="35" fill="rgba(255,255,255,0.18)"/>
-           <rect x="320" y="265" width="160" height="40" rx="20" fill="rgba(255,255,255,0.10)"/>`,
-    dumbbell:`<rect x="330" y="245" width="140" height="30" rx="15" fill="rgba(255,255,255,0.18)"/>
-              <rect x="300" y="215" width="40" height="90" rx="12" fill="rgba(255,255,255,0.22)"/>
-              <rect x="460" y="215" width="40" height="90" rx="12" fill="rgba(255,255,255,0.22)"/>`,
-    mat:`<rect x="270" y="240" width="260" height="120" rx="60" fill="rgba(255,255,255,0.20)"/>`,
-    roller:`<rect x="300" y="230" width="200" height="100" rx="50" fill="rgba(255,255,255,0.22)"/>`,
-    bag:`<rect x="300" y="210" width="200" height="150" rx="26" fill="rgba(255,255,255,0.20)"/>
-         <path d="M340 210 Q400 160 460 210" stroke="rgba(255,255,255,0.28)" stroke-width="10" fill="none"/>`,
-    bottle:`<rect x="365" y="140" width="70" height="220" rx="24" fill="rgba(255,255,255,0.20)"/>
-            <rect x="372" y="120" width="56" height="28" rx="10" fill="rgba(255,255,255,0.25)"/>`,
-    watch:`<rect x="335" y="180" width="130" height="200" rx="30" fill="rgba(255,255,255,0.14)"/>
-           <circle cx="400" cy="260" r="46" fill="rgba(255,255,255,0.28)"/>
-           <rect x="385" y="210" width="30" height="18" rx="6" fill="rgba(0,0,0,0.18)"/>`,
-    book:`<rect x="310" y="170" width="180" height="220" rx="16" fill="rgba(255,255,255,0.18)"/>
-          <path d="M400 170 L400 390" stroke="rgba(255,255,255,0.18)" stroke-width="6"/>`,
-    marker:`<rect x="350" y="160" width="100" height="220" rx="18" fill="rgba(255,255,255,0.18)"/>
-            <path d="M350 360 L450 360 L400 410Z" fill="rgba(255,255,255,0.25)"/>`,
-    palette:`<ellipse cx="400" cy="260" rx="120" ry="90" fill="rgba(255,255,255,0.18)"/>
-             <circle cx="340" cy="240" r="12" fill="rgba(255,255,255,0.35)"/>
-             <circle cx="380" cy="210" r="12" fill="rgba(255,255,255,0.35)"/>
-             <circle cx="420" cy="220" r="12" fill="rgba(255,255,255,0.35)"/>
-             <circle cx="460" cy="250" r="12" fill="rgba(255,255,255,0.35)"/>`,
-    canvas:`<rect x="290" y="170" width="220" height="160" rx="18" fill="rgba(255,255,255,0.16)"/>
-            <rect x="310" y="190" width="180" height="120" rx="14" fill="rgba(255,255,255,0.10)"/>`,
-    pen:`<rect x="385" y="150" width="30" height="240" rx="15" fill="rgba(255,255,255,0.18)"/>
-         <path d="M385 380 L415 380 L400 420Z" fill="rgba(255,255,255,0.25)"/>`,
-    clay:`<path d="M310 290 C320 210 480 210 490 290 C480 350 320 350 310 290Z" fill="rgba(255,255,255,0.18)"/>`,
-    needle:`<rect x="340" y="230" width="120" height="120" rx="60" fill="rgba(255,255,255,0.14)"/>
-            <path d="M450 210 L520 140" stroke="rgba(255,255,255,0.30)" stroke-width="8"/>`,
-    ringlight:`<circle cx="400" cy="240" r="90" fill="none" stroke="rgba(255,255,255,0.30)" stroke-width="18"/>
-              <rect x="390" y="320" width="20" height="90" rx="10" fill="rgba(255,255,255,0.20)"/>`,
-    label:`<rect x="280" y="210" width="240" height="150" rx="22" fill="rgba(255,255,255,0.18)"/>
-           <rect x="310" y="240" width="180" height="40" rx="12" fill="rgba(255,255,255,0.12)"/>
-           <rect x="330" y="295" width="140" height="20" rx="10" fill="rgba(255,255,255,0.12)"/>`,
-    pillow:`<path d="M280 240 C280 180 520 180 520 240 C520 300 280 300 280 240Z" fill="rgba(255,255,255,0.18)"/>`,
-    humidifier:`<rect x="320" y="170" width="160" height="210" rx="26" fill="rgba(255,255,255,0.16)"/>
-               <path d="M400 150 C380 130 420 120 400 95" stroke="rgba(255,255,255,0.35)" stroke-width="6" fill="none"/>`,
-    lamp:`<rect x="360" y="280" width="80" height="90" rx="16" fill="rgba(255,255,255,0.18)"/>
-          <path d="M320 280 C340 210 460 210 480 280Z" fill="rgba(255,255,255,0.22)"/>`,
-    box:`<rect x="310" y="190" width="180" height="180" rx="20" fill="rgba(255,255,255,0.18)"/>
-         <path d="M310 250 L490 250" stroke="rgba(255,255,255,0.18)" stroke-width="8"/>`
-  };
-
-  const bg1 = "rgba(124,131,255,0.30)";
-  const bg2 = "rgba(45,212,191,0.22)";
-  const svg = `
-  <svg xmlns="http://www.w3.org/2000/svg" width="800" height="450">
-    <defs>
-      <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="${bg1}"/>
-        <stop offset="1" stop-color="${bg2}"/>
-      </linearGradient>
-      <radialGradient id="spot" cx="30%" cy="0%" r="80%">
-        <stop offset="0" stop-color="rgba(255,255,255,0.12)"/>
-        <stop offset="1" stop-color="rgba(0,0,0,0)"/>
-      </radialGradient>
-      <filter id="sh" x="-20%" y="-20%" width="140%" height="140%">
-        <feDropShadow dx="0" dy="18" stdDeviation="16" flood-color="rgba(0,0,0,0.45)"/>
-      </filter>
-    </defs>
-    <rect width="800" height="450" fill="#0b1020"/>
-    <rect width="800" height="450" fill="url(#bg)"/>
-    <rect width="800" height="450" fill="url(#spot)"/>
-    <g filter="url(#sh)">${shapes[icon] || shapes.box}</g>
-  </svg>`;
-  return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg.trim());
+  const svg=`
+<svg xmlns='http://www.w3.org/2000/svg' width='800' height='450'>
+<defs>
+<linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'>
+  <stop offset='0' stop-color='#ffffff'/>
+  <stop offset='1' stop-color='#e9ecf3'/>
+</linearGradient>
+<linearGradient id='obj' x1='0' y1='0' x2='0' y2='1'>
+  <stop offset='0' stop-color='#ffffff'/>
+  <stop offset='1' stop-color='#cfd6e4'/>
+</linearGradient>
+<filter id='shadow'>
+  <feDropShadow dx='0' dy='20' stdDeviation='25' flood-color='rgba(0,0,0,0.35)'/>
+</filter>
+</defs>
+<rect width='800' height='450' fill='url(#bg)'/>
+<g filter='url(#shadow)'>
+  <${shape} fill='url(#obj)'/>
+</g>
+<ellipse cx='400' cy='350' rx='180' ry='25' fill='rgba(0,0,0,0.08)'/>
+</svg>`;
+  return "data:image/svg+xml;charset=UTF-8,"+encodeURIComponent(svg);
 }
 
 function render(){
@@ -230,10 +90,14 @@ function render(){
     const card=document.createElement("div");
     card.className="card";
     card.innerHTML=`
-      <div class="thumb"><img src="${productSvg(title)}" alt="${esc(title)} product image"></div>
+      <div class="thumb">
+        <img src="${productImage(title)}" alt="${title} product">
+      </div>
       <div class="inner">
-        <div class="title">${esc(title)}</div>
-        <button onclick="window.open('${amazonUrl(title)}','_blank')">View on Amazon.nl</button>
+        <div class="title">${title}</div>
+        <button onclick="window.open('${amazonUrl(title)}','_blank')">
+          View on Amazon.nl
+        </button>
       </div>
     `;
     grid.appendChild(card);
