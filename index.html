@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoodMarket MVP</title>
+<style>
+  body { font-family: 'Arial', sans-serif; margin:0; padding:0; background:#f9f9f9; color:#333;}
+  header { display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; background:#fff; box-shadow:0 2px 4px rgba(0,0,0,0.1);}
+  header h1 { margin:0; font-size:1.8rem;}
+  header nav a { margin-left:1rem; text-decoration:none; color:#333; font-weight:bold;}
+  section { padding:2rem;}
+  .mood-selector { display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:2rem;}
+  .mood-card { flex:1 0 120px; background:#fff; border-radius:12px; text-align:center; padding:1rem; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,0.1); transition:0.2s; }
+  .mood-card:hover { transform:scale(1.05);}
+  .mood-card.selected { border:2px solid #333;}
+  .feed { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem;}
+  .card { background:#fff; border-radius:12px; padding:1rem; box-shadow:0 1px 4px rgba(0,0,0,0.1); }
+  .card img { width:100%; border-radius:8px; margin-bottom:0.5rem;}
+  .card button { margin-right:0.5rem; padding:0.3rem 0.6rem; border:none; border-radius:6px; cursor:pointer; background:#333; color:#fff;}
+  .feedback { margin-top:0.5rem;}
+  .feedback button { padding:0.2rem 0.5rem; border:none; border-radius:6px; margin-right:0.3rem; cursor:pointer;}
+  .favorites-section { margin-top:2rem; }
+  .premium { margin-top:3rem; background:#e0f7fa; padding:1.5rem; border-radius:12px; text-align:center;}
+  footer { text-align:center; padding:1rem; background:#fff; margin-top:2rem; font-size:0.9rem;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>MoodMarket</h1>
+  <nav>
+    <a href="#" id="favoritesBtn">Favorites</a>
+    <a href="#">Login</a>
+  </nav>
+</header>
+
+<section>
+  <h2>How are you feeling?</h2>
+  <p>Discover products, tips, and mini-experiences that match your current mood</p>
+
+  <div class="mood-selector">
+    <div class="mood-card" data-mood="Stressed">😫<br>Stressed</div>
+    <div class="mood-card" data-mood="Happy">😃<br>Happy</div>
+    <div class="mood-card" data-mood="Energetic">⚡<br>Energetic</div>
+    <div class="mood-card" data-mood="Creative">🎨<br>Creative</div>
+    <div class="mood-card" data-mood="Tired">😴<br>Tired</div>
+  </div>
+
+  <div class="feed" id="feed"></div>
+
+  <div class="favorites-section" id="favoritesSection" style="display:none;">
+    <h3>My Favorites</h3>
+    <div class="feed" id="favoritesFeed"></div>
+  </div>
+
+  <div class="premium">
+    <h3>Go Premium</h3>
+    <p>- More moods & personalized dashboard<br>- Track your mood history<br>- Exclusive mini-experiences</p>
+    <button>Upgrade Now</button>
+  </div>
+</section>
+
+<footer>
+  About | Contact | Privacy | Terms<br>
+  MoodMarket © Your mood, your choice.
+</footer>
+
+<script>
+// Global affiliate example products per mood
+const products = {
+  'Stressed': [
+    {name:'Relaxing Herbal Tea', desc:'Calming herbal tea for stress relief', link:'https://www.amazon.com/dp/B00EXAMPLE1'},
+    {name:'Meditation App Subscription', desc:'Guided meditation for relaxation', link:'https://www.amazon.com/dp/B00EXAMPLE2'},
+    {name:'Relaxing Music Album', desc:'Soothing music for stress', link:'https://www.amazon.com/dp/B00EXAMPLE3'}
+  ],
+  'Happy': [
+    {name:'Comedy Show Tickets', desc:'Enjoy a fun night out', link:'https://www.amazon.com/dp/B00EXAMPLE4'},
+    {name:'Smoothie Kit', desc:'Delicious smoothie ingredients', link:'https://www.amazon.com/dp/B00EXAMPLE5'},
+    {name:'Dance Tutorial Video', desc:'Learn a cheerful dance', link:'https://www.amazon.com/dp/B00EXAMPLE6'}
+  ],
+  'Energetic': [
+    {name:'HIIT Workout Program', desc:'10 min intensive workout', link:'https://www.amazon.com/dp/B00EXAMPLE7'},
+    {name:'Energy Snack Pack', desc:'Boost your energy quickly', link:'https://www.amazon.com/dp/B00EXAMPLE8'},
+    {name:'Motivational Podcast Series', desc:'Stay energized all day', link:'https://www.amazon.com/dp/B00EXAMPLE9'}
+  ],
+  'Creative': [
+    {name:'Painting Kit', desc:'Inspire your creativity', link:'https://www.amazon.com/dp/B00EXAMPLE10'},
+    {name:'DIY Craft Kit', desc:'Make your own creative project', link:'https://www.amazon.com/dp/B00EXAMPLE11'},
+    {name:'Writing Prompt Book', desc:'Stimulate your imagination', link:'https://www.amazon.com/dp/B00EXAMPLE12'}
+  ],
+  'Tired': [
+    {name:'Power Nap Pillow', desc:'Quick rest and refresh', link:'https://www.amazon.com/dp/B00EXAMPLE13'},
+    {name:'Calm Music Playlist', desc:'Relaxing audio to unwind', link:'https://www.amazon.com/dp/B00EXAMPLE14'},
+    {name:'Stretching Guide', desc:'Light exercises to revive', link:'https://www.amazon.com/dp/B00EXAMPLE15'}
+  ]
+};
+
+const feedDiv = document.getElementById('feed');
+let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+function renderFeed(mood) {
+  feedDiv.innerHTML = '';
+  products[mood].forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <img src="https://via.placeholder.com/200x120?text=${encodeURIComponent(item.name)}" alt="${item.name}">
+      <h4>${item.name}</h4>
+      <p>${item.desc}</p>
+      <button onclick="window.open('${item.link}','_blank')">View / Buy</button>
+      <div class="feedback">
+        <button onclick="giveFeedback('${item.name}', true)">👍</button>
+        <button onclick="giveFeedback('${item.name}', false)">👎</button>
+        <button onclick="addFavorite('${item.name}','${item.desc}','${item.link}')">❤️</button>
+      </div>
+    `;
+    feedDiv.appendChild(card);
+  });
+}
+
+document.querySelectorAll('.mood-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.mood-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    renderFeed(card.dataset.mood);
+  });
+});
+
+function giveFeedback(name, positive){
+  alert(`Feedback for ${name}: ${positive ? '👍' : '👎'}`);
+}
+
+function addFavorite(name, desc, link){
+  if(!favorites.some(f=>f.name===name)){
+    favorites.push({name, desc, link});
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    alert(`${name} added to favorites`);
+  }
+}
+
+document.getElementById('favoritesBtn').addEventListener('click', ()=>{
+  document.getElementById('favoritesSection').style.display='block';
+  const favDiv = document.getElementById('favoritesFeed');
+  favDiv.innerHTML = '';
+  favorites.forEach(item=>{
+    const card = document.createElement('div');
+    card.className='card';
+    card.innerHTML=`
+      <img src="https://via.placeholder.com/200x120?text=${encodeURIComponent(item.name)}" alt="${item.name}">
+      <h4>${item.name}</h4>
+      <p>${item.desc}</p>
+      <button onclick="window.open('${item.link}','_blank')">View / Buy</button>
+    `;
+    favDiv.appendChild(card);
+  });
+});
+</script>
+
+</body>
+</html>
