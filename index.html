@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +12,10 @@ body{
 }
 .container{max-width:1100px;margin:auto;padding:20px}
 h1{margin-bottom:6px}
+.notice{
+  background:#12172a;border:1px dashed #2a2f45;border-radius:12px;
+  padding:10px 12px;margin-bottom:14px;font-size:13px;color:#a6b0cf
+}
 .moods{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .mood{padding:8px 14px;border-radius:999px;background:#12172a;
 border:1px solid #2a2f45;cursor:pointer;font-size:13px}
@@ -19,11 +23,7 @@ border:1px solid #2a2f45;cursor:pointer;font-size:13px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
 .card{background:#12172a;border-radius:16px;overflow:hidden;
 box-shadow:0 12px 30px rgba(0,0,0,.35)}
-.thumb{height:160px;display:flex;align-items:center;justify-content:center}
-.thumb span{
-  font-weight:800;font-size:15px;text-align:center;
-  padding:0 16px;color:#0b1020
-}
+.thumb img{width:100%;height:160px;object-fit:cover;display:block}
 .inner{padding:12px}
 button{
   width:100%;padding:10px;border:none;border-radius:10px;
@@ -36,8 +36,16 @@ footer{margin-top:40px;font-size:12px;color:#8b92b2;text-align:center}
 <body>
 <div class="container">
 <h1>MoodMarket</h1>
+
+<div class="notice">
+<b>Let op:</b> Afbeeldingen zijn <u>voorbeelden</u> (random productfoto’s),
+niet exact dezelfde producten als op Amazon.
+Deze worden later vervangen door echte Amazon-productafbeeldingen via ASIN.
+</div>
+
 <div class="moods" id="moods"></div>
 <div class="grid" id="grid"></div>
+
 <footer>As an Amazon Associate I earn from qualifying purchases.</footer>
 </div>
 
@@ -54,15 +62,21 @@ function amazonUrl(title){
   return BASE + encodeURIComponent(title) + "&tag=" + TAG;
 }
 
+// Random photo per load (keyword-based)
+function imageUrl(title){
+  const q = encodeURIComponent(title + " product");
+  const r = Math.floor(Math.random()*10000);
+  return `https://source.unsplash.com/800x600/?${q}&sig=${r}`;
+}
+
 function render(){
   grid.innerHTML="";
   CATALOG[currentMood].forEach(title=>{
-    const color = "__COLOR__".replace("__COLOR__", "");
     const card=document.createElement("div");
     card.className="card";
     card.innerHTML=`
-      <div class="thumb" style="background:${colorFromText(title)}">
-        <span>${title}</span>
+      <div class="thumb">
+        <img src="${imageUrl(title)}" alt="${title} example image">
       </div>
       <div class="inner">
         <button onclick="window.open('${amazonUrl(title)}','_blank')">
@@ -72,13 +86,6 @@ function render(){
     `;
     grid.appendChild(card);
   });
-}
-
-function colorFromText(t){
-  let hash=0;
-  for(let i=0;i<t.length;i++) hash=t.charCodeAt(i)+((hash<<5)-hash);
-  let c=(hash&0x00FFFFFF).toString(16).toUpperCase();
-  return "#"+"00000".substring(0,6-c.length)+c;
 }
 
 Object.keys(CATALOG).forEach((m,i)=>{
