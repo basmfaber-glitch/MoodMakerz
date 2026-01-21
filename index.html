@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -6,82 +5,110 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MoodMarket</title>
 <style>
-:root{--bg:#0b1020;--card:#12172a;--border:#2a2f45;--text:#eef2ff;--muted:#a6b0cf;}
-body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Arial;background:var(--bg);color:var(--text);}
-.container{max-width:1200px;margin:auto;padding:24px}
-h1{margin-bottom:10px}
-.moods{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
-.mood{padding:8px 14px;border-radius:999px;background:var(--card);border:1px solid var(--border);cursor:pointer;font-size:13px}
-.mood.active{background:#7c83ff;color:#0b1020;font-weight:800}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
-.card{background:var(--card);border-radius:18px;overflow:hidden;
-box-shadow:0 20px 50px rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.06)}
-.thumb img{width:100%;height:190px;object-fit:contain;background:#f5f6fa}
-.inner{padding:14px}
-.title{font-weight:700;font-size:14px;margin-bottom:12px}
-button{width:100%;padding:12px;border:none;border-radius:12px;
-background:linear-gradient(90deg,#7c83ff,#2dd4bf);font-weight:900;cursor:pointer;color:#0b1020}
-footer{margin-top:40px;font-size:12px;color:#8b92b2;text-align:center}
+  :root{--bg:#0b1020;--text:#eef2ff;--muted:#a6b0cf;--card:#12172a;--border:#2a2f45;}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Arial;background:var(--bg);color:var(--text);}
+  .container{max-width:1100px;margin:auto;padding:20px}
+  h1{margin:0 0 10px}
+  .moods{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
+  .mood{padding:8px 14px;border-radius:999px;background:var(--card);border:1px solid var(--border);cursor:pointer;font-size:13px}
+  .mood.active{background:#7c83ff;color:#0b1020;font-weight:700}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+  .card{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 14px 36px rgba(0,0,0,.45)}
+  .thumb img{width:100%;height:160px;object-fit:cover;display:block}
+  .inner{padding:12px}
+  .title{font-weight:700;font-size:13px;margin:0 0 10px}
+  button{width:100%;padding:10px;border:none;border-radius:10px;background:linear-gradient(90deg,#7c83ff,#2dd4bf);font-weight:800;cursor:pointer;color:#0b1020}
+  footer{margin:32px 0 10px;text-align:center;font-size:12px;color:#8b92b2}
 </style>
 </head>
 <body>
 <div class="container">
-<h1>MoodMarket</h1>
-<div class="moods" id="moods"></div>
-<div class="grid" id="grid"></div>
-<footer>
-⚠️ Afbeeldingen zijn realistische mockups (voorbeeld).<br>
-As an Amazon Associate I earn from qualifying purchases.
-</footer>
+  <h1>MoodMarket</h1>
+  <div class="moods" id="moods"></div>
+  <div class="grid" id="grid"></div>
+  <footer>
+    ⚠️ Afbeeldingen zijn voorbeeldafbeeldingen (realistische productrenders).<br>
+    As an Amazon Associate I earn from qualifying purchases.
+  </footer>
 </div>
 
 <script>
 const TAG="moodmakerz-21";
 const BASE="https://www.amazon.nl/s?k=";
-const CATALOG={"Stressed": ["Aromatherapy diffuser", "Scented candle set", "Weighted blanket", "Neck massager", "Sleep mask"], "Happy": ["Instant camera", "Bluetooth speaker", "Board game", "Mini projector", "LEGO set"], "Energetic": ["Adjustable dumbbells", "Yoga mat", "Massage gun", "Gym bag", "Water bottle"], "Creative": ["Sketchbook", "Marker set", "Watercolor paint", "Canvas panels", "Ring light"], "Tired": ["White noise machine", "Neck pillow", "Humidifier", "Electric blanket", "Bedside lamp"]}";
-
+const CATALOG={"Stressed": ["Aromatherapy diffuser", "Lavender essential oil", "Chamomile tea", "Scented candle set", "Weighted blanket", "Neck massager", "Stress ball", "Sleep mask", "White noise machine"], "Happy": ["Instant camera", "Bluetooth speaker", "Board game", "Mini projector", "Party lights", "Photo album", "Craft kit", "Popcorn maker", "LEGO set"], "Energetic": ["Jump rope", "Resistance bands", "Adjustable dumbbells", "Yoga mat", "Foam roller", "Massage gun", "Gym bag", "Water bottle", "Fitness tracker"], "Creative": ["Sketchbook", "Marker set", "Watercolor paint", "Canvas panels", "Calligraphy set", "Clay kit", "Embroidery kit", "Ring light", "Label maker"], "Tired": ["Blackout sleep mask", "White noise machine", "Neck pillow", "Weighted eye mask", "Humidifier", "Electric blanket", "Foot massager", "Sleep tea", "Bedside lamp"]}";
 const moodsEl=document.getElementById("moods");
 const grid=document.getElementById("grid");
 let currentMood=Object.keys(CATALOG)[0];
 
-function amazonUrl(title){
-  return BASE+encodeURIComponent(title)+"&tag="+TAG;
-}
+function amazonUrl(t){return BASE+encodeURIComponent(t)+"&tag="+TAG;}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 
-// Ultra‑realistic SVG studio mockup
-function productImage(title){
+// Studio‑style realistic SVG renderer
+function realisticImage(title){
   const t=title.toLowerCase();
-  let shape="rect x='260' y='90' width='280' height='220' rx='28'";
-  if(t.includes("candle")) shape="rect x='300' y='80' width='200' height='260' rx='40'";
-  if(t.includes("camera")) shape="rect x='240' y='120' width='320' height='200' rx='32'";
-  if(t.includes("blanket")) shape="rect x='220' y='150' width='360' height='160' rx='60'";
-  if(t.includes("dumbbell")) shape="rect x='240' y='200' width='320' height='60' rx='30'";
-  if(t.includes("lamp")) shape="rect x='360' y='180' width='80' height='160' rx='20'";
-  if(t.includes("speaker")) shape="rect x='300' y='110' width='200' height='260' rx='28'";
-  if(t.includes("bottle")) shape="rect x='360' y='90' width='80' height='260' rx='40'";
+  let shape="box";
+  if(t.includes("candle")) shape="candle";
+  else if(t.includes("blanket")) shape="blanket";
+  else if(t.includes("diffuser")) shape="diffuser";
+  else if(t.includes("oil")) shape="bottle";
+  else if(t.includes("tea")) shape="mug";
+  else if(t.includes("camera")) shape="camera";
+  else if(t.includes("speaker")) shape="speaker";
+  else if(t.includes("dumbbell")) shape="dumbbell";
+  else if(t.includes("yoga")) shape="mat";
+  else if(t.includes("bottle")) shape="water";
+  else if(t.includes("lamp")) shape="lamp";
+
+  const shapes={
+    candle:`<rect x="330" y="170" width="140" height="180" rx="18" fill="#eee"/>
+            <rect x="350" y="190" width="100" height="130" rx="14" fill="#fafafa"/>
+            <path d="M400 150 C390 170 395 180 400 190 C405 180 410 170 400 150Z" fill="#ffd27d"/>`,
+    blanket:`<rect x="290" y="210" width="220" height="110" rx="26" fill="#d8dbe6"/>`,
+    diffuser:`<ellipse cx="400" cy="300" rx="120" ry="40" fill="rgba(0,0,0,0.2)"/>
+              <rect x="330" y="160" width="140" height="160" rx="24" fill="#f5f5f5"/>
+              <path d="M400 140 C380 120 420 110 400 90" stroke="#fff" stroke-width="5"/>`,
+    bottle:`<rect x="360" y="150" width="80" height="200" rx="18" fill="#f0f0f0"/>
+            <rect x="372" y="130" width="56" height="30" rx="8" fill="#ddd"/>`,
+    mug:`<rect x="320" y="220" width="160" height="100" rx="22" fill="#f7f7f7"/>
+         <path d="M480 240 C520 250 520 300 480 310" stroke="#e0e0e0" stroke-width="10" fill="none"/>`,
+    camera:`<rect x="300" y="220" width="200" height="120" rx="18" fill="#2b2b2b"/>
+            <circle cx="400" cy="280" r="44" fill="#555"/>
+            <circle cx="400" cy="280" r="20" fill="#111"/>`,
+    speaker:`<rect x="330" y="200" width="140" height="160" rx="22" fill="#1f2937"/>
+             <circle cx="400" cy="280" r="44" fill="#374151"/>`,
+    dumbbell:`<rect x="330" y="270" width="140" height="20" rx="10" fill="#444"/>
+              <rect x="300" y="240" width="40" height="80" rx="10" fill="#666"/>
+              <rect x="460" y="240" width="40" height="80" rx="10" fill="#666"/>`,
+    mat:`<rect x="270" y="260" width="260" height="80" rx="40" fill="#4ade80"/>`,
+    water:`<rect x="365" y="150" width="70" height="200" rx="22" fill="#60a5fa"/>`,
+    lamp:`<rect x="360" y="280" width="80" height="90" rx="14" fill="#ddd"/>
+          <path d="M320 280 C340 220 460 220 480 280Z" fill="#fef3c7"/>`,
+    box:`<rect x="310" y="220" width="180" height="140" rx="18" fill="#e5e7eb"/>`
+  };
 
   const svg=`
-<svg xmlns='http://www.w3.org/2000/svg' width='800' height='450'>
-<defs>
-<linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'>
-  <stop offset='0' stop-color='#ffffff'/>
-  <stop offset='1' stop-color='#e9ecf3'/>
-</linearGradient>
-<linearGradient id='obj' x1='0' y1='0' x2='0' y2='1'>
-  <stop offset='0' stop-color='#ffffff'/>
-  <stop offset='1' stop-color='#cfd6e4'/>
-</linearGradient>
-<filter id='shadow'>
-  <feDropShadow dx='0' dy='20' stdDeviation='25' flood-color='rgba(0,0,0,0.35)'/>
-</filter>
-</defs>
-<rect width='800' height='450' fill='url(#bg)'/>
-<g filter='url(#shadow)'>
-  <${shape} fill='url(#obj)'/>
-</g>
-<ellipse cx='400' cy='350' rx='180' ry='25' fill='rgba(0,0,0,0.08)'/>
-</svg>`;
-  return "data:image/svg+xml;charset=UTF-8,"+encodeURIComponent(svg);
+  <svg xmlns="http://www.w3.org/2000/svg" width="800" height="450">
+    <defs>
+      <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#f8fafc"/>
+        <stop offset="1" stop-color="#e5e7eb"/>
+      </linearGradient>
+      <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+        <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="rgba(0,0,0,0.45)"/>
+      </filter>
+      <filter id="grain">
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" result="n"/>
+        <feColorMatrix type="saturate" values="0"/>
+        <feComponentTransfer>
+          <feFuncA type="linear" slope="0.04"/>
+        </feComponentTransfer>
+      </filter>
+    </defs>
+    <rect width="800" height="450" fill="url(#bg)"/>
+    <g filter="url(#shadow)">${shapes[shape]||shapes.box}</g>
+    <rect width="800" height="450" filter="url(#grain)" opacity="0.15"/>
+  </svg>`;
+  return "data:image/svg+xml;charset=UTF-8,"+encodeURIComponent(svg.trim());
 }
 
 function render(){
@@ -90,16 +117,11 @@ function render(){
     const card=document.createElement("div");
     card.className="card";
     card.innerHTML=`
-      <div class="thumb">
-        <img src="${productImage(title)}" alt="${title} product">
-      </div>
+      <div class="thumb"><img src="${realisticImage(title)}" alt="${esc(title)} product image"></div>
       <div class="inner">
-        <div class="title">${title}</div>
-        <button onclick="window.open('${amazonUrl(title)}','_blank')">
-          View on Amazon.nl
-        </button>
-      </div>
-    `;
+        <div class="title">${esc(title)}</div>
+        <button onclick="window.open('${amazonUrl(title)}','_blank')">View on Amazon.nl</button>
+      </div>`;
     grid.appendChild(card);
   });
 }
