@@ -9,16 +9,19 @@
   body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Arial;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
   .container{max-width:1100px;margin:auto;padding:20px;flex:1;width:100%;}
   h1{margin:0 0 10px;}
-  .moods{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px;}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0 14px;}
+  .moods{display:flex;gap:8px;flex-wrap:wrap;}
   .mood{padding:8px 14px;border-radius:999px;background:var(--card);border:1px solid var(--border);cursor:pointer;font-size:13px;user-select:none;}
-  .mood.active{background:#7c83ff;color:#0b1020;font-weight:700;border-color:#7c83ff;}
+  .mood.active{background:#7c83ff;color:#0b1020;font-weight:800;border-color:#7c83ff;}
+  .shuffle{padding:8px 14px;border-radius:999px;border:none;cursor:pointer;font-weight:900;color:#0b1020;
+           background:linear-gradient(90deg,#7c83ff,#2dd4bf);}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
   .card{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,0.06);}
   .thumb{background:#0b1020;}
   .thumb img{width:100%;height:160px;object-fit:cover;display:block;}
   .inner{padding:12px;}
-  .title{font-weight:700;font-size:13px;margin:0 0 10px;color:#eef2ff;line-height:1.2;}
-  button{width:100%;padding:10px;border:none;border-radius:10px;background:linear-gradient(90deg,#7c83ff,#2dd4bf);font-weight:800;cursor:pointer;color:#0b1020;}
+  .title{font-weight:800;font-size:13px;margin:0 0 10px;color:#eef2ff;line-height:1.2;}
+  button.buy{width:100%;padding:10px;border:none;border-radius:10px;background:linear-gradient(90deg,#7c83ff,#2dd4bf);font-weight:900;cursor:pointer;color:#0b1020;}
   .footer-wrap{padding:18px 20px;border-top:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02);}
   .footer{max-width:1100px;margin:0 auto;font-size:12px;color:#8b92b2;line-height:1.45;text-align:center;}
   .disclaimer{margin-top:8px;}
@@ -27,13 +30,18 @@
 <body>
 <div class="container">
   <h1>MoodMarket</h1>
-  <div class="moods" id="moods"></div>
+
+  <div class="row">
+    <div class="moods" id="moods"></div>
+    <button class="shuffle" id="shuffle">Refresh 8</button>
+  </div>
+
   <div class="grid" id="grid"></div>
 </div>
 
 <div class="footer-wrap">
   <div class="footer">
-    <div class="example-note">⚠️ Afbeeldingen zijn <b>voorbeeldafbeeldingen</b> (random productfoto’s) en niet exact dezelfde producten als op Amazon. Deze worden later vervangen door echte Amazon-productafbeeldingen via ASIN.</div>
+    <div class="example-note">⚠️ Afbeeldingen zijn <b>voorbeeldafbeeldingen</b> die van het internet worden geladen op basis van zoekwoorden. Deze worden later vervangen door echte Amazon-productafbeeldingen via ASIN.</div>
     <div class="disclaimer">As an Amazon Associate I earn from qualifying purchases.</div>
   </div>
 </div>
@@ -41,18 +49,80 @@
 <script>
 const TAG="moodmakerz-21";
 const BASE="https://www.amazon.nl/s?k=";
-const CATALOG={"Stressed": ["Aromatherapy diffuser", "Lavender essential oil", "Chamomile tea", "Scented candle set", "Weighted blanket", "Neck massager", "Stress ball", "Sleep mask", "White noise machine"], "Happy": ["Instant camera", "Bluetooth speaker", "Board game", "Mini projector", "Party lights", "Photo album", "Craft kit", "Popcorn maker", "LEGO set"], "Energetic": ["Jump rope", "Resistance bands", "Adjustable dumbbells", "Yoga mat", "Foam roller", "Massage gun", "Gym bag", "Water bottle", "Fitness tracker"], "Creative": ["Sketchbook", "Marker set", "Watercolor paint", "Canvas panels", "Calligraphy set", "Clay kit", "Embroidery kit", "Ring light", "Label maker"], "Tired": ["Blackout sleep mask", "White noise machine", "Neck pillow", "Weighted eye mask", "Humidifier", "Electric blanket", "Foot massager", "Sleep tea", "Bedside lamp"]};
+const CATALOG={"Stressed": ["Aromatherapy diffuser", "Lavender essential oil", "Chamomile tea", "Scented candle set", "Weighted blanket", "Heat pad (microwavable)", "Neck and shoulder massager", "Foam roller", "Massage ball", "Stress ball", "Acupressure mat", "Sleep mask (blackout)", "Silk pillowcase", "White noise machine", "Humidifier", "Bath salts", "Bubble bath", "Shower steamers", "Foot spa bath", "Hot water bottle", "Herbal tea sampler", "Calming room spray", "Incense sticks", "Meditation cushion", "Yoga mat", "Yoga blocks", "Stretching strap", "Aromatherapy inhaler sticks", "Hand cream set", "Face mask set (skincare)", "Eye gel patches", "Soothing body lotion", "Cozy socks", "Soft throw blanket", "Desk fountain", "Adult coloring book", "Colored pencil set", "Stress journal (paper)", "Planner notebook", "LED salt lamp", "Tea infuser", "Ceramic mug set", "Coaster set", "Sleep earplugs", "Noise-cancelling earmuffs", "Room humidifier filters", "Candle lighter", "Calming essential oil set", "Relaxing bath pillow", "Guided meditation book", "Aromatherapy candle", "Warm fleece blanket", "Soothing heat wrap", "Cooling gel pillow", "Relaxation incense holder", "Scented wax melts", "Electric aroma diffuser", "Calm music vinyl", "Weighted eye mask", "Aroma reed diffuser", "Herbal pillow (lavender)", "Massage oil", "Hand massage roller", "Neck heat wrap", "Bath bomb set", "Tea storage tin", "Relaxing face roller", "Soft bathrobe", "Microfiber towel set", "Room spray (lavender)", "Relaxing essential oil necklace", "Mindfulness cards", "Anti-stress fidget cube", "Desk humidifier", "Sleep spray", "Cozy slippers", "Aroma candle lantern", "Calming tea set", "Relaxing candle holder", "Aromatherapy shower steamer set"], "Happy": ["Instant camera", "Instant film pack", "Photo printer (mini)", "Scrapbook album", "Photo frames set", "String lights (fairy lights)", "Party lights projector", "Bluetooth speaker", "Karaoke microphone", "Board game", "Card game", "Puzzle (1000 pieces)", "Balloon set", "Confetti poppers", "Polaroid-style sticker pack", "DIY mocktail kit", "Popcorn maker", "Movie night snack box", "Picnic blanket", "Portable cooler", "Neon sign", "Gift wrap kit", "Celebration banner set", "Disposable camera", "Mini projector", "LED strip lights", "Cake decorating kit", "Baking kit", "Waffle maker", "Fondue set", "Ice cream maker", "Fidget toy set", "Outdoor game set (cornhole)", "Bubble machine", "Face paint set", "Craft kit", "LEGO flower bouquet set", "LEGO set", "Desk plant (artificial)", "Funny mug", "Sticker pack", "Glow sticks", "Portable photo backdrop", "Mini printer paper pack", "Party hats set", "Party photo booth props", "Mini champagne glasses (plastic)", "Color confetti balloons", "Tabletop disco ball", "Birthday candles set", "Cupcake stand", "Cookie cutter set", "Chocolate gift box", "Gourmet candy mix", "Happy journal", "Celebration confetti cannon", "Mini polaroid album", "Photo corner stickers", "Portable tripod", "Friendship bracelet kit", "DIY slime kit", "Scented candle gift set", "Colorful streamers", "Party tableware set", "Mini waffle maker", "Snack platter board", "Bluetooth microphone", "Portable lantern lights", "Outdoor picnic basket", "Instant photo album", "Mini speaker stand", "Photo clip string lights", "Party game set", "Desktop bubble blower", "Party confetti balloons set", "Photo booth backdrop curtain", "Mini disco light", "Candy gift jar", "Celebration cake topper", "Popcorn seasoning set"], "Energetic": ["Jump rope", "Resistance bands set", "Adjustable dumbbells", "Kettlebell", "Yoga mat (non-slip)", "Fitness gloves", "Gym towel", "Shaker bottle", "Protein snack box", "Electrolyte tablets", "Water bottle (insulated)", "Smartwatch/fitness tracker", "Heart rate monitor strap", "Running belt", "Reflective running vest", "Compression socks", "Foam roller", "Massage gun", "Pull-up bar (doorway)", "Ab roller", "Push-up bars", "Mini stepper", "Portable pedal exerciser", "Ankle weights", "Weighted vest", "Medicine ball", "Balance board", "Agility ladder", "Training cones set", "Boxing gloves", "Standing punching bag", "Hand grip strengthener", "Cycling gloves", "Bike phone mount", "Bike lights set", "Swim goggles", "Kickboard", "Tennis racket", "Badminton set", "Basketball", "Soccer ball", "Pilates ring", "Stretching strap", "Pre-workout shaker", "Meal prep containers", "Gym bag", "Sports sunscreen", "Running cap", "Sweat headbands", "Sports earbuds", "Yoga blocks", "Protein bar variety pack", "Foam yoga wheel", "Resistance loop bands", "Jump rope mat", "Speed ladder set", "Weighted jump rope", "Skipping rope counter", "Dumbbell rack", "Knee sleeves", "Elbow sleeves", "Wrist wraps", "Exercise mat thick", "Portable blender", "Creatine container", "Gym chalk", "Lifting straps", "Water bottle carrier", "Cooling towel", "Sports hydration pack", "Running armband", "Trail running light", "Gym stopwatch", "Workout timer", "Balance disc", "Mini trampoline", "Rowing resistance band", "Push-up board", "Core slider discs", "Punch mitts"], "Creative": ["Sketchbook", "Drawing pencils set", "Eraser set", "Fineliner pens set", "Marker set (alcohol-based)", "Watercolor paint set", "Watercolor paper pad", "Acrylic paint set", "Canvas panels pack", "Paint brushes set", "Calligraphy set", "Brush pens set", "Colored pencils set", "Pastel set", "Charcoal drawing set", "Craft scissors set", "Glue gun", "Washi tape set", "Sticker pack (art)", "Scrapbooking kit", "Collage paper pack", "Cutting mat", "X-Acto knife", "Ruler set", "Photography tripod", "Ring light", "Phone lens kit", "Backdrop cloth", "Photo props kit", "Air-dry clay", "Polymer clay kit", "Clay tools set", "Crochet starter kit", "Knitting needles set", "Embroidery starter kit", "Sewing kit", "Fabric markers", "Bead kit", "Jewelry making kit", "Origami paper set", "Model building kit", "Miniature house kit", "3D puzzle kit", "Ukulele", "Guitar picks set", "Notebook (dot grid)", "Idea journal", "Desk organizer", "Label maker", "Stamp set", "Ink pad set", "Wax seal kit", "Lettering practice book", "DIY candle making kit", "Soap making kit", "Resin kit", "Resin molds", "A4 light pad", "Craft storage box", "Sketching mannequin", "Water brush pens", "Gouache paint set", "Brush cleaning cup", "Canvas easel", "Photo printing paper", "Mini photo printer", "DIY embroidery hoop set", "Craft cutting machine tools", "Woven yarn set", "Punch needle kit", "Color mixing palette", "Calligraphy ink set", "Metallic pens set", "Sticker printer", "Paper trimmer", "Brush set (fine detail)", "Acrylic paint markers", "Portable sketching kit", "Watercolor brush pen set", "Craft punch set"], "Tired": ["Blackout sleep mask", "Earplugs (sleep)", "White noise machine", "Weighted eye mask (warm/cool)", "Neck pillow", "Memory foam pillow", "Cooling pillowcase", "Silk pillowcase", "Bedside lamp (warm light)", "Sunrise alarm clock", "Blue light blocking glasses", "Humidifier", "Air purifier", "Aromatherapy diffuser", "Lavender pillow spray", "Sleep tea (caffeine-free)", "Electric blanket", "Hot water bottle", "Cozy robe", "Slippers", "Compression sleep socks", "Foot massager", "Leg massager", "Heating pad", "Magnesium bath flakes", "Bath pillow", "Eye mask gel packs", "Bed wedge pillow", "Mattress topper", "Sleep sound machine (portable)", "Travel pillow", "Travel blanket", "Noise-cancelling earmuffs", "Sleep headphones (headband)", "Reading light (clip-on)", "Bedside organizer", "Night light (motion sensor)", "Essential oil sampler", "Tea infuser", "Ceramic mug", "Herbal tea sampler", "Stretching strap", "Foam roller", "Gentle yoga props set", "Sleep journal (paper)", "Calming candle", "Lavender sachets", "Pillow mist", "Soft blanket", "Warm socks", "Heating slippers", "Aroma diffuser necklace", "Relaxing bath soak", "Light-blocking curtains", "Bed canopy", "Cooling eye patches", "Soothing face cream", "Hand warmers", "Foot soak basin", "Sleep gummies (melatonin-free)", "Relaxing audiobook (CD)", "Comfort hoodie blanket", "Cervical pillow", "Weighted blanket", "Sleep mask silk", "Noise machine rechargeable", "Sleep aromatherapy set", "Warm tea kettle", "Mug warmer", "Soft bedside rug", "Comforter set", "Mattress protector", "Sleep tracker ring", "Bed sheet set", "Humidifier filters", "Relaxing pillow", "Cozy throw", "Warm light bulb set", "Scented candle set", "Relaxing herbal pillow spray set"]};
+const CARDS_PER_REFRESH = 8;
 
 const moodsEl=document.getElementById("moods");
 const grid=document.getElementById("grid");
+const shuffleBtn=document.getElementById("shuffle");
 let currentMood=Object.keys(CATALOG)[0];
+
+// Persist rotation so every page load shows a NEW batch (auto-refresh on pageload)
+const STORAGE_KEY = "moodmarket_rotation_v1";
+
+function loadState(){
+  try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); }
+  catch(e){ return {}; }
+}
+function saveState(state){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+}
+
+let state = loadState();
+if(!state.order) state.order = {};
+if(!state.idx) state.idx = {};
+
+function shuffleArray(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+function ensureOrder(mood){
+  const n = CATALOG[mood].length;
+  if(!state.order[mood] || state.order[mood].length !== n){
+    state.order[mood] = Array.from({length:n}, (_,i)=>i);
+    shuffleArray(state.order[mood]);
+    // randomize start so first ever load isn't always the same 8
+    state.idx[mood] = Math.floor(Math.random()*n);
+    saveState(state);
+  }
+}
+
+function nextBatch(mood, k){
+  ensureOrder(mood);
+  const n = CATALOG[mood].length;
+  const used = new Set();
+  const out = [];
+  while(out.length < k){
+    if(state.idx[mood] >= n){
+      // reshuffle after exhausting all items
+      state.order[mood] = Array.from({length:n}, (_,i)=>i);
+      shuffleArray(state.order[mood]);
+      state.idx[mood] = 0;
+    }
+    const pickIndex = state.order[mood][state.idx[mood]++];
+    const title = CATALOG[mood][pickIndex];
+    const key = title.toLowerCase();
+    if(used.has(key)) continue;
+    used.add(key);
+    out.push(title);
+  }
+  saveState(state);
+  return out;
+}
 
 function amazonUrl(title){
   return BASE + encodeURIComponent(title) + "&tag=" + TAG;
 }
 
+function esc(s){
+  return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
 function svgFallback(title){
-  const safe = title.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  const safe = esc(title);
   const svg = `
   <svg xmlns="http://www.w3.org/2000/svg" width="800" height="450">
     <defs>
@@ -63,22 +133,28 @@ function svgFallback(title){
     </defs>
     <rect width="800" height="450" fill="#0b1020"/>
     <rect width="800" height="450" fill="url(#g)"/>
-    <text x="40" y="140" font-family="Inter,system-ui,Arial" font-size="34" fill="#eef2ff" font-weight="800">${safe}</text>
-    <text x="40" y="390" font-family="Inter,system-ui,Arial" font-size="18" fill="#a6b0cf">Example image</text>
+    <text x="40" y="150" font-family="Inter,system-ui,Arial" font-size="34" fill="#eef2ff" font-weight="800">${safe}</text>
+    <text x="40" y="390" font-family="Inter,system-ui,Arial" font-size="18" fill="#a6b0cf">Placeholder image</text>
   </svg>`;
   return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg.trim());
 }
 
-// Multiple providers + fallback
+function hashCode(str){
+  let hash=0;
+  for(let i=0;i<str.length;i++){
+    hash = str.charCodeAt(i) + ((hash<<5)-hash);
+    hash |= 0;
+  }
+  return hash;
+}
+
+// Pull "product-like" images from the internet using keywords
 function imageCandidates(title){
-  const q = encodeURIComponent(title + " product");
+  const q = encodeURIComponent(title + " product photo");
   const seed = Math.abs(hashCode(title)).toString(16);
-  // 1) picsum (very reliable)
-  const u1 = `https://picsum.photos/seed/${seed}/800/600`;
-  // 2) loremflickr (often works)
-  const u2 = `https://loremflickr.com/800/600/${q}`;
-  // 3) unsplash source (sometimes rate-limited)
-  const u3 = `https://source.unsplash.com/800x600/?${q}&sig=${Math.floor(Math.random()*10000)}`;
+  const u1 = `https://loremflickr.com/800/600/${q}`;
+  const u2 = `https://source.unsplash.com/800x600/?${q}`;
+  const u3 = `https://picsum.photos/seed/${seed}/800/600`;
   return [u1,u2,u3];
 }
 
@@ -95,58 +171,58 @@ function setImgWithFallback(img, urls, fallback){
   tryNext();
 }
 
-function hashCode(str){
-  let hash=0;
-  for(let i=0;i<str.length;i++){
-    hash = str.charCodeAt(i) + ((hash<<5)-hash);
-    hash |= 0;
-  }
-  return hash;
-}
-
 function render(){
   grid.innerHTML="";
-  CATALOG[currentMood].forEach(title=>{
+  const batch = nextBatch(currentMood, CARDS_PER_REFRESH);
+  batch.forEach(title=>{
     const card=document.createElement("div");
     card.className="card";
 
     const thumb=document.createElement("div");
     thumb.className="thumb";
     const img=document.createElement("img");
-    img.alt=title + " voorbeeldafbeelding";
+    img.alt=title + " product photo";
     img.loading="lazy";
     setImgWithFallback(img, imageCandidates(title), svgFallback(title));
     thumb.appendChild(img);
 
     const inner=document.createElement("div");
     inner.className="inner";
-    inner.innerHTML = `<div class="title">${title}</div>`;
+    inner.innerHTML = `<div class="title">${esc(title)}</div>`;
 
     const btn=document.createElement("button");
+    btn.className="buy";
     btn.textContent="View on Amazon.nl";
     btn.onclick=()=>window.open(amazonUrl(title),"_blank");
 
     inner.appendChild(btn);
-
     card.appendChild(thumb);
     card.appendChild(inner);
     grid.appendChild(card);
   });
 }
 
+function setMood(mood){
+  currentMood=mood;
+  document.querySelectorAll(".mood").forEach(x=>x.classList.remove("active"));
+  document.querySelector(`[data-mood="${mood}"]`).classList.add("active");
+  render();
+}
+
 Object.keys(CATALOG).forEach((m,i)=>{
   const b=document.createElement("div");
   b.className="mood"+(i===0?" active":"");
+  b.dataset.mood=m;
   b.textContent=m;
-  b.onclick=()=>{
-    document.querySelectorAll(".mood").forEach(x=>x.classList.remove("active"));
-    b.classList.add("active");
-    currentMood=m;
-    render();
-  };
+  b.onclick=()=>setMood(m);
   moodsEl.appendChild(b);
 });
 
+shuffleBtn.onclick = render;
+
+// AUTO-REFRESH ON PAGE LOAD:
+// render() is called once on load, and because we persist idx in localStorage,
+// a browser refresh (F5) will automatically advance to the NEXT 8 items.
 render();
 </script>
 </body>
