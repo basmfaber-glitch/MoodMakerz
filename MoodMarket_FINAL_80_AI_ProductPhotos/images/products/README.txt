@@ -1,1 +1,0 @@
-80 AI product photos go here (final build).
