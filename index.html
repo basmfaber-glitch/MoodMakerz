@@ -1,150 +1,38 @@
 <!doctype html>
-<html lang="nl">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MoodMakerz – Mood</title>
+  <title>MoodMarket – STRESSED</title>
   <style>
-    :root{--bg:#0b1020;--text:#eef2ff;--muted:#a6b0cf;--card:#12172a;--border:#2a2f45;}
-    body{
-      margin:0;font-family:system-ui,-apple-system,Segoe UI,Arial;
-      background:radial-gradient(1200px 800px at 50% -10%, rgba(255,126,52,0.10), rgba(0,0,0,0) 60%),
-               radial-gradient(900px 700px at 20% 0%, rgba(255,48,110,0.06), rgba(0,0,0,0) 55%),
-               radial-gradient(900px 700px at 80% 0%, rgba(45,212,191,0.05), rgba(0,0,0,0) 55%),
-               var(--bg);
-      color:var(--text);
-      min-height:100vh;
-      overflow-x:hidden;
-    }
-    .container{max-width:1100px;margin:0 auto;padding:20px;}
-    .topbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:8px 0 16px;}
-    a.back{color:var(--muted);text-decoration:none;font-size:13px}
-    h1{margin:0;font-size:22px}
-    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0 14px;}
-    button{
-      padding:10px 12px;border-radius:12px;border:1px solid rgba(42,47,69,0.85);
-      background:rgba(18,23,42,0.75); color:var(--text); cursor:pointer; font-weight:800;
-    }
-    .pill{font-size:12px;color:var(--muted)}
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
-    .card{
-      background:rgba(18,23,42,0.88);backdrop-filter: blur(10px);
-      border-radius:16px;overflow:hidden;
-      box-shadow:0 18px 42px rgba(0,0,0,.42);
-      border:1px solid rgba(255,255,255,0.07);
-    }
-    .thumb{background:#0b1020;}
-    .thumb img{width:100%;height:160px;object-fit:cover;display:block;}
-    .inner{padding:12px;}
-    .title{font-weight:800;font-size:13px;margin:0 0 10px;color:#eef2ff;line-height:1.2;}
-    a.buy{
-      display:block;text-align:center;
-      padding:10px;border-radius:10px;
-      background:linear-gradient(90deg,#7c83ff,#2dd4bf);
-      font-weight:900; color:#0b1020; text-decoration:none;
-    }
-    footer{
-      padding:18px 20px; border-top:1px solid rgba(255,255,255,0.08);
-      background:rgba(255,255,255,0.02);
-      backdrop-filter: blur(8px);
-      font-size:12px;color:#8b92b2;line-height:1.45;text-align:center;
-    }
+    body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif; margin:0; padding:24px; background:#0f1115; color:#eef2ff;}
+    h1{margin:0 0 12px 0;}
+    .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin-top:14px;}
+    .card{background:#161a22; border:1px solid #242b3a; border-radius:14px; padding:14px;}
+    .name{font-weight:650; margin:0 0 8px 0;}
+    a.btn{display:inline-block; padding:10px 12px; border-radius:10px; background:#2a6df6; color:white; text-decoration:none; font-weight:650;}
+    .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+    button{padding:10px 12px; border-radius:10px; border:1px solid #2a3244; background:#1b2230; color:#eef2ff; cursor:pointer; font-weight:650;}
+    footer{opacity:.75; margin-top:18px; font-size:12px;}
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="topbar">
-      <a class="back" href="index.html">← Terug naar home</a>
-      <span class="pill" id="countInfo"></span>
-    </div>
-
-    <h1 id="title">Mood</h1>
-
-    <div class="row">
-      <button id="shuffleBtn">Refresh 8</button>
-    </div>
-
-    <div id="grid" class="grid"></div>
+  <h1>😣 STRESSED</h1>
+  <div class="row">
+    <button id="shuffleBtn">Shuffle</button>
+    <span id="countInfo" style="opacity:.8;"></span>
   </div>
 
-  <footer>
-    As an Amazon Associate I earn from qualifying purchases.
-  </footer>
+  <div id="grid" class="grid"></div>
+
+  <footer>As an Amazon Associate I earn from qualifying purchases.</footer>
 
   <script>
     const TAG = "moodmakerz-21";
-    const BASE = "https://www.amazon.nl/s?k=";
     const PER_LOAD = 8;
 
-    // Zelfde catalogus als in je index (kopie)
-    const CATALOG = {
-      "Stressed": ["Aromatherapy diffuser", "Lavender essential oil", "Chamomile tea", "Scented candle set", "Weighted blanket", "Heat pad (microwavable)", "Neck and shoulder massager", "Foam roller", "Massage ball", "Stress ball", "Acupressure mat", "Sleep mask (blackout)", "Silk pillowcase", "White noise machine", "Humidifier", "Bath salts", "Bubble bath", "Shower steamers", "Foot spa bath", "Hot water bottle", "Herbal tea sampler", "Calming room spray", "Incense sticks", "Meditation cushion", "Yoga mat", "Yoga blocks", "Stretching strap", "Aromatherapy inhaler sticks", "Hand cream set", "Face mask set (skincare)", "Eye gel patches", "Soothing body lotion", "Cozy socks", "Soft throw blanket", "Desk fountain", "Adult coloring book", "Colored pencil set", "Stress journal (paper)", "Planner notebook", "LED salt lamp", "Tea infuser", "Ceramic mug set", "Coaster set", "Sleep earplugs", "Noise-cancelling earmuffs", "Room humidifier filters", "Candle lighter", "Calming essential oil set", "Relaxing bath pillow", "Guided meditation book", "Aromatherapy candle", "Warm fleece blanket", "Soothing heat wrap", "Cooling gel pillow", "Relaxation incense holder", "Scented wax melts", "Electric aroma diffuser", "Calm music vinyl", "Weighted eye mask", "Aroma reed diffuser", "Herbal pillow (lavender)", "Massage oil", "Hand massage roller", "Neck heat wrap", "Bath bomb set", "Tea storage tin", "Relaxing face roller", "Soft bathrobe", "Microfiber towel set", "Room spray (lavender)", "Relaxing essential oil necklace", "Mindfulness cards", "Anti-stress fidget cube", "Desk humidifier", "Sleep spray", "Cozy slippers", "Aroma candle lantern", "Calming tea set", "Relaxing candle holder", "Aromatherapy shower steamer set"],
-      "Happy": ["Instant camera","Instant film pack","Photo printer (mini)","Scrapbook album","Photo frames set","String lights (fairy lights)","Party lights projector","Bluetooth speaker","Karaoke microphone","Board game","Card game","Puzzle (1000 pieces)","Balloon set","Confetti poppers","Polaroid-style sticker pack","DIY mocktail kit","Popcorn maker","Movie night snack box","Picnic blanket","Portable cooler","Neon sign","Gift wrap kit","Celebration banner set","Disposable camera","Mini projector","LED strip lights","Cake decorating kit","Baking kit","Waffle maker","Fondue set","Ice cream maker","Fidget toy set","Outdoor game set (cornhole)","Bubble machine","Face paint set","Craft kit","LEGO flower bouquet set","LEGO set","Desk plant (artificial)","Funny mug","Sticker pack","Glow sticks","Portable photo backdrop","Mini printer paper pack","Party hats set","Party photo booth props","Mini champagne glasses (plastic)","Color confetti balloons","Tabletop disco ball","Birthday candles set","Cupcake stand","Cookie cutter set","Chocolate gift box","Gourmet candy mix","Happy journal","Celebration confetti cannon","Mini polaroid album","Photo corner stickers","Portable tripod","Friendship bracelet kit","DIY slime kit","Scented candle gift set","Colorful streamers","Party tableware set","Mini waffle maker","Snack platter board","Bluetooth microphone","Portable lantern lights","Outdoor picnic basket","Instant photo album","Mini speaker stand","Photo clip string lights","Party game set","Desktop bubble blower","Party confetti balloons set","Photo booth backdrop curtain","Mini disco light","Candy gift jar","Celebration cake topper","Popcorn seasoning set"],
-      "Energetic": ["Jump rope","Resistance bands set","Adjustable dumbbells","Kettlebell","Yoga mat (non-slip)","Fitness gloves","Gym towel","Shaker bottle","Protein snack box","Electrolyte tablets","Water bottle (insulated)","Smartwatch/fitness tracker","Heart rate monitor strap","Running belt","Reflective running vest","Compression socks","Foam roller","Massage gun","Pull-up bar (doorway)","Ab roller","Push-up bars","Mini stepper","Portable pedal exerciser","Ankle weights","Weighted vest","Medicine ball","Balance board","Agility ladder","Training cones set","Boxing gloves","Standing punching bag","Hand grip strengthener","Cycling gloves","Bike phone mount","Bike lights set","Swim goggles","Kickboard","Tennis racket","Badminton set","Basketball","Soccer ball","Pilates ring","Stretching strap","Pre-workout shaker","Meal prep containers","Gym bag","Sports sunscreen","Running cap","Sweat headbands","Sports earbuds","Yoga blocks","Protein bar variety pack","Foam yoga wheel","Resistance loop bands","Jump rope mat","Speed ladder set","Weighted jump rope","Skipping rope counter","Dumbbell rack","Knee sleeves","Elbow sleeves","Wrist wraps","Exercise mat thick","Portable blender","Creatine container","Gym chalk","Lifting straps","Cooling towel","Running armband","Mini trampoline","Push-up board","Core slider discs","Punch mitts"],
-      "Creative": ["Sketchbook","Drawing pencils set","Eraser set","Fineliner pens set","Marker set (alcohol-based)","Watercolor paint set","Watercolor paper pad","Acrylic paint set","Canvas panels pack","Paint brushes set","Calligraphy set","Brush pens set","Colored pencils set","Pastel set","Charcoal drawing set","Craft scissors set","Glue gun","Washi tape set","Sticker pack (art)","Scrapbooking kit","Collage paper pack","Cutting mat","X-Acto knife","Ruler set","Photography tripod","Ring light","Phone lens kit","Backdrop cloth","Photo props kit","Air-dry clay","Polymer clay kit","Clay tools set","Crochet starter kit","Knitting needles set","Embroidery starter kit","Sewing kit","Fabric markers","Bead kit","Jewelry making kit","Origami paper set","Model building kit","Miniature house kit","3D puzzle kit","Ukulele","Guitar picks set","Notebook (dot grid)","Idea journal","Desk organizer","Label maker","Stamp set","Ink pad set","Wax seal kit","Lettering practice book","DIY candle making kit","Soap making kit","Resin kit","Resin molds","A4 light pad","Craft storage box","Sketching mannequin","Gouache paint set","Canvas easel","Mini photo printer","Punch needle kit","Paper trimmer","Acrylic paint markers"],
-      "Tired": ["Blackout sleep mask","Earplugs (sleep)","White noise machine","Weighted eye mask (warm/cool)","Neck pillow","Memory foam pillow","Cooling pillowcase","Silk pillowcase","Bedside lamp (warm light)","Sunrise alarm clock","Blue light blocking glasses","Humidifier","Air purifier","Aromatherapy diffuser","Lavender pillow spray","Sleep tea (caffeine-free)","Electric blanket","Hot water bottle","Cozy robe","Slippers","Compression sleep socks","Foot massager","Heating pad","Magnesium bath flakes","Bath pillow","Eye mask gel packs","Bed wedge pillow","Mattress topper","Travel pillow","Travel blanket","Noise-cancelling earmuffs","Sleep headphones (headband)","Reading light (clip-on)","Night light (motion sensor)","Tea infuser","Ceramic mug","Herbal tea sampler","Foam roller","Sleep journal (paper)","Calming candle","Soft blanket","Warm socks","Mug warmer","Comforter set","Mattress protector","Weighted blanket","Scented candle set"]
-    };
-
-    // ---- helpers (zelfde idee als je index) ----
-    function esc(s){
-      return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-    }
-
-    function svgFallback(title){
-      const safe = esc(title);
-      const svg = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="800" height="450">
-        <defs>
-          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#7c83ff" stop-opacity="0.55"/>
-            <stop offset="1" stop-color="#2dd4bf" stop-opacity="0.35"/>
-          </linearGradient>
-        </defs>
-        <rect width="800" height="450" fill="#0b1020"/>
-        <rect width="800" height="450" fill="url(#g)"/>
-        <text x="40" y="150" font-family="Inter,system-ui,Arial" font-size="34" fill="#eef2ff" font-weight="800">${safe}</text>
-        <text x="40" y="390" font-family="Inter,system-ui,Arial" font-size="18" fill="#a6b0cf">Placeholder image</text>
-      </svg>`;
-      return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg.trim());
-    }
-
-    function hashCode(str){
-      let hash=0;
-      for(let i=0;i<str.length;i++){
-        hash = str.charCodeAt(i) + ((hash<<5)-hash);
-        hash |= 0;
-      }
-      return hash;
-    }
-
-    function imageCandidates(title){
-      const q = encodeURIComponent(title + " product photo");
-      const seed = Math.abs(hashCode(title)).toString(16);
-      const u1 = `https://loremflickr.com/800/600/${q}`;
-      const u2 = `https://source.unsplash.com/800x600/?${q}`;
-      const u3 = `https://picsum.photos/seed/${seed}/800/600`;
-      return [u1,u2,u3];
-    }
-
-    function setImgWithFallback(img, urls, fallback){
-      let i = 0;
-      const tryNext = () => {
-        if(i >= urls.length){
-          img.src = fallback;
-          return;
-        }
-        img.src = urls[i++];
-      };
-      img.onerror = tryNext;
-      tryNext();
-    }
-
-    function amazonUrl(title, asinMap){
-      const asin = asinMap[title];
-      if (asin && typeof asin === "string" && asin.length === 10) {
-        return `https://www.amazon.nl/dp/${asin}/?tag=${TAG}`;
-      }
-      return BASE + encodeURIComponent(title) + `&tag=${TAG}`;
+    function amazonLink(asin){
+      return `https://www.amazon.nl/dp/${asin}?tag=${encodeURIComponent(TAG)}`;
     }
 
     function pickRandomUnique(arr, n){
@@ -156,77 +44,31 @@
       return a.slice(0, Math.min(n, a.length));
     }
 
-    // ---- page logic ----
-    const params = new URLSearchParams(location.search);
-    const mood = params.get("m") || "Stressed";
-
-    document.getElementById("title").textContent = `😶‍🌫️ ${mood.toUpperCase()}`;
-    document.title = `MoodMakerz – ${mood}`;
-
-    let ASIN_BY_NAME = {};
-
-    async function loadAsinMap(){
-      try{
-        const res = await fetch("asin-map.json", { cache: "no-store" });
-        if(!res.ok) return {};
-        const data = await res.json();
-        const out = {};
-        for (const [k, v] of Object.entries(data)) {
-          if (typeof k === "string" && typeof v === "string") out[k] = v;
-        }
-        return out;
-      }catch(e){
-        return {};
-      }
+    async function load(){
+      const res = await fetch("asin-map.json", { cache: "no-store" });
+      const map = await res.json();
+      const entries = Object.entries(map); // [name, asin]
+      document.getElementById("countInfo").textContent = `${entries.length} products in STRESSED`;
+      render(entries);
+      document.getElementById("shuffleBtn").onclick = () => render(entries);
     }
 
-    function render(){
-      const list = CATALOG[mood] || [];
-      const chosen = pickRandomUnique(list, PER_LOAD);
+    function render(entries){
+      const chosen = pickRandomUnique(entries, PER_LOAD);
       const grid = document.getElementById("grid");
       grid.innerHTML = "";
-
-      for (const title of chosen){
+      for (const [name, asin] of chosen){
         const card = document.createElement("div");
         card.className = "card";
-
-        const thumb = document.createElement("div");
-        thumb.className = "thumb";
-        const img = document.createElement("img");
-        img.alt = title + " product photo";
-        img.loading = "lazy";
-        setImgWithFallback(img, imageCandidates(title), svgFallback(title));
-        thumb.appendChild(img);
-
-        const inner = document.createElement("div");
-        inner.className = "inner";
-        inner.innerHTML = `<div class="title">${esc(title)}</div>`;
-
-        const a = document.createElement("a");
-        a.className = "buy";
-        a.href = amazonUrl(title, ASIN_BY_NAME);
-        a.target = "_blank";
-        a.rel = "nofollow noopener";
-        a.textContent = "View on Amazon.nl";
-
-        inner.appendChild(a);
-
-        card.appendChild(thumb);
-        card.appendChild(inner);
+        card.innerHTML = `
+          <p class="name">${name}</p>
+          <a class="btn" href="${amazonLink(asin)}" target="_blank" rel="nofollow noopener">View on Amazon</a>
+        `;
         grid.appendChild(card);
       }
-
-      // info
-      const withAsin = (CATALOG[mood] || []).filter(t => (ASIN_BY_NAME[t] && String(ASIN_BY_NAME[t]).length === 10)).length;
-      document.getElementById("countInfo").textContent =
-        `${(CATALOG[mood]||[]).length} items • ${withAsin} met ASIN`;
     }
 
-    (async () => {
-      ASIN_BY_NAME = await loadAsinMap();
-      render();
-      document.getElementById("shuffleBtn").onclick = render;
-    })();
+    load();
   </script>
 </body>
 </html>
