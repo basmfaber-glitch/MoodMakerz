@@ -5,192 +5,144 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MoodMarket</title>
 <style>
-  :root{
-    --bg:#070a14;
-    --panel:rgba(14,18,32,0.78);
-    --panel-strong:rgba(14,18,32,0.88);
-    --text:#eef2ff;
-    --muted:#a6b0cf;
-    --border:rgba(255,255,255,0.08);
-    --border-strong:rgba(255,255,255,0.12);
-    --shadow: 0 18px 50px rgba(0,0,0,.55);
-    --shadow-soft: 0 10px 30px rgba(0,0,0,.40);
-    --radius:16px;
-    --radius-sm:12px;
-    --accent:#7c83ff;
-    --accent2:#2dd4bf;
-    --ember: rgba(255,126,52,0.16);
-    --ash: rgba(210,210,220,0.10);
-  }
-  *{box-sizing:border-box;}
-  html,body{height:100%;}
+  :root{--bg:#0b1020;--text:#eef2ff;--muted:#a6b0cf;--card:#12172a;--border:#2a2f45;}
   body{
-    margin:0;
-    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Arial;
+    margin:0;font-family:system-ui,-apple-system,Segoe UI,Arial;
+    background:radial-gradient(1200px 800px at 50% -10%, rgba(255,126,52,0.10), rgba(0,0,0,0) 60%),
+               radial-gradient(900px 700px at 20% 0%, rgba(255,48,110,0.06), rgba(0,0,0,0) 55%),
+               radial-gradient(900px 700px at 80% 0%, rgba(45,212,191,0.05), rgba(0,0,0,0) 55%),
+               var(--bg);
     color:var(--text);
-    background:
-      radial-gradient(1000px 680px at 50% -10%, rgba(124,131,255,0.10), rgba(0,0,0,0) 62%),
-      radial-gradient(900px 700px at 20% 0%, var(--ember), rgba(0,0,0,0) 58%),
-      radial-gradient(900px 700px at 80% 0%, rgba(45,212,191,0.07), rgba(0,0,0,0) 58%),
-      radial-gradient(900px 800px at 50% 120%, rgba(255,255,255,0.05), rgba(0,0,0,0) 55%),
-      var(--bg);
-    min-height:100vh;
+    min-height:100vh;display:flex;flex-direction:column;
     overflow-x:hidden;
   }
+
+  /* Fire & Ash side frames (decor only; no text changes) */
   body::before, body::after{
     content:"";
-    position:fixed; top:-120px; bottom:-120px;
-    width:360px;
-    z-index:0; pointer-events:none;
-    opacity:.92;
+    position:fixed; top:-80px; bottom:-80px;
+    width:320px; z-index:0; pointer-events:none;
+    opacity:0.95;
   }
   body::before{
-    left:-90px;
+    left:-60px;
     background:
-      radial-gradient(240px 520px at 55% 25%, rgba(255,140,0,0.20), rgba(0,0,0,0) 72%),
-      radial-gradient(260px 540px at 50% 60%, rgba(255,60,0,0.12), rgba(0,0,0,0) 75%),
-      radial-gradient(220px 240px at 55% 85%, var(--ash), rgba(0,0,0,0) 70%);
-    mask-image: radial-gradient(260px 900px at 70% 50%, #000 64%, transparent 100%);
-    filter: blur(0.2px);
+      radial-gradient(220px 420px at 45% 25%, rgba(255,140,0,0.28), rgba(0,0,0,0) 70%),
+      radial-gradient(260px 520px at 45% 60%, rgba(255,60,0,0.18), rgba(0,0,0,0) 72%),
+      radial-gradient(180px 360px at 65% 75%, rgba(255,210,120,0.12), rgba(0,0,0,0) 70%),
+      radial-gradient(180px 220px at 35% 85%, rgba(200,200,210,0.12), rgba(0,0,0,0) 68%),
+      linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0));
+    mask-image: radial-gradient(240px 800px at 65% 50%, #000 65%, transparent 100%);
   }
   body::after{
-    right:-90px;
+    right:-60px;
     background:
-      radial-gradient(240px 520px at 45% 25%, rgba(255,140,0,0.14), rgba(0,0,0,0) 72%),
-      radial-gradient(260px 540px at 50% 60%, rgba(255,60,0,0.10), rgba(0,0,0,0) 75%),
-      radial-gradient(220px 240px at 45% 85%, rgba(180,200,210,0.08), rgba(0,0,0,0) 70%);
-    mask-image: radial-gradient(260px 900px at 30% 50%, #000 64%, transparent 100%);
-    filter: blur(0.2px);
+      radial-gradient(220px 420px at 55% 25%, rgba(255,140,0,0.20), rgba(0,0,0,0) 70%),
+      radial-gradient(260px 520px at 55% 60%, rgba(255,60,0,0.14), rgba(0,0,0,0) 72%),
+      radial-gradient(180px 360px at 35% 75%, rgba(255,210,120,0.10), rgba(0,0,0,0) 70%),
+      radial-gradient(180px 220px at 65% 85%, rgba(200,200,210,0.10), rgba(0,0,0,0) 68%),
+      linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0));
+    mask-image: radial-gradient(240px 800px at 35% 50%, #000 65%, transparent 100%);
   }
+
+  /* Floating ember/ash particles (subtle, decorative) */
   .particles{
-    position:fixed; inset:0;
-    z-index:0; pointer-events:none;
-    opacity:.30;
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    opacity:0.55;
     background:
-      radial-gradient(circle at 12% 22%, rgba(255,140,0,0.20) 0 1.5px, transparent 3px),
-      radial-gradient(circle at 18% 78%, rgba(220,220,230,0.18) 0 1.2px, transparent 3px),
-      radial-gradient(circle at 78% 30%, rgba(255,80,0,0.16) 0 1.6px, transparent 3px),
-      radial-gradient(circle at 74% 74%, rgba(210,210,220,0.16) 0 1.2px, transparent 3px),
-      radial-gradient(circle at 52% 16%, rgba(255,200,120,0.12) 0 1.2px, transparent 3px);
-    animation: drift 18s linear infinite;
+      radial-gradient(circle at 10% 20%, rgba(255,140,0,0.18) 0 2px, transparent 3px),
+      radial-gradient(circle at 20% 80%, rgba(220,220,230,0.18) 0 1.5px, transparent 3px),
+      radial-gradient(circle at 80% 30%, rgba(255,80,0,0.14) 0 2px, transparent 3px),
+      radial-gradient(circle at 75% 75%, rgba(210,210,220,0.16) 0 1.5px, transparent 3px),
+      radial-gradient(circle at 55% 15%, rgba(255,200,120,0.10) 0 1.5px, transparent 3px);
+    animation: drift 14s linear infinite;
   }
-  @keyframes drift{0%{transform:translateY(0)}100%{transform:translateY(-60px)}}
-  .wrap{position:relative; z-index:1; min-height:100vh; display:flex; flex-direction:column;}
-  .container{width:100%; max-width:1180px; margin:0 auto; padding:28px 22px 22px; flex:1;}
-  .topbar{
-    position:sticky; top:0; z-index:5;
-    margin:-28px -22px 16px;
-    padding:18px 22px 14px;
-    background: linear-gradient(180deg, rgba(7,10,20,0.92), rgba(7,10,20,0.60) 65%, rgba(7,10,20,0));
-    backdrop-filter: blur(10px);
+  @keyframes drift{
+    0%{transform: translate3d(0,0,0);}
+    100%{transform: translate3d(0,-40px,0);}
   }
-  h1{margin:0 0 10px; font-size:34px; letter-spacing:-0.02em; line-height:1.05; font-weight:900;}
-  .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:0;}
-  .moods{display:flex; gap:8px; flex-wrap:wrap;}
-  .mood{
-    padding:8px 12px; border-radius:999px;
-    background:rgba(14,18,32,0.55);
-    border:1px solid rgba(255,255,255,0.10);
-    cursor:pointer; font-size:12.5px; font-weight:700;
-    color:rgba(238,242,255,0.88); user-select:none;
-    transition: transform .12s ease, background .12s ease, border-color .12s ease;
+
+  .container{
+    position:relative; z-index:1;
+    max-width:1100px;margin:auto;padding:20px;flex:1;width:100%;
   }
-  .mood:hover{transform: translateY(-1px); border-color: rgba(255,255,255,0.18);}
-  .mood.active{background: rgba(124,131,255,0.92); color:#070a14; border-color: rgba(124,131,255,0.95);}
-  .shuffle{
-    padding:8px 12px; border-radius:999px;
-    border:1px solid rgba(255,255,255,0.10);
-    cursor:pointer; font-weight:900;
-    color:rgba(238,242,255,0.92);
-    background: rgba(14,18,32,0.45);
-    backdrop-filter: blur(8px);
-    transition: transform .12s ease, border-color .12s ease, background .12s ease;
-  }
-  .shuffle:hover{transform: translateY(-1px); border-color: rgba(255,255,255,0.22); background: rgba(14,18,32,0.62);}
-  .grid{display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:16px; padding:6px 0 8px;}
-  @media (max-width:1080px){.grid{grid-template-columns:repeat(3, minmax(0, 1fr));}}
-  @media (max-width:820px){.grid{grid-template-columns:repeat(2, minmax(0, 1fr));}}
-  @media (max-width:520px){.grid{grid-template-columns:1fr;}}
+  h1{margin:0 0 10px;}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0 14px;}
+  .moods{display:flex;gap:8px;flex-wrap:wrap;}
+  .mood{padding:8px 14px;border-radius:999px;background:rgba(18,23,42,0.85);backdrop-filter: blur(8px);
+        border:1px solid rgba(42,47,69,0.85);cursor:pointer;font-size:13px;user-select:none;}
+  .mood.active{background:#7c83ff;color:#0b1020;font-weight:800;border-color:#7c83ff;}
+  .shuffle{padding:8px 14px;border-radius:999px;border:none;cursor:pointer;font-weight:900;color:#0b1020;
+           background:linear-gradient(90deg,#7c83ff,#2dd4bf);}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
   .card{
-    background: var(--panel);
-    border-radius: var(--radius);
-    overflow:hidden;
-    border:1px solid var(--border);
-    box-shadow: var(--shadow-soft);
-    transform: translateZ(0);
-    transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+    background:rgba(18,23,42,0.88);backdrop-filter: blur(10px);
+    border-radius:16px;overflow:hidden;
+    box-shadow:0 18px 42px rgba(0,0,0,.42);
+    border:1px solid rgba(255,255,255,0.07);
   }
-  .card:hover{transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--border-strong);}
-  .thumb{position:relative; background: rgba(0,0,0,0.25);}
-  .thumb::after{
-    content:""; position:absolute; inset:0;
-    background:
-      linear-gradient(180deg, rgba(0,0,0,0.10), rgba(0,0,0,0.52)),
-      radial-gradient(900px 420px at 50% 0%, rgba(124,131,255,0.10), rgba(0,0,0,0) 60%);
-    pointer-events:none;
-  }
-  .thumb img{width:100%; height:168px; object-fit:cover; display:block; filter:saturate(0.95) contrast(1.02); transform: scale(1.01);}
-  .skeleton{
-    position:absolute; inset:0;
-    background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.10), rgba(255,255,255,0.04));
-    background-size: 220% 100%;
-    animation: shimmer 1.2s ease-in-out infinite;
-  }
-  @keyframes shimmer{0%{background-position:120% 0}100%{background-position:-120% 0}}
-  .thumb.loaded .skeleton{display:none;}
-  .inner{padding:12px 12px 13px;}
-  .title{font-weight:850; font-size:12.5px; margin:0 0 10px; color:rgba(238,242,255,0.92); line-height:1.25;}
-  button.buy{
-    width:100%; padding:10px 12px; border:none; border-radius: var(--radius-sm);
-    font-weight:900; cursor:pointer; color:#070a14;
-    background: linear-gradient(90deg, rgba(124,131,255,0.92), rgba(45,212,191,0.78));
-    box-shadow: 0 10px 22px rgba(0,0,0,0.32);
-    transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
-  }
-  button.buy:hover{transform: translateY(-1px); filter: brightness(0.98); box-shadow: 0 14px 30px rgba(0,0,0,0.40);}
-  button.buy:active{transform: translateY(0px);}
+  .thumb{background:#0b1020;}
+  .thumb img{width:100%;height:160px;object-fit:cover;display:block;}
+  .inner{padding:12px;}
+  .title{font-weight:800;font-size:13px;margin:0 0 10px;color:#eef2ff;line-height:1.2;}
+  button.buy{width:100%;padding:10px;border:none;border-radius:10px;background:linear-gradient(90deg,#7c83ff,#2dd4bf);font-weight:900;cursor:pointer;color:#0b1020;}
   .footer-wrap{
     position:relative; z-index:1;
-    padding:18px 20px; border-top:1px solid rgba(255,255,255,0.06);
-    background: rgba(255,255,255,0.02); backdrop-filter: blur(10px);
+    padding:18px 20px;border-top:1px solid rgba(255,255,255,0.08);
+    background:rgba(255,255,255,0.02);
+    backdrop-filter: blur(8px);
   }
-  .footer{max-width:1180px; margin:0 auto; font-size:12px; color:rgba(166,176,207,0.78); line-height:1.45; text-align:center;}
-  .disclaimer{margin-top:8px; color:rgba(166,176,207,0.70);}
-  .mood:focus-visible, .shuffle:focus-visible, button.buy:focus-visible{outline:2px solid rgba(124,131,255,0.75); outline-offset:2px;}
-  @media (max-width:820px){
-    body::before, body::after{width:180px; opacity:0.40}
-    .particles{opacity:0.20}
-    h1{font-size:30px;}
+  .footer{max-width:1100px;margin:0 auto;font-size:12px;color:#8b92b2;line-height:1.45;text-align:center;}
+  .disclaimer{margin-top:8px;}
+
+  @media (max-width: 820px){
+    body::before, body::after{width:180px; opacity:0.45}
+    .particles{opacity:0.25}
   }
 </style>
 </head>
 <body>
 <div class="particles"></div>
-<div class="wrap">
-  <div class="container">
-    <div class="topbar">
-      <h1>MoodMarket</h1>
-      <div class="row">
-        <div class="moods" id="moods"></div>
-        <button class="shuffle" id="shuffle">Refresh 8</button>
-      </div>
-    </div>
-    <div class="grid" id="grid"></div>
+
+<div class="container">
+  <h1>MoodMarket</h1>
+
+  <div class="row">
+    <div class="moods" id="moods"></div>
+    <button class="shuffle" id="shuffle">Refresh 8</button>
   </div>
 
-  <div class="footer-wrap">
-    <div class="footer">
-      <div class="example-note">⚠️ Afbeeldingen zijn <b>voorbeeldafbeeldingen</b> die van het internet worden geladen op basis van zoekwoorden. Deze worden later vervangen door echte Amazon-productafbeeldingen via ASIN.</div>
-      <div class="disclaimer">As an Amazon Associate I earn from qualifying purchases.</div>
-    </div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="footer-wrap">
+  <div class="footer">
+    <div class="example-note">⚠️ Afbeeldingen zijn <b>voorbeeldafbeeldingen</b> die van het internet worden geladen op basis van zoekwoorden. Deze worden later vervangen door echte Amazon-productafbeeldingen via ASIN.</div>
+    <div class="disclaimer">As an Amazon Associate I earn from qualifying purchases.</div>
   </div>
 </div>
 
 <script>
 const TAG="moodmakerz-21";
 const BASE="https://www.amazon.nl/s?k=";
+
+// Central ASIN map (shared across all moods). Fill via asin-map.json (recommended) or directly here.
+let ASIN_BY_NAME = {};
+// Try to load /asin-map.json at runtime (optional).
+(async () => {
+  try {
+    const res = await fetch("asin-map.json", { cache: "no-store" });
+    if (res.ok) {
+      const data = await res.json();
+      // merge only string->string entries
+      for (const [k, v] of Object.entries(data)) {
+        if (typeof k === "string" && typeof v === "string" && v.length === 10) ASIN_BY_NAME[k] = v;
+      }
+    }
+  } catch (e) { /* ignore */ }
+})();
+
 const CATALOG={"Stressed": ["Aromatherapy diffuser", "Lavender essential oil", "Chamomile tea", "Scented candle set", "Weighted blanket", "Heat pad (microwavable)", "Neck and shoulder massager", "Foam roller", "Massage ball", "Stress ball", "Acupressure mat", "Sleep mask (blackout)", "Silk pillowcase", "White noise machine", "Humidifier", "Bath salts", "Bubble bath", "Shower steamers", "Foot spa bath", "Hot water bottle", "Herbal tea sampler", "Calming room spray", "Incense sticks", "Meditation cushion", "Yoga mat", "Yoga blocks", "Stretching strap", "Aromatherapy inhaler sticks", "Hand cream set", "Face mask set (skincare)", "Eye gel patches", "Soothing body lotion", "Cozy socks", "Soft throw blanket", "Desk fountain", "Adult coloring book", "Colored pencil set", "Stress journal (paper)", "Planner notebook", "LED salt lamp", "Tea infuser", "Ceramic mug set", "Coaster set", "Sleep earplugs", "Noise-cancelling earmuffs", "Room humidifier filters", "Candle lighter", "Calming essential oil set", "Relaxing bath pillow", "Guided meditation book", "Aromatherapy candle", "Warm fleece blanket", "Soothing heat wrap", "Cooling gel pillow", "Relaxation incense holder", "Scented wax melts", "Electric aroma diffuser", "Calm music vinyl", "Weighted eye mask", "Aroma reed diffuser", "Herbal pillow (lavender)", "Massage oil", "Hand massage roller", "Neck heat wrap", "Bath bomb set", "Tea storage tin", "Relaxing face roller", "Soft bathrobe", "Microfiber towel set", "Room spray (lavender)", "Relaxing essential oil necklace", "Mindfulness cards", "Anti-stress fidget cube", "Desk humidifier", "Sleep spray", "Cozy slippers", "Aroma candle lantern", "Calming tea set", "Relaxing candle holder", "Aromatherapy shower steamer set"], "Happy": ["Instant camera", "Instant film pack", "Photo printer (mini)", "Scrapbook album", "Photo frames set", "String lights (fairy lights)", "Party lights projector", "Bluetooth speaker", "Karaoke microphone", "Board game", "Card game", "Puzzle (1000 pieces)", "Balloon set", "Confetti poppers", "Polaroid-style sticker pack", "DIY mocktail kit", "Popcorn maker", "Movie night snack box", "Picnic blanket", "Portable cooler", "Neon sign", "Gift wrap kit", "Celebration banner set", "Disposable camera", "Mini projector", "LED strip lights", "Cake decorating kit", "Baking kit", "Waffle maker", "Fondue set", "Ice cream maker", "Fidget toy set", "Outdoor game set (cornhole)", "Bubble machine", "Face paint set", "Craft kit", "LEGO flower bouquet set", "LEGO set", "Desk plant (artificial)", "Funny mug", "Sticker pack", "Glow sticks", "Portable photo backdrop", "Mini printer paper pack", "Party hats set", "Party photo booth props", "Mini champagne glasses (plastic)", "Color confetti balloons", "Tabletop disco ball", "Birthday candles set", "Cupcake stand", "Cookie cutter set", "Chocolate gift box", "Gourmet candy mix", "Happy journal", "Celebration confetti cannon", "Mini polaroid album", "Photo corner stickers", "Portable tripod", "Friendship bracelet kit", "DIY slime kit", "Scented candle gift set", "Colorful streamers", "Party tableware set", "Mini waffle maker", "Snack platter board", "Bluetooth microphone", "Portable lantern lights", "Outdoor picnic basket", "Instant photo album", "Mini speaker stand", "Photo clip string lights", "Party game set", "Desktop bubble blower", "Party confetti balloons set", "Photo booth backdrop curtain", "Mini disco light", "Candy gift jar", "Celebration cake topper", "Popcorn seasoning set"], "Energetic": ["Jump rope", "Resistance bands set", "Adjustable dumbbells", "Kettlebell", "Yoga mat (non-slip)", "Fitness gloves", "Gym towel", "Shaker bottle", "Protein snack box", "Electrolyte tablets", "Water bottle (insulated)", "Smartwatch/fitness tracker", "Heart rate monitor strap", "Running belt", "Reflective running vest", "Compression socks", "Foam roller", "Massage gun", "Pull-up bar (doorway)", "Ab roller", "Push-up bars", "Mini stepper", "Portable pedal exerciser", "Ankle weights", "Weighted vest", "Medicine ball", "Balance board", "Agility ladder", "Training cones set", "Boxing gloves", "Standing punching bag", "Hand grip strengthener", "Cycling gloves", "Bike phone mount", "Bike lights set", "Swim goggles", "Kickboard", "Tennis racket", "Badminton set", "Basketball", "Soccer ball", "Pilates ring", "Stretching strap", "Pre-workout shaker", "Meal prep containers", "Gym bag", "Sports sunscreen", "Running cap", "Sweat headbands", "Sports earbuds", "Yoga blocks", "Protein bar variety pack", "Foam yoga wheel", "Resistance loop bands", "Jump rope mat", "Speed ladder set", "Weighted jump rope", "Skipping rope counter", "Dumbbell rack", "Knee sleeves", "Elbow sleeves", "Wrist wraps", "Exercise mat thick", "Portable blender", "Creatine container", "Gym chalk", "Lifting straps", "Water bottle carrier", "Cooling towel", "Sports hydration pack", "Running armband", "Trail running light", "Gym stopwatch", "Workout timer", "Balance disc", "Mini trampoline", "Rowing resistance band", "Push-up board", "Core slider discs", "Punch mitts"], "Creative": ["Sketchbook", "Drawing pencils set", "Eraser set", "Fineliner pens set", "Marker set (alcohol-based)", "Watercolor paint set", "Watercolor paper pad", "Acrylic paint set", "Canvas panels pack", "Paint brushes set", "Calligraphy set", "Brush pens set", "Colored pencils set", "Pastel set", "Charcoal drawing set", "Craft scissors set", "Glue gun", "Washi tape set", "Sticker pack (art)", "Scrapbooking kit", "Collage paper pack", "Cutting mat", "X-Acto knife", "Ruler set", "Photography tripod", "Ring light", "Phone lens kit", "Backdrop cloth", "Photo props kit", "Air-dry clay", "Polymer clay kit", "Clay tools set", "Crochet starter kit", "Knitting needles set", "Embroidery starter kit", "Sewing kit", "Fabric markers", "Bead kit", "Jewelry making kit", "Origami paper set", "Model building kit", "Miniature house kit", "3D puzzle kit", "Ukulele", "Guitar picks set", "Notebook (dot grid)", "Idea journal", "Desk organizer", "Label maker", "Stamp set", "Ink pad set", "Wax seal kit", "Lettering practice book", "DIY candle making kit", "Soap making kit", "Resin kit", "Resin molds", "A4 light pad", "Craft storage box", "Sketching mannequin", "Water brush pens", "Gouache paint set", "Brush cleaning cup", "Canvas easel", "Photo printing paper", "Mini photo printer", "DIY embroidery hoop set", "Craft cutting machine tools", "Woven yarn set", "Punch needle kit", "Color mixing palette", "Calligraphy ink set", "Metallic pens set", "Sticker printer", "Paper trimmer", "Brush set (fine detail)", "Acrylic paint markers", "Portable sketching kit", "Watercolor brush pen set", "Craft punch set"], "Tired": ["Blackout sleep mask", "Earplugs (sleep)", "White noise machine", "Weighted eye mask (warm/cool)", "Neck pillow", "Memory foam pillow", "Cooling pillowcase", "Silk pillowcase", "Bedside lamp (warm light)", "Sunrise alarm clock", "Blue light blocking glasses", "Humidifier", "Air purifier", "Aromatherapy diffuser", "Lavender pillow spray", "Sleep tea (caffeine-free)", "Electric blanket", "Hot water bottle", "Cozy robe", "Slippers", "Compression sleep socks", "Foot massager", "Leg massager", "Heating pad", "Magnesium bath flakes", "Bath pillow", "Eye mask gel packs", "Bed wedge pillow", "Mattress topper", "Sleep sound machine (portable)", "Travel pillow", "Travel blanket", "Noise-cancelling earmuffs", "Sleep headphones (headband)", "Reading light (clip-on)", "Bedside organizer", "Night light (motion sensor)", "Essential oil sampler", "Tea infuser", "Ceramic mug", "Herbal tea sampler", "Stretching strap", "Foam roller", "Gentle yoga props set", "Sleep journal (paper)", "Calming candle", "Lavender sachets", "Pillow mist", "Soft blanket", "Warm socks", "Heating slippers", "Aroma diffuser necklace", "Relaxing bath soak", "Light-blocking curtains", "Bed canopy", "Cooling eye patches", "Soothing face cream", "Hand warmers", "Foot soak basin", "Sleep gummies (melatonin-free)", "Relaxing audiobook (CD)", "Comfort hoodie blanket", "Cervical pillow", "Weighted blanket", "Sleep mask silk", "Noise machine rechargeable", "Sleep aromatherapy set", "Warm tea kettle", "Mug warmer", "Soft bedside rug", "Comforter set", "Mattress protector", "Sleep tracker ring", "Bed sheet set", "Humidifier filters", "Relaxing pillow", "Cozy throw", "Warm light bulb set", "Scented candle set", "Relaxing herbal pillow spray set"]};
-const LOCAL_IMAGES={"Aromatherapy diffuser": "images/products/stressed-aromatherapy-diffuser.png", "Lavender essential oil": "images/products/stressed-lavender-essential-oil.png", "Chamomile tea": "images/products/stressed-chamomile-tea.png", "Scented candle set": "images/products/stressed-scented-candle-set.png", "Weighted blanket": "images/products/stressed-weighted-blanket.png", "Heat pad (microwavable)": "images/products/stressed-heat-pad-microwavable.png", "Neck and shoulder massager": "images/products/stressed-neck-and-shoulder-massager.png", "Foam roller": "images/products/stressed-foam-roller.png", "Massage ball": "images/products/stressed-massage-ball.png", "Stress ball": "images/products/stressed-stress-ball.png", "Acupressure mat": "images/products/stressed-acupressure-mat.png", "Sleep mask (blackout)": "images/products/stressed-sleep-mask-blackout.png", "Silk pillowcase": "images/products/stressed-silk-pillowcase.png", "White noise machine": "images/products/stressed-white-noise-machine.png", "Humidifier": "images/products/stressed-humidifier.png", "Bath salts": "images/products/stressed-bath-salts.png", "Bubble bath": "images/products/stressed-bubble-bath.png", "Shower steamers": "images/products/stressed-shower-steamers.png", "Foot spa bath": "images/products/stressed-foot-spa-bath.png", "Hot water bottle": "images/products/stressed-hot-water-bottle.png", "Herbal tea sampler": "images/products/stressed-herbal-tea-sampler.png", "Calming room spray": "images/products/stressed-calming-room-spray.png", "Incense sticks": "images/products/stressed-incense-sticks.png", "Meditation cushion": "images/products/stressed-meditation-cushion.png", "Yoga mat": "images/products/stressed-yoga-mat.png", "Yoga blocks": "images/products/stressed-yoga-blocks.png", "Stretching strap": "images/products/stressed-stretching-strap.png", "Aromatherapy inhaler sticks": "images/products/stressed-aromatherapy-inhaler-sticks.png", "Hand cream set": "images/products/stressed-hand-cream-set.png", "Face mask set (skincare)": "images/products/stressed-face-mask-set-skincare.png", "Eye gel patches": "images/products/stressed-eye-gel-patches.png", "Soothing body lotion": "images/products/stressed-soothing-body-lotion.png", "Cozy socks": "images/products/stressed-cozy-socks.png", "Soft throw blanket": "images/products/stressed-soft-throw-blanket.png", "Desk fountain": "images/products/stressed-desk-fountain.png", "Adult coloring book": "images/products/stressed-adult-coloring-book.png", "Colored pencil set": "images/products/stressed-colored-pencil-set.png", "Stress journal (paper)": "images/products/stressed-stress-journal-paper.png", "Planner notebook": "images/products/stressed-planner-notebook.png", "LED salt lamp": "images/products/stressed-led-salt-lamp.png", "Tea infuser": "images/products/stressed-tea-infuser.png", "Ceramic mug set": "images/products/stressed-ceramic-mug-set.png", "Coaster set": "images/products/stressed-coaster-set.png", "Sleep earplugs": "images/products/stressed-sleep-earplugs.png", "Noise-cancelling earmuffs": "images/products/stressed-noise-cancelling-earmuffs.png", "Room humidifier filters": "images/products/stressed-room-humidifier-filters.png", "Candle lighter": "images/products/stressed-candle-lighter.png", "Calming essential oil set": "images/products/stressed-calming-essential-oil-set.png", "Relaxing bath pillow": "images/products/stressed-relaxing-bath-pillow.png", "Guided meditation book": "images/products/stressed-guided-meditation-book.png", "Aromatherapy candle": "images/products/stressed-aromatherapy-candle.png", "Warm fleece blanket": "images/products/stressed-warm-fleece-blanket.png", "Soothing heat wrap": "images/products/stressed-soothing-heat-wrap.png", "Cooling gel pillow": "images/products/stressed-cooling-gel-pillow.png", "Relaxation incense holder": "images/products/stressed-relaxation-incense-holder.png", "Scented wax melts": "images/products/stressed-scented-wax-melts.png", "Electric aroma diffuser": "images/products/stressed-electric-aroma-diffuser.png", "Calm music vinyl": "images/products/stressed-calm-music-vinyl.png", "Weighted eye mask": "images/products/stressed-weighted-eye-mask.png", "Aroma reed diffuser": "images/products/stressed-aroma-reed-diffuser.png", "Herbal pillow (lavender)": "images/products/stressed-herbal-pillow-lavender.png", "Massage oil": "images/products/stressed-massage-oil.png", "Hand massage roller": "images/products/stressed-hand-massage-roller.png", "Neck heat wrap": "images/products/stressed-neck-heat-wrap.png", "Bath bomb set": "images/products/stressed-bath-bomb-set.png", "Tea storage tin": "images/products/stressed-tea-storage-tin.png", "Relaxing face roller": "images/products/stressed-relaxing-face-roller.png", "Soft bathrobe": "images/products/stressed-soft-bathrobe.png", "Microfiber towel set": "images/products/stressed-microfiber-towel-set.png", "Room spray (lavender)": "images/products/stressed-room-spray-lavender.png", "Relaxing essential oil necklace": "images/products/stressed-relaxing-essential-oil-necklace.png", "Mindfulness cards": "images/products/stressed-mindfulness-cards.png", "Anti-stress fidget cube": "images/products/stressed-anti-stress-fidget-cube.png", "Desk humidifier": "images/products/stressed-desk-humidifier.png", "Sleep spray": "images/products/stressed-sleep-spray.png", "Cozy slippers": "images/products/stressed-cozy-slippers.png", "Aroma candle lantern": "images/products/stressed-aroma-candle-lantern.png", "Calming tea set": "images/products/stressed-calming-tea-set.png", "Relaxing candle holder": "images/products/stressed-relaxing-candle-holder.png", "Aromatherapy shower steamer set": "images/products/stressed-aromatherapy-shower-steamer-set.png"};
 const CARDS_PER_REFRESH = 8;
 
 const moodsEl=document.getElementById("moods");
@@ -200,14 +152,24 @@ let currentMood=Object.keys(CATALOG)[0];
 
 const STORAGE_KEY = "moodmarket_rotation_v1";
 
-function loadState(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch(e){ return {}; } }
-function saveState(state){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){} }
+function loadState(){
+  try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); }
+  catch(e){ return {}; }
+}
+function saveState(state){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+}
 
 let state = loadState();
 if(!state.order) state.order = {};
 if(!state.idx) state.idx = {};
 
-function shuffleArray(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } }
+function shuffleArray(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
 
 function ensureOrder(mood){
   const n = CATALOG[mood].length;
@@ -241,84 +203,81 @@ function nextBatch(mood, k){
   return out;
 }
 
-function amazonUrl(title){ return BASE + encodeURIComponent(title) + "&tag=" + TAG; }
-function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function amazonUrl(title){
+  const asin = ASIN_BY_NAME[title];
+  if (asin && asin.length === 10) {
+    return "https://www.amazon.nl/dp/" + asin + "/?tag=" + TAG;
+  }
+  return BASE + encodeURIComponent(title) + "&tag=" + TAG;
+}
+
+function esc(s){
+  return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
 
 function svgFallback(title){
   const safe = esc(title);
   const svg = `
-  <svg xmlns="http://www.w3.org/2000/svg" width="900" height="650">
+  <svg xmlns="http://www.w3.org/2000/svg" width="800" height="450">
     <defs>
       <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0" stop-color="#7c83ff" stop-opacity="0.55"/>
         <stop offset="1" stop-color="#2dd4bf" stop-opacity="0.35"/>
       </linearGradient>
     </defs>
-    <rect width="900" height="650" fill="#070a14"/>
-    <rect width="900" height="650" fill="url(#g)"/>
-    <text x="46" y="200" font-family="Inter,system-ui,Arial" font-size="36" fill="#eef2ff" font-weight="800">${safe}</text>
-    <text x="46" y="560" font-family="Inter,system-ui,Arial" font-size="18" fill="#a6b0cf">Placeholder image</text>
+    <rect width="800" height="450" fill="#0b1020"/>
+    <rect width="800" height="450" fill="url(#g)"/>
+    <text x="40" y="150" font-family="Inter,system-ui,Arial" font-size="34" fill="#eef2ff" font-weight="800">${safe}</text>
+    <text x="40" y="390" font-family="Inter,system-ui,Arial" font-size="18" fill="#a6b0cf">Placeholder image</text>
   </svg>`;
   return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg.trim());
 }
 
-function hashCode(str){ let hash=0; for(let i=0;i<str.length;i++){ hash=str.charCodeAt(i)+((hash<<5)-hash); hash|=0; } return hash; }
+function hashCode(str){
+  let hash=0;
+  for(let i=0;i<str.length;i++){
+    hash = str.charCodeAt(i) + ((hash<<5)-hash);
+    hash |= 0;
+  }
+  return hash;
+}
 
 function imageCandidates(title){
   const q = encodeURIComponent(title + " product photo");
   const seed = Math.abs(hashCode(title)).toString(16);
-  const u1 = `https://loremflickr.com/900/650/${q}`;
-  const u2 = `https://source.unsplash.com/900x650/?${q}`;
-  const u3 = `https://picsum.photos/seed/${seed}/900/650`;
+  const u1 = `https://loremflickr.com/800/600/${q}`;
+  const u2 = `https://source.unsplash.com/800x600/?${q}`;
+  const u3 = `https://picsum.photos/seed/${seed}/800/600`;
   return [u1,u2,u3];
 }
 
-function setImgWithFallback(img, urls, fallback, onDone){
+function setImgWithFallback(img, urls, fallback){
   let i = 0;
-  const finish = () => { if(typeof onDone === "function") onDone(); };
   const tryNext = () => {
-    if(i >= urls.length){ img.src = fallback; finish(); return; }
+    if(i >= urls.length){
+      img.src = fallback;
+      return;
+    }
     img.src = urls[i++];
   };
-  img.onload = finish;
   img.onerror = tryNext;
   tryNext();
-}
-
-function imageFor(title){
-  if(currentMood === "Stressed") return {type:"local", url: LOCAL_IMAGES[title]};
-  return {type:"remote", urls: imageCandidates(title)};
 }
 
 function render(){
   grid.innerHTML="";
   const batch = nextBatch(currentMood, CARDS_PER_REFRESH);
-
   batch.forEach(title=>{
     const card=document.createElement("div");
     card.className="card";
 
     const thumb=document.createElement("div");
     thumb.className="thumb";
-    const sk=document.createElement("div");
-    sk.className="skeleton";
-
     const img=document.createElement("img");
     img.alt=title + " product photo";
     img.loading="lazy";
-    img.decoding="async";
-
-    const choice = imageFor(title);
-    if(choice.type === "local"){
-      img.src = choice.url;
-      img.onload = ()=>thumb.classList.add("loaded");
-      img.onerror = ()=>{ img.src = svgFallback(title); thumb.classList.add("loaded"); };
-    }else{
-      setImgWithFallback(img, choice.urls, svgFallback(title), ()=>thumb.classList.add("loaded"));
-    }
-
+    setImgWithFallback(img, imageCandidates(title), svgFallback(title));
     thumb.appendChild(img);
-    thumb.appendChild(sk);
 
     const inner=document.createElement("div");
     inner.className="inner";
@@ -353,6 +312,7 @@ Object.keys(CATALOG).forEach((m,i)=>{
 });
 
 shuffleBtn.onclick = render;
+
 render();
 </script>
 </body>
