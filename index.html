@@ -284,11 +284,25 @@ function setImgWithFallback(img, urls, fallback, onDone){
   img.onerror = tryNext;
   tryNext();
 }
+const AI_IMG_EXT = "jpg"; // of png
 
-function imageFor(title){
-  if(currentMood === "Stressed" && LOCAL_IMAGES[title]) return {type:"local", url: LOCAL_IMAGES[title]};
-  return {type:"remote", urls: imageCandidates(title)};
+function slugify(title){
+  return title
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9\s-]/g, "") // verwijder tekens
+    .trim()
+    .replace(/\s+/g, "-");
 }
+
+function aiImageForTitle(title){
+  return `images/ai/${slugify(title)}.${AI_IMG_EXT}`;
+}
+function imageFor(title){
+  // 1) Probeer AI image (lokaal)
+  return { type: "local", url: aiImageForTitle(title) };
+}
+
 
 function render(){
   grid.innerHTML="";
