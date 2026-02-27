@@ -7,70 +7,70 @@
 
 <style>
   :root{
-    /* base beige UI */
-    --bg0:#fbf3e6;
-    --bg1:#f6e9d4;
-    --bg2:#efe0c6;
+    --ink:#171a22;
+    --muted:#5a5f6c;
 
-    --ink:#1f2330;
-    --muted:#5c5f6a;
+    --glass: rgba(255,255,255,0.62);
+    --glass-2: rgba(255,255,255,0.46);
+    --stroke: rgba(23,26,34,0.10);
+    --stroke-2: rgba(23,26,34,0.14);
 
-    --border: rgba(31,35,48,0.10);
-    --border-strong: rgba(31,35,48,0.16);
-    --shadow: 0 18px 55px rgba(31,35,48,.18);
-    --shadow-soft: 0 10px 28px rgba(31,35,48,.12);
+    --shadow: 0 18px 50px rgba(23,26,34,.12);
+    --shadow-soft: 0 10px 26px rgba(23,26,34,.09);
 
-    --radius:22px;
-    --radius-sm:14px;
-
-    /* defaults overwritten by mood class */
-    --mood-card: rgba(255,255,255,0.76);
-    --mood-card-2: rgba(255,255,255,0.58);
-    --mood-glow: radial-gradient(700px 420px at 25% 20%, rgba(107,124,255,0.18), transparent 60%),
-                 radial-gradient(700px 420px at 80% 80%, rgba(34,199,168,0.12), transparent 62%);
-    --mood-accent: rgba(107,124,255,0.70);
-    --mood-accent2: rgba(34,199,168,0.55);
+    --r: 22px;
+    --r2: 16px;
   }
 
-  *{box-sizing:border-box;}
-  html,body{height:100%;}
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
   body{
     margin:0;
     font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Arial;
     color:var(--ink);
-    min-height:100vh;
     overflow-x:hidden;
-    background: linear-gradient(180deg, var(--bg0), var(--bg1) 45%, var(--bg2));
+    background: #fbf6ee;
   }
 
-  /* ===== Visible background photo layers (crossfade) ===== */
-  .bg-photo{
+  /* ===== AURORA / COLOR HAZE BACKGROUND ===== */
+  .haze{
     position:fixed;
     inset:0;
     z-index:0;
     pointer-events:none;
-    background-size: cover;
-    background-position: center;
-    filter: saturate(1.1) contrast(1.08);
-    opacity:0;
-    transition: opacity 700ms ease;
-    transform: scale(1.02);
+    background:
+      radial-gradient(1100px 680px at 14% 18%, rgba(255, 170, 95, 0.22), transparent 60%),
+      radial-gradient(900px 650px at 86% 22%, rgba(125, 156, 255, 0.18), transparent 60%),
+      radial-gradient(1000px 760px at 50% 108%, rgba(70, 216, 190, 0.14), transparent 62%),
+      radial-gradient(900px 700px at 20% 110%, rgba(236, 120, 200, 0.10), transparent 65%),
+      linear-gradient(180deg, #fbf6ee, #f6ecd9 50%, #f2e3c9);
   }
-  .bg-photo.show{ opacity:0.55; } /* <-- makes it clearly visible */
 
-  /* beige veil so text stays readable */
-  .bg-veil{
+  /* floating blobs */
+  .blob{
     position:fixed;
-    inset:0;
+    inset:auto;
+    width:520px;
+    height:520px;
+    border-radius: 999px;
+    filter: blur(40px);
+    opacity: .55;
     z-index:1;
     pointer-events:none;
-    background:
-      radial-gradient(1300px 900px at 50% 18%, rgba(251,243,230,0.55), rgba(0,0,0,0) 62%),
-      radial-gradient(1200px 900px at 50% 120%, rgba(251,243,230,0.62), rgba(0,0,0,0) 62%),
-      linear-gradient(180deg, rgba(251,243,230,0.62), rgba(251,243,230,0.56) 45%, rgba(239,224,198,0.60));
+    mix-blend-mode: multiply;
+    animation: drift 12s ease-in-out infinite alternate;
+  }
+  .b1{ left:-180px; top:-120px; background: radial-gradient(circle at 30% 30%, rgba(255,170,95,.55), transparent 62%); }
+  .b2{ right:-220px; top:40px;  background: radial-gradient(circle at 30% 30%, rgba(125,156,255,.55), transparent 62%); animation-duration: 14s; }
+  .b3{ left:18%; bottom:-260px; background: radial-gradient(circle at 30% 30%, rgba(70,216,190,.48), transparent 62%); animation-duration: 16s; }
+  .b4{ right:10%; bottom:-300px; background: radial-gradient(circle at 30% 30%, rgba(236,120,200,.42), transparent 64%); animation-duration: 18s; }
+
+  @keyframes drift{
+    from{ transform: translate3d(-10px, -8px, 0) scale(1.02); }
+    to{ transform: translate3d(14px, 10px, 0) scale(1.08); }
   }
 
-  /* a little grain */
+  /* subtle grain layer */
   .grain{
     position:fixed;
     inset:0;
@@ -78,22 +78,37 @@
     pointer-events:none;
     opacity:.06;
     background-image:
-      radial-gradient(circle at 20% 30%, rgba(0,0,0,0.34) 0 0.5px, transparent 1px),
-      radial-gradient(circle at 80% 40%, rgba(0,0,0,0.34) 0 0.5px, transparent 1px),
-      radial-gradient(circle at 55% 75%, rgba(0,0,0,0.34) 0 0.5px, transparent 1px);
+      radial-gradient(circle at 20% 30%, rgba(0,0,0,0.40) 0 0.55px, transparent 1px),
+      radial-gradient(circle at 80% 40%, rgba(0,0,0,0.40) 0 0.55px, transparent 1px),
+      radial-gradient(circle at 55% 75%, rgba(0,0,0,0.40) 0 0.55px, transparent 1px);
     background-size: 120px 120px;
   }
 
-  .wrap{position:relative; z-index:3; min-height:100vh; display:flex; flex-direction:column;}
-  .container{width:100%; max-width:1240px; margin:0 auto; padding:26px 22px 22px; flex:1;}
+  /* main content */
+  .wrap{
+    position:relative;
+    z-index:3;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+  .container{
+    width:100%;
+    max-width:1240px;
+    margin:0 auto;
+    padding:26px 22px 22px;
+    flex:1;
+  }
 
   .topbar{
-    position:sticky; top:0; z-index:10;
+    position:sticky;
+    top:0;
+    z-index:10;
     margin:-26px -22px 18px;
     padding:18px 22px 14px;
-    background: linear-gradient(180deg, rgba(251,243,230,0.90), rgba(251,243,230,0.70) 65%, rgba(251,243,230,0));
-    backdrop-filter: blur(12px);
-    border-bottom:1px solid rgba(31,35,48,0.06);
+    background: linear-gradient(180deg, rgba(251,246,238,0.85), rgba(251,246,238,0.70) 65%, rgba(251,246,238,0));
+    backdrop-filter: blur(14px);
+    border-bottom:1px solid rgba(23,26,34,0.06);
   }
 
   h1{
@@ -102,52 +117,43 @@
     letter-spacing:-0.02em;
     line-height:1.05;
     font-weight:950;
-    color: rgba(31,35,48,0.92);
+    color: rgba(23,26,34,0.92);
   }
 
-  .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:0;}
-  .moods{display:flex; gap:8px; flex-wrap:wrap;}
+  .row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .moods{ display:flex; gap:8px; flex-wrap:wrap; }
 
-  .mood{
+  .pillbtn{
     padding:8px 12px;
     border-radius:999px;
-    background: rgba(255,255,255,0.62);
-    border:1px solid rgba(31,35,48,0.10);
+    background: rgba(255,255,255,0.55);
+    border:1px solid rgba(23,26,34,0.10);
     cursor:pointer;
     font-size:12.5px;
     font-weight:900;
-    color: rgba(31,35,48,0.82);
+    color: rgba(23,26,34,0.82);
     user-select:none;
     transition: transform .12s ease, background .12s ease, border-color .12s ease, box-shadow .12s ease;
   }
-  .mood:hover{
+  .pillbtn:hover{
     transform: translateY(-1px);
-    border-color: rgba(31,35,48,0.16);
-    box-shadow: 0 10px 20px rgba(31,35,48,0.10);
+    border-color: rgba(23,26,34,0.16);
+    box-shadow: 0 10px 20px rgba(23,26,34,0.08);
   }
-  .mood.active{
+  .pillbtn.active{
     background: linear-gradient(90deg, var(--mood-accent), var(--mood-accent2));
-    border-color: rgba(31,35,48,0.16);
-    color: rgba(31,35,48,0.92);
+    border-color: rgba(23,26,34,0.14);
+    color: rgba(23,26,34,0.92);
   }
 
-  .shuffle{
-    padding:8px 12px;
-    border-radius:999px;
-    border:1px solid rgba(31,35,48,0.12);
-    cursor:pointer;
-    font-weight:950;
-    color: rgba(31,35,48,0.88);
-    background: rgba(255,255,255,0.62);
-    transition: transform .12s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease;
-  }
-  .shuffle:hover{
-    transform: translateY(-1px);
-    border-color: rgba(31,35,48,0.18);
-    box-shadow: 0 10px 20px rgba(31,35,48,0.10);
-  }
+  /* ===== Mood palette variables ===== */
+  body.mood-Stressed{ --mood-accent: rgba(125,156,255,0.70); --mood-accent2: rgba(70,216,190,0.55); --mood-wash: rgba(125,156,255,0.12); }
+  body.mood-Happy{ --mood-accent: rgba(255,170,95,0.74); --mood-accent2: rgba(236,120,200,0.46); --mood-wash: rgba(255,170,95,0.12); }
+  body.mood-Energetic{ --mood-accent: rgba(70,216,190,0.70); --mood-accent2: rgba(255,170,95,0.48); --mood-wash: rgba(70,216,190,0.12); }
+  body.mood-Creative{ --mood-accent: rgba(236,120,200,0.62); --mood-accent2: rgba(125,156,255,0.56); --mood-wash: rgba(236,120,200,0.10); }
+  body.mood-Tired{ --mood-accent: rgba(140,150,185,0.62); --mood-accent2: rgba(180,170,210,0.46); --mood-wash: rgba(140,150,185,0.10); }
 
-  /* ===== GRID: 4 bigger cards ===== */
+  /* ===== Grid ===== */
   .grid{
     display:grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -158,35 +164,38 @@
   @media (max-width:900px){ .grid{grid-template-columns:repeat(2, minmax(0,1fr));} }
   @media (max-width:540px){ .grid{grid-template-columns:1fr;} }
 
+  /* ===== Card (premium glass) ===== */
   .card{
     position:relative;
-    border-radius: var(--radius);
-    border:1px solid var(--border);
+    border-radius: var(--r);
+    border:1px solid rgba(23,26,34,0.10);
+    background: linear-gradient(180deg, rgba(255,255,255,0.70), rgba(255,255,255,0.55));
     box-shadow: var(--shadow-soft);
-    transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
     padding:14px;
     display:flex;
     flex-direction:column;
     gap:12px;
     overflow:hidden;
     min-height:360px;
-    background: var(--mood-card);
+    backdrop-filter: blur(10px);
+    transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
   }
   .card:hover{
     transform: translateY(-3px);
     box-shadow: var(--shadow);
-    border-color: var(--border-strong);
+    border-color: rgba(23,26,34,0.14);
   }
-
-  /* mood glow inside card */
-  .card::after{
+  .card::before{
     content:"";
-    position:absolute; inset:-2px;
+    position:absolute;
+    inset:-2px;
     pointer-events:none;
-    opacity: .8;
-    background: var(--mood-glow);
+    opacity:.95;
+    background:
+      radial-gradient(700px 420px at 22% 18%, var(--mood-wash), transparent 62%),
+      radial-gradient(700px 420px at 82% 86%, rgba(255,255,255,0.12), transparent 62%);
   }
-  .card > *{position:relative; z-index:1;}
+  .card > *{ position:relative; z-index:1; }
 
   .cardhead{
     display:flex;
@@ -194,77 +203,67 @@
     justify-content:space-between;
     gap:10px;
   }
-
   .badge{
     font-size:11px;
     font-weight:950;
     letter-spacing:.02em;
     padding:6px 10px;
     border-radius:999px;
-    border:1px solid rgba(31,35,48,0.12);
+    border:1px solid rgba(23,26,34,0.10);
     background: rgba(255,255,255,0.55);
-    color: rgba(31,35,48,0.82);
+    color: rgba(23,26,34,0.80);
   }
   .count{
     font-size:11px;
-    color: rgba(31,35,48,0.58);
+    color: rgba(23,26,34,0.54);
     font-weight:950;
     white-space:nowrap;
   }
 
-  .stack{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-  }
+  .stack{ display:flex; flex-direction:column; gap:10px; }
 
   .section{
     border-radius: 18px;
     padding: 12px;
-    border:1px solid rgba(31,35,48,0.08);
-    background: var(--mood-card-2);
+    border:1px solid rgba(23,26,34,0.08);
+    background: rgba(255,255,255,0.42);
   }
 
   .label{
     font-size:11px;
     font-weight:950;
-    color: rgba(31,35,48,0.78);
+    color: rgba(23,26,34,0.76);
     margin: 0 0 6px;
     padding: 6px 9px;
     border-radius: 999px;
     display:inline-flex;
     align-items:center;
     gap:8px;
-    border: 1px solid rgba(31,35,48,0.10);
-    background: rgba(255,255,255,0.38);
+    border: 1px solid rgba(23,26,34,0.10);
+    background: rgba(255,255,255,0.34);
   }
-
   .dot{
     width:8px; height:8px; border-radius:999px;
-    box-shadow: 0 8px 16px rgba(31,35,48,0.12);
-    flex:0 0 auto;
-    background: rgba(31,35,48,0.55);
+    background: rgba(23,26,34,0.55);
   }
+  .label[data-k="product"] .dot{ background: rgba(125,156,255,0.85); }
+  .label[data-k="eat"] .dot{ background: rgba(70,216,190,0.85); }
+  .label[data-k="do"] .dot{ background: rgba(255,170,95,0.82); }
+  .label[data-k="watch"] .dot{ background: rgba(236,120,200,0.72); }
 
   .value{
     font-size: 13px;
     line-height: 1.35;
     font-weight: 900;
-    color: rgba(31,35,48,0.90);
+    color: rgba(23,26,34,0.90);
     margin: 0;
-    word-break: break-word;
     overflow:hidden;
     display:-webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+    word-break: break-word;
   }
   .value.short{ -webkit-line-clamp: 2; }
-
-  /* section accents */
-  .label[data-k="product"] .dot{ background: rgba(107,124,255,0.85); }
-  .label[data-k="eat"] .dot{ background: rgba(34,199,168,0.85); }
-  .label[data-k="do"] .dot{ background: rgba(255,140,0,0.82); }
-  .label[data-k="watch"] .dot{ background: rgba(236,72,153,0.75); }
 
   a.buylink{
     display:inline-flex;
@@ -278,17 +277,17 @@
     font-weight:950;
     font-size:12px;
     letter-spacing:.01em;
-    color: rgba(31,35,48,0.92);
-    background: linear-gradient(90deg, rgba(255,255,255,0.55), rgba(255,255,255,0.35));
-    border: 1px solid rgba(31,35,48,0.12);
-    box-shadow: 0 8px 18px rgba(31,35,48,0.08);
+    color: rgba(23,26,34,0.92);
+    background: linear-gradient(90deg, rgba(255,255,255,0.52), rgba(255,255,255,0.30));
+    border: 1px solid rgba(23,26,34,0.12);
+    box-shadow: 0 10px 20px rgba(23,26,34,0.08);
     transition: transform .12s ease, filter .12s ease, box-shadow .12s ease, border-color .12s ease;
   }
   a.buylink:hover{
     transform: translateY(-1px);
     filter: brightness(1.02);
-    box-shadow: 0 12px 26px rgba(31,35,48,0.12);
-    border-color: rgba(31,35,48,0.16);
+    box-shadow: 0 14px 28px rgba(23,26,34,0.12);
+    border-color: rgba(23,26,34,0.16);
   }
 
   /* ===== Bottom block: Playlist Picks ===== */
@@ -296,31 +295,41 @@
     position:relative;
     margin: 6px 0 10px;
     border-radius: 28px;
-    border: 1px solid rgba(31,35,48,0.10);
-    background: rgba(255,255,255,0.60);
+    border: 1px solid rgba(23,26,34,0.10);
+    background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.50));
     box-shadow: var(--shadow-soft);
     overflow:hidden;
     padding: 16px 16px;
+    backdrop-filter: blur(10px);
   }
   .fun::before{
     content:"";
     position:absolute;
     inset:-140px;
-    background: var(--mood-glow);
-    opacity:.9;
-    animation: floaty 9s ease-in-out infinite alternate;
+    background:
+      radial-gradient(800px 520px at 22% 20%, var(--mood-wash), transparent 62%),
+      radial-gradient(800px 520px at 80% 85%, rgba(70,216,190,0.08), transparent 62%);
+    opacity:.95;
+    animation: drift2 10s ease-in-out infinite alternate;
   }
-  @keyframes floaty{
+  @keyframes drift2{
     from{ transform: translate3d(-10px, -6px, 0) scale(1.02); }
-    to{ transform: translate3d(10px, 6px, 0) scale(1.06); }
+    to{ transform: translate3d(10px, 8px, 0) scale(1.06); }
   }
-  .fun-inner{ position:relative; z-index:1; display:grid; grid-template-columns: 1.5fr 1fr; gap:16px; align-items:stretch; }
+
+  .fun-inner{
+    position:relative; z-index:1;
+    display:grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap:16px;
+    align-items:stretch;
+  }
   @media (max-width:900px){ .fun-inner{ grid-template-columns: 1fr; } }
 
   .fun-card{
     border-radius: 22px;
-    border: 1px solid rgba(31,35,48,0.10);
-    background: rgba(255,255,255,0.62);
+    border: 1px solid rgba(23,26,34,0.10);
+    background: rgba(255,255,255,0.46);
     padding: 14px;
   }
   .fun-title{
@@ -335,16 +344,16 @@
     font-size: 16px;
     font-weight: 980;
     letter-spacing:-0.01em;
-    color: rgba(31,35,48,0.92);
+    color: rgba(23,26,34,0.92);
   }
   .pill{
     font-size: 11px;
     font-weight: 950;
     padding: 6px 10px;
     border-radius: 999px;
-    border:1px solid rgba(31,35,48,0.12);
-    background: rgba(255,255,255,0.62);
-    color: rgba(31,35,48,0.74);
+    border:1px solid rgba(23,26,34,0.12);
+    background: rgba(255,255,255,0.56);
+    color: rgba(23,26,34,0.70);
     white-space:nowrap;
   }
 
@@ -361,22 +370,22 @@
     gap:10px;
     padding: 10px 12px;
     border-radius: 18px;
-    border: 1px solid rgba(31,35,48,0.10);
-    background: rgba(255,255,255,0.58);
-    box-shadow: 0 10px 18px rgba(31,35,48,0.06);
+    border: 1px solid rgba(23,26,34,0.10);
+    background: rgba(255,255,255,0.52);
+    box-shadow: 0 10px 18px rgba(23,26,34,0.06);
   }
   .song .note{
     width:26px; height:26px;
     border-radius: 10px;
     flex:0 0 auto;
     background: linear-gradient(135deg, var(--mood-accent), var(--mood-accent2));
-    box-shadow: 0 10px 18px rgba(31,35,48,0.10);
+    box-shadow: 0 10px 18px rgba(23,26,34,0.10);
   }
-  .song .meta{min-width:0;}
+  .song .meta{ min-width:0; }
   .song .title{
     font-weight: 950;
     font-size: 12.8px;
-    color: rgba(31,35,48,0.90);
+    color: rgba(23,26,34,0.90);
     margin: 0 0 4px;
     overflow:hidden;
     text-overflow:ellipsis;
@@ -385,11 +394,11 @@
   .song a{
     font-weight: 900;
     font-size: 12px;
-    color: rgba(31,35,48,0.70);
+    color: rgba(23,26,34,0.70);
     text-decoration:none;
-    border-bottom: 1px dashed rgba(31,35,48,0.30);
+    border-bottom: 1px dashed rgba(23,26,34,0.30);
   }
-  .song a:hover{ color: rgba(31,35,48,0.90); }
+  .song a:hover{ color: rgba(23,26,34,0.92); }
 
   .boost{
     display:flex;
@@ -398,8 +407,8 @@
   }
   .quote{
     border-radius: 20px;
-    border: 1px solid rgba(31,35,48,0.10);
-    background: rgba(255,255,255,0.62);
+    border: 1px solid rgba(23,26,34,0.10);
+    background: rgba(255,255,255,0.52);
     padding: 12px 12px;
   }
   .quote p{
@@ -407,11 +416,11 @@
     font-weight: 950;
     font-size: 14px;
     line-height: 1.35;
-    color: rgba(31,35,48,0.90);
+    color: rgba(23,26,34,0.90);
   }
   .sub{
     margin:8px 0 0;
-    color: rgba(31,35,48,0.62);
+    color: rgba(23,26,34,0.62);
     font-size: 12px;
     font-weight: 850;
     line-height: 1.45;
@@ -419,16 +428,16 @@
 
   .meter{
     border-radius: 20px;
-    border: 1px solid rgba(31,35,48,0.10);
-    background: rgba(255,255,255,0.62);
+    border: 1px solid rgba(23,26,34,0.10);
+    background: rgba(255,255,255,0.52);
     padding: 12px;
   }
   .bar{
     height: 10px;
     border-radius: 999px;
-    background: rgba(31,35,48,0.10);
+    background: rgba(23,26,34,0.10);
     overflow:hidden;
-    border: 1px solid rgba(31,35,48,0.10);
+    border: 1px solid rgba(23,26,34,0.10);
   }
   .bar > div{
     height:100%;
@@ -437,85 +446,38 @@
     border-radius: 999px;
   }
   .meter-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
-  .meter-row .t{ font-weight: 950; color: rgba(31,35,48,0.84); font-size: 12px; }
-  .meter-row .x{ font-weight: 950; color: rgba(31,35,48,0.62); font-size: 12px; }
+  .meter-row .t{ font-weight: 950; color: rgba(23,26,34,0.84); font-size: 12px; }
+  .meter-row .x{ font-weight: 950; color: rgba(23,26,34,0.62); font-size: 12px; }
 
   .footer-wrap{
     position:relative; z-index:3;
     padding:18px 20px;
-    border-top:1px solid rgba(31,35,48,0.06);
-    background: rgba(255,255,255,0.25);
+    border-top:1px solid rgba(23,26,34,0.06);
+    background: rgba(255,255,255,0.20);
     backdrop-filter: blur(10px);
   }
   .footer{
     max-width:1240px;
     margin:0 auto;
     font-size:12px;
-    color: rgba(31,35,48,0.62);
+    color: rgba(23,26,34,0.62);
     line-height:1.45;
     text-align:center;
   }
-  .disclaimer{margin-top:8px; color: rgba(31,35,48,0.56);}
 
-  .mood:focus-visible, .shuffle:focus-visible, a.buylink:focus-visible{
-    outline:2px solid rgba(31,35,48,0.28);
+  .pillbtn:focus-visible, a.buylink:focus-visible{
+    outline:2px solid rgba(23,26,34,0.28);
     outline-offset:2px;
-  }
-
-  /* ===== Mood palettes (cards + accents) ===== */
-  body.mood-Stressed{
-    --mood-card: rgba(238,244,255,0.78);
-    --mood-card-2: rgba(238,244,255,0.58);
-    --mood-accent: rgba(115,140,255,0.72);
-    --mood-accent2: rgba(72,210,190,0.55);
-    --mood-glow:
-      radial-gradient(720px 420px at 18% 20%, rgba(115,140,255,0.22), transparent 62%),
-      radial-gradient(720px 420px at 85% 80%, rgba(72,210,190,0.16), transparent 62%);
-  }
-  body.mood-Happy{
-    --mood-card: rgba(255,247,228,0.80);
-    --mood-card-2: rgba(255,247,228,0.60);
-    --mood-accent: rgba(255,186,90,0.70);
-    --mood-accent2: rgba(255,120,160,0.50);
-    --mood-glow:
-      radial-gradient(720px 420px at 18% 20%, rgba(255,186,90,0.22), transparent 62%),
-      radial-gradient(720px 420px at 85% 80%, rgba(255,120,160,0.16), transparent 62%);
-  }
-  body.mood-Energetic{
-    --mood-card: rgba(236,255,248,0.78);
-    --mood-card-2: rgba(236,255,248,0.58);
-    --mood-accent: rgba(55,210,175,0.70);
-    --mood-accent2: rgba(255,150,80,0.50);
-    --mood-glow:
-      radial-gradient(720px 420px at 18% 20%, rgba(55,210,175,0.20), transparent 62%),
-      radial-gradient(720px 420px at 85% 80%, rgba(255,150,80,0.16), transparent 62%);
-  }
-  body.mood-Creative{
-    --mood-card: rgba(250,238,255,0.78);
-    --mood-card-2: rgba(250,238,255,0.58);
-    --mood-accent: rgba(236,120,200,0.62);
-    --mood-accent2: rgba(140,155,255,0.55);
-    --mood-glow:
-      radial-gradient(720px 420px at 18% 20%, rgba(236,120,200,0.18), transparent 62%),
-      radial-gradient(720px 420px at 85% 80%, rgba(140,155,255,0.18), transparent 62%);
-  }
-  body.mood-Tired{
-    --mood-card: rgba(240,242,255,0.76);
-    --mood-card-2: rgba(240,242,255,0.56);
-    --mood-accent: rgba(120,140,210,0.62);
-    --mood-accent2: rgba(180,170,210,0.48);
-    --mood-glow:
-      radial-gradient(720px 420px at 18% 20%, rgba(120,140,210,0.18), transparent 62%),
-      radial-gradient(720px 420px at 85% 80%, rgba(180,170,210,0.14), transparent 62%);
   }
 </style>
 </head>
 
 <body>
-  <!-- background crossfade layers -->
-  <div class="bg-photo" id="bgA"></div>
-  <div class="bg-photo" id="bgB"></div>
-  <div class="bg-veil"></div>
+  <div class="haze"></div>
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="blob b4"></div>
   <div class="grain"></div>
 
   <div class="wrap">
@@ -524,13 +486,13 @@
         <h1>MoodMakerz</h1>
         <div class="row">
           <div class="moods" id="moods"></div>
-          <button class="shuffle" id="shuffle">Refresh</button>
+          <button class="pillbtn" id="shuffle">Refresh</button>
         </div>
       </div>
 
       <div class="grid" id="grid"></div>
 
-      <section class="fun" id="fun">
+      <section class="fun">
         <div class="fun-inner">
           <div class="fun-card">
             <div class="fun-title">
@@ -575,7 +537,7 @@ const CARDS_PER_REFRESH = 4;
 const MAX_REFRESHES = 10;
 const SONGS_PER_REFRESH = 8;
 
-/** Data (your existing idea pools) */
+/** Data */
 const DATA = {
   Stressed: {
     products: ["Weighted blanket","Aromatherapy diffuser","Lavender essential oil","Neck and shoulder massager","Heat pad (microwavable)","Acupressure mat","Sleep mask (blackout)","White noise machine","Bath salts","Meditation cushion","Foam roller","Massage ball","Chamomile tea","Scented candle set","Relaxing bath pillow"],
@@ -609,90 +571,14 @@ const DATA = {
   }
 };
 
-/** Playlist per mood (mix van chill/feelgood/energy/creative/night) */
 const SONGS = {
-  Stressed: [
-    "Bon Iver — Holocene",
-    "Novo Amor — Anchor",
-    "Sufjan Stevens — Mystery of Love",
-    "London Grammar — Hey Now",
-    "Cigarettes After Sex — Apocalypse",
-    "The Paper Kites — Bloom",
-    "Billie Eilish — ocean eyes",
-    "Coldplay — Sparks",
-    "Rhye — Open",
-    "Daughter — Youth",
-    "The xx — Intro",
-    "Ben Howard — Only Love"
-  ],
-  Happy: [
-    "Pharrell Williams — Happy",
-    "Katrina & The Waves — Walking on Sunshine",
-    "Harry Styles — Watermelon Sugar",
-    "Dua Lipa — Levitating",
-    "Bruno Mars — Treasure",
-    "ABBA — Dancing Queen",
-    "Justin Timberlake — CAN'T STOP THE FEELING!",
-    "Mark Ronson ft. Bruno Mars — Uptown Funk",
-    "Taylor Swift — Paper Rings",
-    "BTS — Dynamite",
-    "Lizzo — Good as Hell",
-    "OneRepublic — I Ain't Worried"
-  ],
-  Energetic: [
-    "Eminem — Till I Collapse",
-    "Kanye West — Stronger",
-    "Avicii — Levels",
-    "Swedish House Mafia — Greyhound",
-    "Daft Punk — Harder, Better, Faster, Stronger",
-    "The Weeknd — Blinding Lights",
-    "Calvin Harris — Feel So Close",
-    "Imagine Dragons — Believer",
-    "Skrillex — Bangarang",
-    "Linkin Park — Numb",
-    "Survivor — Eye of the Tiger",
-    "Macklemore — Can't Hold Us"
-  ],
-  Creative: [
-    "Tycho — Awake",
-    "ODESZA — A Moment Apart",
-    "Tame Impala — The Less I Know The Better",
-    "Glass Animals — Heat Waves",
-    "Khruangbin — Friday Morning",
-    "FKJ — Ylang Ylang",
-    "M83 — Midnight City",
-    "James Blake — Retrograde",
-    "Lorde — Team",
-    "The 1975 — Somebody Else",
-    "Radiohead — Weird Fishes/Arpeggi",
-    "Sufjan Stevens — Chicago"
-  ],
-  Tired: [
-    "Nils Frahm — Says",
-    "Ólafur Arnalds — Near Light",
-    "Max Richter — On the Nature of Daylight",
-    "Erik Satie — Gymnopédie No.1",
-    "Ludovico Einaudi — Nuvole Bianche",
-    "Yiruma — River Flows in You",
-    "Hans Zimmer — Time",
-    "Norah Jones — Don't Know Why",
-    "The Cinematic Orchestra — To Build a Home",
-    "Chet Baker — I Fall in Love Too Easily",
-    "Hozier — Like Real People Do",
-    "Bill Evans — Peace Piece"
-  ]
+  Stressed: ["Bon Iver — Holocene","Novo Amor — Anchor","Sufjan Stevens — Mystery of Love","London Grammar — Hey Now","Cigarettes After Sex — Apocalypse","The Paper Kites — Bloom","Billie Eilish — ocean eyes","Coldplay — Sparks","Rhye — Open","Daughter — Youth","The xx — Intro","Ben Howard — Only Love"],
+  Happy: ["Pharrell Williams — Happy","Katrina & The Waves — Walking on Sunshine","Harry Styles — Watermelon Sugar","Dua Lipa — Levitating","Bruno Mars — Treasure","ABBA — Dancing Queen","Justin Timberlake — CAN'T STOP THE FEELING!","Mark Ronson ft. Bruno Mars — Uptown Funk","Taylor Swift — Paper Rings","BTS — Dynamite","Lizzo — Good as Hell","OneRepublic — I Ain't Worried"],
+  Energetic: ["Eminem — Till I Collapse","Kanye West — Stronger","Avicii — Levels","Daft Punk — Harder, Better, Faster, Stronger","The Weeknd — Blinding Lights","Calvin Harris — Feel So Close","Imagine Dragons — Believer","Skrillex — Bangarang","Survivor — Eye of the Tiger","Macklemore — Can't Hold Us","Linkin Park — Numb","Swedish House Mafia — Greyhound"],
+  Creative: ["Tycho — Awake","ODESZA — A Moment Apart","Tame Impala — The Less I Know The Better","Khruangbin — Friday Morning","FKJ — Ylang Ylang","M83 — Midnight City","James Blake — Retrograde","Lorde — Team","Radiohead — Weird Fishes/Arpeggi","The 1975 — Somebody Else","Glass Animals — Heat Waves","Sufjan Stevens — Chicago"],
+  Tired: ["Ólafur Arnalds — Near Light","Max Richter — On the Nature of Daylight","Erik Satie — Gymnopédie No.1","Ludovico Einaudi — Nuvole Bianche","Yiruma — River Flows in You","Hans Zimmer — Time","Norah Jones — Don't Know Why","The Cinematic Orchestra — To Build a Home","Chet Baker — I Fall in Love Too Easily","Bill Evans — Peace Piece","Hozier — Like Real People Do","Nils Frahm — Says"]
 };
 
-/** Jungle background keywords per mood */
-const JUNGLE_KEYWORDS = {
-  Stressed:   ["jungle,fog","rainforest,mist","tropical,leaves,closeup","fern,forest","jungle,canopy"],
-  Happy:      ["tropical,sunlight","jungle,waterfall","tropical,flowers","rainforest,sunbeam","palm,leaves"],
-  Energetic:  ["jungle,river","rainforest,trail","tropical,green,light","jungle,adventure","jungle,storm"],
-  Creative:   ["tropical,patterns","jungle,macro,leaf","fern,texture","tropical,plants,detail","rainforest,green"],
-  Tired:      ["jungle,night","rainforest,soft,light","tropical,shade","forest,calm","jungle,quiet"]
-};
-
-/** Quotes */
 const QUOTES = {
   Stressed: ["Zacht is ook sterk. Doe één kleine stap en adem rustig.","Maak het simpel: warm drankje, kleine wandeling, klaar.","Je hoeft het niet op te lossen. Je mag het even laten zijn."],
   Happy: ["Maak er een mini-feestje van: muziek aan, lichtjes aan.","Vreugde = gedeeld. Stuur één berichtje en plan iets leuks.","Vandaag is voor herinneringen: foto, snack, lach."],
@@ -705,7 +591,6 @@ const QUOTES = {
 const moodsEl = document.getElementById("moods");
 const grid = document.getElementById("grid");
 const shuffleBtn = document.getElementById("shuffle");
-
 const funPill = document.getElementById("funPill");
 const songsEl = document.getElementById("songs");
 const quoteEl = document.getElementById("quote");
@@ -713,12 +598,8 @@ const quoteSub = document.getElementById("quoteSub");
 const progText = document.getElementById("progText");
 const progBar = document.getElementById("progBar");
 
-const bgA = document.getElementById("bgA");
-const bgB = document.getElementById("bgB");
-let bgToggle = false;
-
 /** State */
-const STORAGE_KEY = "moodmakerz_beige_jungle_colored_v4";
+const STORAGE_KEY = "moodmakerz_pro_haze_v1";
 function loadState(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch(e){ return {}; } }
 function saveState(s){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch(e){} }
 let state = loadState();
@@ -736,7 +617,6 @@ function ensureMoodState(mood){
   if(!ms.order) ms.order = {};
   if(!ms.idx) ms.idx = {};
   if(typeof ms.refreshCount !== "number") ms.refreshCount = 0;
-  if(typeof ms.bgSig !== "number") ms.bgSig = Math.floor(Math.random()*100000);
 
   for(const cat of ["products","eat","do","watch"]){
     const n = DATA[mood][cat].length;
@@ -780,10 +660,8 @@ function nextItem(mood, cat){
 
 function buildBatch(mood, k){
   ensureMoodState(mood);
-
   const used = { products:new Set(), eat:new Set(), do:new Set(), watch:new Set() };
   const out = [];
-
   for(let i=0;i<k;i++){
     const row = {};
     for(const cat of ["products","eat","do","watch"]){
@@ -810,26 +688,6 @@ function pickQuote(mood){
   return q[Math.floor(Math.random()*q.length)];
 }
 
-/** Background: build a URL that changes per refresh */
-function makeBgUrl(mood, sig){
-  const list = JUNGLE_KEYWORDS[mood] || ["jungle"];
-  const kw = list[sig % list.length];
-  // Unsplash random endpoint — changes with sig
-  return `https://source.unsplash.com/1920x1080/?${encodeURIComponent(kw)}&sig=${sig}`;
-}
-
-function setBg(url){
-  // crossfade
-  bgToggle = !bgToggle;
-  const showEl = bgToggle ? bgA : bgB;
-  const hideEl = bgToggle ? bgB : bgA;
-
-  showEl.style.backgroundImage = `url("${url}")`;
-  showEl.classList.add("show");
-  hideEl.classList.remove("show");
-}
-
-/** Playlist picks */
 function youtubeSearchUrl(query){
   return "https://www.youtube.com/results?search_query=" + encodeURIComponent(query);
 }
@@ -841,7 +699,6 @@ function pickSongs(mood, n){
 function renderSongs(mood){
   songsEl.innerHTML = "";
   const picks = pickSongs(mood, SONGS_PER_REFRESH);
-
   picks.forEach(s=>{
     const el = document.createElement("div");
     el.className = "song";
@@ -856,8 +713,6 @@ function renderSongs(mood){
   });
 }
 
-let currentMood = Object.keys(DATA)[0];
-
 function applyMoodClass(mood){
   document.body.className = document.body.className
     .split(" ")
@@ -867,6 +722,8 @@ function applyMoodClass(mood){
   document.body.classList.add("mood-" + mood);
 }
 
+let currentMood = Object.keys(DATA)[0];
+
 function render(){
   ensureMoodState(currentMood);
   const ms = state[currentMood];
@@ -875,23 +732,16 @@ function render(){
     resetMoodRotation(currentMood);
   }
   ms.refreshCount += 1;
-
-  // change jungle background each refresh
-  ms.bgSig = (ms.bgSig + 1) % 1000000;
   saveState(state);
-  setBg(makeBgUrl(currentMood, ms.bgSig));
 
-  // update progress + quote
   funPill.textContent = `Set ${ms.refreshCount}/${MAX_REFRESHES} • ${currentMood}`;
   progText.textContent = `${ms.refreshCount}/${MAX_REFRESHES}`;
   progBar.style.width = Math.max(5, Math.round((ms.refreshCount / MAX_REFRESHES) * 100)) + "%";
+
   quoteEl.textContent = pickQuote(currentMood);
   quoteSub.textContent = "— MoodMakerz";
-
-  // render playlist
   renderSongs(currentMood);
 
-  // render cards
   const batch = buildBatch(currentMood, CARDS_PER_REFRESH);
   grid.innerHTML = "";
 
@@ -930,7 +780,6 @@ function render(){
         </div>
       </div>
     `;
-
     grid.appendChild(card);
   });
 }
@@ -939,14 +788,9 @@ function setMood(mood){
   currentMood = mood;
   applyMoodClass(mood);
 
-  document.querySelectorAll(".mood").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".pillbtn[data-mood]").forEach(x=>x.classList.remove("active"));
   const btn = document.querySelector(`[data-mood="${CSS.escape(mood)}"]`);
   if(btn) btn.classList.add("active");
-
-  ensureMoodState(mood);
-  state[mood].bgSig = (state[mood].bgSig + 7) % 1000000;
-  saveState(state);
-  setBg(makeBgUrl(mood, state[mood].bgSig));
 
   render();
 }
@@ -954,19 +798,17 @@ function setMood(mood){
 /** Build mood buttons */
 Object.keys(DATA).forEach((m,i)=>{
   const b = document.createElement("div");
-  b.className = "mood" + (i===0 ? " active" : "");
+  b.className = "pillbtn" + (i===0 ? " active" : "");
   b.dataset.mood = m;
   b.textContent = m;
   b.onclick = () => setMood(m);
   moodsEl.appendChild(b);
 });
 
-shuffleBtn.onclick = render;
+document.getElementById("shuffle").onclick = render;
 
-/** Initial */
+/** initial */
 applyMoodClass(currentMood);
-ensureMoodState(currentMood);
-setBg(makeBgUrl(currentMood, state[currentMood].bgSig));
 render();
 </script>
 </body>
