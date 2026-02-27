@@ -484,41 +484,26 @@ function render(){
     const productQuery = b.products; // zoekterm
     const link = amazonUrl(productQuery);
 
-card.innerHTML = `
-  <div class="cardhead">
-    <div class="badge">${esc(currentMood)}</div>
-    <div class="count">Set ${ms.refreshCount}/${MAX_REFRESHES} • #${idx+1}</div>
-  </div>
+    card.innerHTML = `
+      <div class="cardhead">
+        <div class="badge">${esc(currentMood)}</div>
+        <div class="count">Set ${ms.refreshCount}/${MAX_REFRESHES} • #${idx+1}</div>
+      </div>
 
-  <div class="cardbody">
-    <div class="leftcol">
-      <div class="label" data-k="product"><span class="dot"></span> Product</div>
+      <div class="label"><span class="dot"></span> Product</div>
       <p class="value">${esc(b.products)}</p>
-      <a class="buylink" href="${esc(link)}" target="_blank" rel="noopener">
-        Bekijk op Amazon.nl →
-      </a>
-    </div>
 
-    <div class="rightcol">
-      <div class="label" data-k="eat"><span class="dot"></span> Eten/Drinken</div>
+      <div class="label"><span class="dot"></span> Eten/Drinken</div>
       <p class="value">${esc(b.eat)}</p>
 
-      <div class="label" data-k="do"><span class="dot"></span> Doen</div>
+      <div class="label"><span class="dot"></span> Doen</div>
       <p class="value">${esc(b.do)}</p>
 
-      <div class="label" data-k="watch"><span class="dot"></span> Serie/Film</div>
+      <div class="label"><span class="dot"></span> Serie/Film</div>
       <p class="value">${esc(b.watch)}</p>
-    </div>
-  </div>
 
-card.innerHTML = `
-  <div class="cardhead"> ... </div>
-
-  <div class="label">... Product</div>
-  <p class="value">...</p>
-  ...
-  <a class="buylink" ...>Bekijk product op Amazon.nl</a>
-`;
+      <a class="buylink" href="${esc(link)}" target="_blank" rel="noopener">Bekijk product op Amazon.nl</a>
+    `;
 
     grid.appendChild(card);
   });
