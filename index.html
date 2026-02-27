@@ -4,28 +4,26 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MoodMakerz</title>
+
 <style>
   :root{
     /* Beige theme */
     --bg0:#fbf3e6;
     --bg1:#f6e9d4;
     --bg2:#efe0c6;
+
     --ink:#1f2330;
     --muted:#5c5f6a;
 
-    --card: rgba(255,255,255,0.72);
-    --card-strong: rgba(255,255,255,0.82);
+    --card: rgba(255,255,255,0.74);
     --border: rgba(31,35,48,0.10);
     --border-strong: rgba(31,35,48,0.16);
 
     --shadow: 0 18px 55px rgba(31,35,48,.18);
     --shadow-soft: 0 10px 28px rgba(31,35,48,.12);
 
-    --radius:18px;
+    --radius:20px;
     --radius-sm:14px;
-
-    --accent:#6b7cff;      /* periwinkle */
-    --accent2:#22c7a8;     /* teal */
   }
 
   *{box-sizing:border-box;}
@@ -35,32 +33,32 @@
     font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Arial;
     color:var(--ink);
     background:
-      radial-gradient(1100px 720px at 20% -10%, rgba(255, 173, 102, 0.22), rgba(0,0,0,0) 62%),
-      radial-gradient(900px 700px at 90% 0%, rgba(107, 124, 255, 0.16), rgba(0,0,0,0) 58%),
+      radial-gradient(1100px 720px at 18% -10%, rgba(255, 173, 102, 0.22), rgba(0,0,0,0) 62%),
+      radial-gradient(900px 700px at 92% 0%, rgba(107, 124, 255, 0.15), rgba(0,0,0,0) 58%),
       radial-gradient(1000px 800px at 50% 120%, rgba(34, 199, 168, 0.10), rgba(0,0,0,0) 55%),
       linear-gradient(180deg, var(--bg0), var(--bg1) 45%, var(--bg2));
     min-height:100vh;
     overflow-x:hidden;
   }
 
-  /* Soft paper grain */
+  /* soft paper grain */
   body::before{
     content:"";
     position:fixed;
     inset:0;
     pointer-events:none;
     z-index:0;
-    opacity:.08;
+    opacity:.07;
     background-image:
-      radial-gradient(circle at 20% 30%, rgba(0,0,0,0.30) 0 0.5px, transparent 1px),
-      radial-gradient(circle at 80% 40%, rgba(0,0,0,0.30) 0 0.5px, transparent 1px),
-      radial-gradient(circle at 55% 75%, rgba(0,0,0,0.30) 0 0.5px, transparent 1px);
+      radial-gradient(circle at 20% 30%, rgba(0,0,0,0.34) 0 0.5px, transparent 1px),
+      radial-gradient(circle at 80% 40%, rgba(0,0,0,0.34) 0 0.5px, transparent 1px),
+      radial-gradient(circle at 55% 75%, rgba(0,0,0,0.34) 0 0.5px, transparent 1px);
     background-size: 120px 120px;
     filter: blur(.2px);
   }
 
   .wrap{position:relative; z-index:1; min-height:100vh; display:flex; flex-direction:column;}
-  .container{width:100%; max-width:1220px; margin:0 auto; padding:26px 22px 22px; flex:1;}
+  .container{width:100%; max-width:1240px; margin:0 auto; padding:26px 22px 22px; flex:1;}
 
   .topbar{
     position:sticky; top:0; z-index:5;
@@ -86,12 +84,12 @@
   .mood{
     padding:8px 12px;
     border-radius:999px;
-    background: rgba(255,255,255,0.60);
+    background: rgba(255,255,255,0.62);
     border:1px solid rgba(31,35,48,0.10);
     cursor:pointer;
     font-size:12.5px;
-    font-weight:850;
-    color: rgba(31,35,48,0.80);
+    font-weight:900;
+    color: rgba(31,35,48,0.82);
     user-select:none;
     transition: transform .12s ease, background .12s ease, border-color .12s ease, box-shadow .12s ease;
   }
@@ -103,7 +101,7 @@
   .mood.active{
     background: linear-gradient(90deg, rgba(107,124,255,0.22), rgba(34,199,168,0.16));
     border-color: rgba(31,35,48,0.16);
-    color: rgba(31,35,48,0.90);
+    color: rgba(31,35,48,0.92);
   }
 
   .shuffle{
@@ -112,8 +110,8 @@
     border:1px solid rgba(31,35,48,0.12);
     cursor:pointer;
     font-weight:950;
-    color: rgba(31,35,48,0.86);
-    background: rgba(255,255,255,0.60);
+    color: rgba(31,35,48,0.88);
+    background: rgba(255,255,255,0.62);
     transition: transform .12s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease;
   }
   .shuffle:hover{
@@ -122,17 +120,18 @@
     box-shadow: 0 10px 20px rgba(31,35,48,0.10);
   }
 
-  /* 5 cards visible on wide screens */
+  /* ===== GRID: 4 grotere cards ===== */
   .grid{
     display:grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap:14px;
-    padding:6px 0 10px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap:16px;
+    padding:6px 0 14px;
   }
-  @media (max-width:1200px){ .grid{grid-template-columns:repeat(3, minmax(0,1fr));} }
-  @media (max-width:820px){ .grid{grid-template-columns:repeat(2, minmax(0,1fr));} }
-  @media (max-width:520px){ .grid{grid-template-columns:1fr;} }
+  @media (max-width:1220px){ .grid{grid-template-columns:repeat(3, minmax(0,1fr));} }
+  @media (max-width:900px){ .grid{grid-template-columns:repeat(2, minmax(0,1fr));} }
+  @media (max-width:540px){ .grid{grid-template-columns:1fr;} }
 
+  /* ===== CARD ===== */
   .card{
     position:relative;
     background: var(--card);
@@ -140,12 +139,12 @@
     border:1px solid var(--border);
     box-shadow: var(--shadow-soft);
     transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
-    padding:12px;
+    padding:14px;
     display:flex;
     flex-direction:column;
-    gap:10px;
+    gap:12px;
     overflow:hidden;
-    min-height:240px;
+    min-height:320px; /* groter */
   }
   .card:hover{
     transform: translateY(-3px);
@@ -153,14 +152,13 @@
     border-color: var(--border-strong);
   }
 
-  /* Mood tint overlay (subtle) */
+  /* subtle tint overlay from JS variable */
   .card::after{
     content:"";
     position:absolute; inset:-2px;
     pointer-events:none;
     opacity: .22;
     background: var(--mood-tint, transparent);
-    filter: blur(0.2px);
   }
   .card > *{position:relative; z-index:1;}
 
@@ -178,19 +176,21 @@
     padding:6px 10px;
     border-radius:999px;
     border:1px solid rgba(31,35,48,0.12);
-    background: rgba(255,255,255,0.55);
-    color: rgba(31,35,48,0.80);
+    background: rgba(255,255,255,0.58);
+    color: rgba(31,35,48,0.82);
   }
   .count{
     font-size:11px;
     color: rgba(31,35,48,0.58);
-    font-weight:900;
+    font-weight:950;
+    white-space:nowrap;
   }
 
+  /* inside card: 2 columns on wide, stacked on small */
   .cardbody{
     display:grid;
     grid-template-columns: 1fr;
-    gap:10px;
+    gap:12px;
   }
   @media (min-width:980px){
     .cardbody{
@@ -199,32 +199,28 @@
     }
   }
 
-  .leftcol{
-    background: rgba(255,255,255,0.50);
-    border: 1px solid rgba(31,35,48,0.08);
-    border-radius: 14px;
-    padding:10px;
+  .leftcol, .rightcol{
+    border-radius: 16px;
+    padding:12px;
+    border:1px solid rgba(31,35,48,0.08);
   }
-  .rightcol{
-    background: rgba(255,255,255,0.38);
-    border: 1px solid rgba(31,35,48,0.07);
-    border-radius: 14px;
-    padding:10px;
-  }
+  .leftcol{ background: rgba(255,255,255,0.56); }
+  .rightcol{ background: rgba(255,255,255,0.40); }
 
   .label{
     font-size:11px;
     font-weight:950;
     color: rgba(31,35,48,0.78);
-    margin: 8px 0 6px;
-    padding: 6px 8px;
+    margin: 0 0 6px;
+    padding: 6px 9px;
     border-radius: 999px;
     display:inline-flex;
     align-items:center;
     gap:8px;
     border: 1px solid rgba(31,35,48,0.10);
-    background: rgba(255,255,255,0.40);
+    background: rgba(255,255,255,0.44);
   }
+
   .dot{
     width:8px; height:8px; border-radius:999px;
     box-shadow: 0 8px 16px rgba(31,35,48,0.14);
@@ -232,32 +228,29 @@
     background: linear-gradient(90deg, rgba(107,124,255,0.90), rgba(34,199,168,0.75));
   }
 
+  /* Text fitting: clamp + line-clamp to avoid overflow */
   .value{
-    font-size:12.6px;
+    font-size: clamp(12px, 1.05vw, 13.2px);
     line-height:1.35;
     font-weight:900;
-    color: rgba(31,35,48,0.86);
-    margin: 0 0 6px;
+    color: rgba(31,35,48,0.88);
+    margin: 0 0 10px;
     word-break: break-word;
+    overflow:hidden;
+    display:-webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+  .value.one-line{
+    -webkit-line-clamp: 2;
   }
 
   /* Section accents */
-  .label[data-k="product"]{
-    border-color: rgba(107,124,255,0.22);
-    background: rgba(107,124,255,0.10);
-  }
-  .label[data-k="eat"]{
-    border-color: rgba(34,199,168,0.22);
-    background: rgba(34,199,168,0.08);
-  }
-  .label[data-k="do"]{
-    border-color: rgba(255,140,0,0.20);
-    background: rgba(255,140,0,0.08);
-  }
-  .label[data-k="watch"]{
-    border-color: rgba(236,72,153,0.18);
-    background: rgba(236,72,153,0.07);
-  }
+  .label[data-k="product"]{ border-color: rgba(107,124,255,0.22); background: rgba(107,124,255,0.10); }
+  .label[data-k="eat"]{ border-color: rgba(34,199,168,0.22); background: rgba(34,199,168,0.08); }
+  .label[data-k="do"]{ border-color: rgba(255,140,0,0.20); background: rgba(255,140,0,0.08); }
+  .label[data-k="watch"]{ border-color: rgba(236,72,153,0.18); background: rgba(236,72,153,0.07); }
+
   .label[data-k="product"] .dot{ background: rgba(107,124,255,0.90); }
   .label[data-k="eat"] .dot{ background: rgba(34,199,168,0.85); }
   .label[data-k="do"] .dot{ background: rgba(255,140,0,0.82); }
@@ -270,7 +263,7 @@
     justify-content:center;
     gap:8px;
     text-decoration:none;
-    margin-top:10px;
+    margin-top:6px;
     padding:8px 10px;
     border-radius: 12px;
     font-weight:950;
@@ -289,6 +282,182 @@
     border-color: rgba(31,35,48,0.16);
   }
 
+  /* ===== FUN BANNER (onderste grote blok) ===== */
+  .fun{
+    position:relative;
+    margin: 6px 0 10px;
+    border-radius: 26px;
+    border: 1px solid rgba(31,35,48,0.10);
+    background: rgba(255,255,255,0.55);
+    box-shadow: var(--shadow-soft);
+    overflow:hidden;
+    padding: 16px 16px;
+  }
+  .fun::before{
+    content:"";
+    position:absolute;
+    inset:-120px;
+    background: var(--fun-bg, radial-gradient(800px 420px at 30% 20%, rgba(107,124,255,0.22), transparent 62%));
+    opacity:.9;
+    filter: blur(0.2px);
+    animation: floaty 9s ease-in-out infinite alternate;
+  }
+  .fun::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(circle at 18% 30%, rgba(0,0,0,0.10) 0 0.6px, transparent 1px),
+      radial-gradient(circle at 78% 45%, rgba(0,0,0,0.10) 0 0.6px, transparent 1px),
+      radial-gradient(circle at 55% 75%, rgba(0,0,0,0.10) 0 0.6px, transparent 1px);
+    background-size: 140px 140px;
+    opacity:.12;
+    pointer-events:none;
+  }
+  @keyframes floaty{
+    from{ transform: translate3d(-10px, -6px, 0) scale(1.02); }
+    to{ transform: translate3d(10px, 6px, 0) scale(1.06); }
+  }
+  .fun-inner{
+    position:relative; z-index:1;
+    display:grid;
+    grid-template-columns: 1.1fr 1.4fr;
+    gap:16px;
+    align-items:stretch;
+  }
+  @media (max-width:900px){
+    .fun-inner{ grid-template-columns: 1fr; }
+  }
+
+  .fun-card{
+    border-radius: 20px;
+    border: 1px solid rgba(31,35,48,0.10);
+    background: rgba(255,255,255,0.62);
+    padding: 14px;
+  }
+  .fun-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:10px;
+  }
+  .fun-title h2{
+    margin:0;
+    font-size: 16px;
+    font-weight: 980;
+    letter-spacing:-0.01em;
+    color: rgba(31,35,48,0.92);
+  }
+  .pill{
+    font-size: 11px;
+    font-weight: 950;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border:1px solid rgba(31,35,48,0.12);
+    background: rgba(255,255,255,0.60);
+    color: rgba(31,35,48,0.74);
+    white-space:nowrap;
+  }
+
+  .plan{
+    display:grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap:10px;
+  }
+  @media (max-width:900px){
+    .plan{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width:520px){
+    .plan{ grid-template-columns: 1fr; }
+  }
+
+  .mini{
+    border-radius: 16px;
+    border: 1px solid rgba(31,35,48,0.10);
+    background: rgba(255,255,255,0.56);
+    padding: 10px 10px;
+  }
+  .mini .k{
+    display:flex; align-items:center; gap:8px;
+    font-weight: 950;
+    font-size: 11px;
+    color: rgba(31,35,48,0.70);
+    margin-bottom:6px;
+  }
+  .mini .v{
+    margin:0;
+    font-weight: 950;
+    font-size: 12.5px;
+    line-height: 1.35;
+    color: rgba(31,35,48,0.88);
+    overflow:hidden;
+    display:-webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  .boost{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .quote{
+    border-radius: 18px;
+    border: 1px solid rgba(31,35,48,0.10);
+    background: rgba(255,255,255,0.56);
+    padding: 12px 12px;
+  }
+  .quote p{
+    margin:0;
+    font-weight: 950;
+    font-size: 14px;
+    line-height: 1.35;
+    color: rgba(31,35,48,0.90);
+  }
+  .sub{
+    margin:0;
+    color: rgba(31,35,48,0.62);
+    font-size: 12px;
+    font-weight: 850;
+    line-height: 1.45;
+  }
+
+  .meter{
+    border-radius: 18px;
+    border: 1px solid rgba(31,35,48,0.10);
+    background: rgba(255,255,255,0.56);
+    padding: 12px;
+  }
+  .bar{
+    height: 10px;
+    border-radius: 999px;
+    background: rgba(31,35,48,0.10);
+    overflow:hidden;
+    border: 1px solid rgba(31,35,48,0.10);
+  }
+  .bar > div{
+    height:100%;
+    width: var(--p, 10%);
+    background: linear-gradient(90deg, rgba(107,124,255,0.55), rgba(34,199,168,0.45), rgba(255,140,0,0.40));
+    border-radius: 999px;
+  }
+  .meter-row{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px;
+    margin-bottom:10px;
+  }
+  .meter-row .t{
+    font-weight: 950;
+    color: rgba(31,35,48,0.84);
+    font-size: 12px;
+  }
+  .meter-row .x{
+    font-weight: 950;
+    color: rgba(31,35,48,0.62);
+    font-size: 12px;
+  }
+
   .footer-wrap{
     position:relative; z-index:1;
     padding:18px 20px;
@@ -297,7 +466,7 @@
     backdrop-filter: blur(10px);
   }
   .footer{
-    max-width:1220px;
+    max-width:1240px;
     margin:0 auto;
     font-size:12px;
     color: rgba(31,35,48,0.62);
@@ -325,6 +494,33 @@
     </div>
 
     <div class="grid" id="grid"></div>
+
+    <!-- Big fun block -->
+    <section class="fun" id="fun">
+      <div class="fun-inner">
+        <div class="fun-card">
+          <div class="fun-title">
+            <h2>Mini Mood Plan</h2>
+            <div class="pill" id="funPill">Set 1/10</div>
+          </div>
+          <div class="plan" id="plan"></div>
+        </div>
+
+        <div class="boost">
+          <div class="quote">
+            <p id="quote">Loading…</p>
+            <p class="sub" id="quoteSub">— MoodMakerz</p>
+          </div>
+          <div class="meter">
+            <div class="meter-row">
+              <div class="t">Progress</div>
+              <div class="x" id="progText">1/10</div>
+            </div>
+            <div class="bar"><div id="progBar"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 
   <div class="footer-wrap">
@@ -341,10 +537,10 @@ const BASE="https://www.amazon.nl/s?k=";
 function amazonUrl(query){ return BASE + encodeURIComponent(query) + "&tag=" + TAG; }
 
 /** Config */
-const CARDS_PER_REFRESH = 5;     // 5 blokken in beeld
-const MAX_REFRESHES = 10;        // 10 refreshes per mood (unieke sets)
+const CARDS_PER_REFRESH = 4;     // 1 blok minder -> grotere cards
+const MAX_REFRESHES = 10;
 
-/** Data per mood */
+/** Data */
 const DATA = {
   Stressed: {
     products: [
@@ -365,7 +561,6 @@ const DATA = {
       "Our Planet","Studio Ghibli (bv. Totoro)","Feel-good romcom","Friends","Ted Lasso"
     ]
   },
-
   Happy: {
     products: [
       "Instant camera","Bluetooth speaker","String lights (fairy lights)","Board game","Karaoke microphone",
@@ -385,7 +580,6 @@ const DATA = {
       "Spider-Man: Into the Spider-Verse","School of Rock","Chef","The Secret Life of Walter Mitty","Sing"
     ]
   },
-
   Energetic: {
     products: [
       "Jump rope","Resistance bands set","Adjustable dumbbells","Kettlebell","Fitness tracker",
@@ -405,7 +599,6 @@ const DATA = {
       "Rocky","Formula 1: Drive to Survive","John Wick","Mission: Impossible","Spider-Man (actie)"
     ]
   },
-
   Creative: {
     products: [
       "Sketchbook","Marker set","Watercolor paint set","Acrylic paint set","Calligraphy set",
@@ -422,10 +615,9 @@ const DATA = {
     ],
     watch: [
       "Amélie","Abstract: The Art of Design","The Great British Bake Off","Chef’s Table","Julie & Julia",
-      "La La Land","Midnight in Paris","The Pixar Story","Inside Llewyn Davis","Kiki’s Delivery Service"
+      "La La Land","Midnight in Paris","The Pixar Story","Kiki’s Delivery Service","Inside Llewyn Davis"
     ]
   },
-
   Tired: {
     products: [
       "Blackout sleep mask","White noise machine","Sunrise alarm clock","Electric blanket","Memory foam pillow",
@@ -447,13 +639,51 @@ const DATA = {
   }
 };
 
-/** Mood tint gradients (subtle) */
+/** Mood tint gradients */
 const MOOD_TINT = {
-  Stressed: "radial-gradient(600px 360px at 30% 15%, rgba(107,124,255,0.30), rgba(0,0,0,0) 60%), radial-gradient(520px 320px at 70% 85%, rgba(34,199,168,0.16), rgba(0,0,0,0) 62%)",
-  Happy:    "radial-gradient(620px 380px at 30% 20%, rgba(255,186,90,0.28), rgba(0,0,0,0) 60%), radial-gradient(520px 320px at 75% 80%, rgba(236,72,153,0.14), rgba(0,0,0,0) 62%)",
-  Energetic:"radial-gradient(620px 380px at 30% 15%, rgba(34,199,168,0.26), rgba(0,0,0,0) 60%), radial-gradient(520px 320px at 75% 85%, rgba(255,140,0,0.18), rgba(0,0,0,0) 62%)",
-  Creative: "radial-gradient(620px 380px at 30% 20%, rgba(236,72,153,0.18), rgba(0,0,0,0) 60%), radial-gradient(520px 320px at 75% 80%, rgba(107,124,255,0.20), rgba(0,0,0,0) 62%)",
-  Tired:    "radial-gradient(620px 380px at 30% 15%, rgba(31,35,48,0.12), rgba(0,0,0,0) 60%), radial-gradient(520px 320px at 75% 85%, rgba(107,124,255,0.14), rgba(0,0,0,0) 62%)"
+  Stressed: "radial-gradient(620px 360px at 30% 15%, rgba(107,124,255,0.30), transparent 62%), radial-gradient(520px 320px at 70% 85%, rgba(34,199,168,0.16), transparent 62%)",
+  Happy:    "radial-gradient(640px 380px at 30% 20%, rgba(255,186,90,0.28), transparent 62%), radial-gradient(520px 320px at 75% 80%, rgba(236,72,153,0.14), transparent 62%)",
+  Energetic:"radial-gradient(640px 380px at 30% 15%, rgba(34,199,168,0.26), transparent 62%), radial-gradient(520px 320px at 75% 85%, rgba(255,140,0,0.18), transparent 62%)",
+  Creative: "radial-gradient(640px 380px at 30% 20%, rgba(236,72,153,0.18), transparent 62%), radial-gradient(520px 320px at 75% 80%, rgba(107,124,255,0.20), transparent 62%)",
+  Tired:    "radial-gradient(640px 380px at 30% 15%, rgba(31,35,48,0.12), transparent 62%), radial-gradient(520px 320px at 75% 85%, rgba(107,124,255,0.14), transparent 62%)"
+};
+
+/** Fun banner backgrounds */
+const FUN_BG = {
+  Stressed: "radial-gradient(900px 460px at 20% 20%, rgba(107,124,255,0.26), transparent 62%), radial-gradient(800px 420px at 80% 70%, rgba(34,199,168,0.16), transparent 62%)",
+  Happy: "radial-gradient(900px 460px at 18% 25%, rgba(255,186,90,0.26), transparent 62%), radial-gradient(800px 420px at 78% 72%, rgba(236,72,153,0.14), transparent 62%)",
+  Energetic: "radial-gradient(900px 460px at 18% 25%, rgba(34,199,168,0.22), transparent 62%), radial-gradient(800px 420px at 78% 72%, rgba(255,140,0,0.18), transparent 62%)",
+  Creative: "radial-gradient(900px 460px at 18% 25%, rgba(236,72,153,0.18), transparent 62%), radial-gradient(800px 420px at 78% 72%, rgba(107,124,255,0.18), transparent 62%)",
+  Tired: "radial-gradient(900px 460px at 18% 25%, rgba(31,35,48,0.12), transparent 62%), radial-gradient(800px 420px at 78% 72%, rgba(107,124,255,0.14), transparent 62%)"
+};
+
+/** Mood quotes */
+const QUOTES = {
+  Stressed: [
+    "Zacht is ook sterk. Doe één kleine stap en adem rustig.",
+    "Maak het simpel: warm drankje, kleine wandeling, klaar.",
+    "Je hoeft het niet op te lossen. Je mag het even laten zijn."
+  ],
+  Happy: [
+    "Maak er een mini-feestje van: muziek aan, lichtjes aan.",
+    "Vreugde = gedeeld. Stuur één berichtje en plan iets leuks.",
+    "Vandaag is voor herinneringen: foto, snack, lach."
+  ],
+  Energetic: [
+    "Gebruik die energie: 12 minuten knallen is genoeg.",
+    "Actie maakt motivatie. Start klein, ga door.",
+    "Hydrate, move, repeat."
+  ],
+  Creative: [
+    "Maak iets kleins af. Kleine projecten geven grote voldoening.",
+    "Geen perfectie — alleen nieuwsgierigheid.",
+    "Maak het lelijk. Dan wordt het vanzelf mooi."
+  ],
+  Tired: [
+    "Rust is productief. Je hoeft niet te pushen.",
+    "Zacht licht, warme thee, rustig ritme.",
+    "Een goede nacht is ook een overwinning."
+  ]
 };
 
 /** UI refs */
@@ -461,8 +691,16 @@ const moodsEl = document.getElementById("moods");
 const grid = document.getElementById("grid");
 const shuffleBtn = document.getElementById("shuffle");
 
-/** State: per mood: order per category + idx + refreshCount */
-const STORAGE_KEY = "moodmakerz_beige_structured_v1";
+const fun = document.getElementById("fun");
+const plan = document.getElementById("plan");
+const funPill = document.getElementById("funPill");
+const quote = document.getElementById("quote");
+const quoteSub = document.getElementById("quoteSub");
+const progText = document.getElementById("progText");
+const progBar = document.getElementById("progBar");
+
+/** State */
+const STORAGE_KEY = "moodmakerz_beige_big_v2";
 function loadState(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch(e){ return {}; } }
 function saveState(s){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch(e){} }
 let state = loadState();
@@ -545,18 +783,54 @@ function buildBatch(mood, k){
 }
 
 function esc(s){
-  return String(s)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;");
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
 
 let currentMood = Object.keys(DATA)[0];
 
+function pickQuote(mood){
+  const q = QUOTES[mood] || ["Enjoy."];
+  const i = Math.floor(Math.random()*q.length);
+  return q[i];
+}
+
+function renderFunBanner(mood, setNum){
+  fun.style.setProperty("--fun-bg", FUN_BG[mood] || FUN_BG.Stressed);
+
+  funPill.textContent = `Set ${setNum}/${MAX_REFRESHES} • ${mood}`;
+  progText.textContent = `${setNum}/${MAX_REFRESHES}`;
+  const pct = Math.max(1, Math.min(100, Math.round((setNum / MAX_REFRESHES) * 100)));
+  progBar.style.width = pct + "%";
+
+  quote.textContent = pickQuote(mood);
+  quoteSub.textContent = "— MoodMakerz";
+}
+
+/* bottom plan uses 1 random combo (from batch[0]) */
+function renderPlan(example){
+  plan.innerHTML = "";
+  const items = [
+    {k:"Product", v: example.products, dot:"background:rgba(107,124,255,0.90)"},
+    {k:"Eten/Drinken", v: example.eat, dot:"background:rgba(34,199,168,0.85)"},
+    {k:"Doen", v: example.do, dot:"background:rgba(255,140,0,0.82)"},
+    {k:"Serie/Film", v: example.watch, dot:"background:rgba(236,72,153,0.75)"}
+  ];
+
+  items.forEach(it=>{
+    const el = document.createElement("div");
+    el.className = "mini";
+    el.innerHTML = `
+      <div class="k"><span style="width:8px;height:8px;border-radius:999px;${it.dot};display:inline-block;"></span>${esc(it.k)}</div>
+      <p class="v">${esc(it.v)}</p>
+    `;
+    plan.appendChild(el);
+  });
+}
+
 function render(){
   ensureMoodState(currentMood);
-
   const ms = state[currentMood];
+
   if(ms.refreshCount >= MAX_REFRESHES){
     resetMoodRotation(currentMood);
   }
@@ -569,12 +843,9 @@ function render(){
   batch.forEach((b, idx) => {
     const card = document.createElement("div");
     card.className = "card";
-
-    // mood tint in CSS variable
     card.style.setProperty("--mood-tint", MOOD_TINT[currentMood] || "transparent");
 
-    const productQuery = b.products;
-    const link = amazonUrl(productQuery);
+    const link = amazonUrl(b.products);
 
     card.innerHTML = `
       <div class="cardhead">
@@ -585,10 +856,8 @@ function render(){
       <div class="cardbody">
         <div class="leftcol">
           <div class="label" data-k="product"><span class="dot"></span> Product</div>
-          <p class="value">${esc(b.products)}</p>
-          <a class="buylink" href="${esc(link)}" target="_blank" rel="noopener">
-            Bekijk op Amazon.nl →
-          </a>
+          <p class="value one-line">${esc(b.products)}</p>
+          <a class="buylink" href="${esc(link)}" target="_blank" rel="noopener">Bekijk op Amazon.nl →</a>
         </div>
 
         <div class="rightcol">
@@ -606,6 +875,10 @@ function render(){
 
     grid.appendChild(card);
   });
+
+  // Fun block uses first card’s combo as "mini plan"
+  renderFunBanner(currentMood, ms.refreshCount);
+  renderPlan(batch[0]);
 }
 
 function setMood(mood){
@@ -627,8 +900,6 @@ Object.keys(DATA).forEach((m,i)=>{
 });
 
 shuffleBtn.onclick = render;
-
-/** First render */
 render();
 </script>
 </body>
