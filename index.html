@@ -20,6 +20,11 @@
 
     --r: 22px;
     --r2: 16px;
+
+    /* mood defaults */
+    --mood-accent: rgba(125,156,255,0.70);
+    --mood-accent2: rgba(70,216,190,0.55);
+    --mood-wash: rgba(125,156,255,0.12);
   }
 
   *{ box-sizing:border-box; }
@@ -29,15 +34,12 @@
     font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Arial;
     color:var(--ink);
     overflow-x:hidden;
-    background: #fbf6ee;
+    background:#fbf6ee;
   }
 
-  /* ===== AURORA / COLOR HAZE BACKGROUND ===== */
+  /* ===== Aesthetic haze background (no images) ===== */
   .haze{
-    position:fixed;
-    inset:0;
-    z-index:0;
-    pointer-events:none;
+    position:fixed; inset:0; z-index:0; pointer-events:none;
     background:
       radial-gradient(1100px 680px at 14% 18%, rgba(255, 170, 95, 0.22), transparent 60%),
       radial-gradient(900px 650px at 86% 22%, rgba(125, 156, 255, 0.18), transparent 60%),
@@ -46,36 +48,28 @@
       linear-gradient(180deg, #fbf6ee, #f6ecd9 50%, #f2e3c9);
   }
 
-  /* floating blobs */
   .blob{
     position:fixed;
-    inset:auto;
-    width:520px;
-    height:520px;
-    border-radius: 999px;
-    filter: blur(40px);
+    width:560px; height:560px; border-radius:999px;
+    filter: blur(44px);
     opacity: .55;
     z-index:1;
     pointer-events:none;
     mix-blend-mode: multiply;
     animation: drift 12s ease-in-out infinite alternate;
   }
-  .b1{ left:-180px; top:-120px; background: radial-gradient(circle at 30% 30%, rgba(255,170,95,.55), transparent 62%); }
-  .b2{ right:-220px; top:40px;  background: radial-gradient(circle at 30% 30%, rgba(125,156,255,.55), transparent 62%); animation-duration: 14s; }
-  .b3{ left:18%; bottom:-260px; background: radial-gradient(circle at 30% 30%, rgba(70,216,190,.48), transparent 62%); animation-duration: 16s; }
-  .b4{ right:10%; bottom:-300px; background: radial-gradient(circle at 30% 30%, rgba(236,120,200,.42), transparent 64%); animation-duration: 18s; }
+  .b1{ left:-210px; top:-140px; background: radial-gradient(circle at 30% 30%, rgba(255,170,95,.55), transparent 62%); }
+  .b2{ right:-260px; top:30px; background: radial-gradient(circle at 30% 30%, rgba(125,156,255,.55), transparent 62%); animation-duration: 14s; }
+  .b3{ left:18%; bottom:-300px; background: radial-gradient(circle at 30% 30%, rgba(70,216,190,.48), transparent 62%); animation-duration: 16s; }
+  .b4{ right:10%; bottom:-320px; background: radial-gradient(circle at 30% 30%, rgba(236,120,200,.42), transparent 64%); animation-duration: 18s; }
 
   @keyframes drift{
     from{ transform: translate3d(-10px, -8px, 0) scale(1.02); }
-    to{ transform: translate3d(14px, 10px, 0) scale(1.08); }
+    to{ transform: translate3d(16px, 12px, 0) scale(1.08); }
   }
 
-  /* subtle grain layer */
   .grain{
-    position:fixed;
-    inset:0;
-    z-index:2;
-    pointer-events:none;
+    position:fixed; inset:0; z-index:2; pointer-events:none;
     opacity:.06;
     background-image:
       radial-gradient(circle at 20% 30%, rgba(0,0,0,0.40) 0 0.55px, transparent 1px),
@@ -84,35 +78,35 @@
     background-size: 120px 120px;
   }
 
-  /* main content */
-  .wrap{
-    position:relative;
-    z-index:3;
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-  }
+  .wrap{ position:relative; z-index:3; min-height:100vh; display:flex; flex-direction:column; }
   .container{
     width:100%;
-    max-width:1240px;
+    max-width:1380px; /* (6) fill large screens */
     margin:0 auto;
     padding:26px 22px 22px;
     flex:1;
   }
 
+  /* ===== Topbar / Hero ===== */
   .topbar{
-    position:sticky;
-    top:0;
-    z-index:10;
-    margin:-26px -22px 18px;
+    position:sticky; top:0; z-index:20;
+    margin:-26px -22px 16px;
     padding:18px 22px 14px;
-    background: linear-gradient(180deg, rgba(251,246,238,0.85), rgba(251,246,238,0.70) 65%, rgba(251,246,238,0));
+    background: linear-gradient(180deg, rgba(251,246,238,0.86), rgba(251,246,238,0.72) 65%, rgba(251,246,238,0));
     backdrop-filter: blur(14px);
     border-bottom:1px solid rgba(23,26,34,0.06);
   }
 
+  .hero{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+
   h1{
-    margin:0 0 10px;
+    margin:0;
     font-size:34px;
     letter-spacing:-0.02em;
     line-height:1.05;
@@ -120,7 +114,40 @@
     color: rgba(23,26,34,0.92);
   }
 
-  .row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .tagline{
+    margin:6px 0 0;
+    font-weight:900;
+    color: rgba(23,26,34,0.72);
+    font-size:13px;
+  }
+  .subline{
+    margin:6px 0 0;
+    color: rgba(23,26,34,0.62);
+    font-weight:850;
+    font-size:12px;
+    line-height:1.35;
+  }
+
+  .hero-right{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+  }
+
+  .statuspill{
+    padding:8px 12px;
+    border-radius:999px;
+    background: rgba(255,255,255,0.55);
+    border:1px solid rgba(23,26,34,0.10);
+    font-weight:950;
+    color: rgba(23,26,34,0.76);
+    font-size:12px;
+    white-space:nowrap;
+  }
+
+  .row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px; }
   .moods{ display:flex; gap:8px; flex-wrap:wrap; }
 
   .pillbtn{
@@ -144,6 +171,21 @@
     background: linear-gradient(90deg, var(--mood-accent), var(--mood-accent2));
     border-color: rgba(23,26,34,0.14);
     color: rgba(23,26,34,0.92);
+    box-shadow: 0 12px 26px rgba(23,26,34,0.10);
+    position:relative;
+  }
+  .pillbtn.active::after{
+    content:"";
+    position:absolute;
+    left:18px; right:18px; bottom:-7px;
+    height:3px;
+    border-radius:999px;
+    background: linear-gradient(90deg, var(--mood-accent), var(--mood-accent2));
+    opacity:.65;
+  }
+
+  .pillbtn.ghost{
+    background: rgba(255,255,255,0.38);
   }
 
   /* ===== Mood palette variables ===== */
@@ -153,30 +195,98 @@
   body.mood-Creative{ --mood-accent: rgba(236,120,200,0.62); --mood-accent2: rgba(125,156,255,0.56); --mood-wash: rgba(236,120,200,0.10); }
   body.mood-Tired{ --mood-accent: rgba(140,150,185,0.62); --mood-accent2: rgba(180,170,210,0.46); --mood-wash: rgba(140,150,185,0.10); }
 
-  /* ===== Grid ===== */
-  .grid{
+  /* ===== Mood meter (5) ===== */
+  .meterbar{
+    margin-top:12px;
+    border-radius: 20px;
+    border:1px solid rgba(23,26,34,0.10);
+    background: linear-gradient(180deg, rgba(255,255,255,0.66), rgba(255,255,255,0.50));
+    box-shadow: var(--shadow-soft);
+    padding: 12px 12px;
+    backdrop-filter: blur(10px);
+  }
+  .metergrid{
     display:grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap:10px;
+  }
+  @media (max-width:700px){
+    .metergrid{ grid-template-columns: 1fr; }
+  }
+  .meteritem{
+    border-radius: 16px;
+    border:1px solid rgba(23,26,34,0.08);
+    background: rgba(255,255,255,0.46);
+    padding: 10px 10px;
+  }
+  .mrow{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px;
+    margin-bottom:8px;
+  }
+  .mname{
+    display:flex; align-items:center; gap:8px;
+    font-weight:950;
+    font-size:12px;
+    color: rgba(23,26,34,0.82);
+  }
+  .mic{
+    width:18px; height:18px; border-radius:7px;
+    background: linear-gradient(135deg, var(--mood-accent), var(--mood-accent2));
+    box-shadow: 0 10px 18px rgba(23,26,34,0.10);
+    flex: 0 0 auto;
+  }
+  .mval{
+    font-weight:950;
+    font-size:12px;
+    color: rgba(23,26,34,0.62);
+    white-space:nowrap;
+  }
+  .track{
+    height:10px;
+    border-radius:999px;
+    background: rgba(23,26,34,0.10);
+    border:1px solid rgba(23,26,34,0.10);
+    overflow:hidden;
+  }
+  .fill{
+    height:100%;
+    width: 10%;
+    border-radius:999px;
+    background: linear-gradient(90deg, var(--mood-accent), var(--mood-accent2));
+  }
+
+  /* ===== Cards grid (6) ===== */
+  .grid{
+    margin-top:14px;
+    display:grid;
+    grid-template-columns: 1.15fr repeat(3, minmax(0, 1fr)); /* (2) highlight slightly wider */
     gap:16px;
     padding:6px 0 14px;
   }
-  @media (max-width:1220px){ .grid{grid-template-columns:repeat(3, minmax(0,1fr));} }
-  @media (max-width:900px){ .grid{grid-template-columns:repeat(2, minmax(0,1fr));} }
-  @media (max-width:540px){ .grid{grid-template-columns:1fr;} }
+  @media (max-width:1280px){
+    .grid{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+  }
+  @media (max-width:900px){
+    .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+  }
+  @media (max-width:540px){
+    .grid{ grid-template-columns: 1fr; }
+  }
 
   /* ===== Card (premium glass) ===== */
   .card{
     position:relative;
     border-radius: var(--r);
     border:1px solid rgba(23,26,34,0.10);
-    background: linear-gradient(180deg, rgba(255,255,255,0.70), rgba(255,255,255,0.55));
+    background: linear-gradient(180deg, rgba(255,255,255,0.70), rgba(255,255,255,0.54));
     box-shadow: var(--shadow-soft);
     padding:14px;
     display:flex;
     flex-direction:column;
     gap:12px;
     overflow:hidden;
-    min-height:360px;
+    min-height:370px;
     backdrop-filter: blur(10px);
     transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
   }
@@ -187,9 +297,7 @@
   }
   .card::before{
     content:"";
-    position:absolute;
-    inset:-2px;
-    pointer-events:none;
+    position:absolute; inset:-2px; pointer-events:none;
     opacity:.95;
     background:
       radial-gradient(700px 420px at 22% 18%, var(--mood-wash), transparent 62%),
@@ -220,6 +328,20 @@
     white-space:nowrap;
   }
 
+  /* (7) shimmer while rendering */
+  .skeleton{
+    height: 12px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0.60), rgba(255,255,255,0.18));
+    background-size: 220% 100%;
+    animation: shimmer 1.05s ease-in-out infinite;
+    border:1px solid rgba(23,26,34,0.06);
+  }
+  @keyframes shimmer{
+    0%{ background-position: 120% 0; }
+    100%{ background-position: -120% 0; }
+  }
+
   .stack{ display:flex; flex-direction:column; gap:10px; }
 
   .section{
@@ -227,6 +349,14 @@
     padding: 12px;
     border:1px solid rgba(23,26,34,0.08);
     background: rgba(255,255,255,0.42);
+    transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease; /* (7) micro */
+  }
+  .card:hover .section{
+    border-color: rgba(23,26,34,0.10);
+  }
+  .section:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 10px 18px rgba(23,26,34,0.06);
   }
 
   .label{
@@ -250,6 +380,11 @@
   .label[data-k="eat"] .dot{ background: rgba(70,216,190,0.85); }
   .label[data-k="do"] .dot{ background: rgba(255,170,95,0.82); }
   .label[data-k="watch"] .dot{ background: rgba(236,120,200,0.72); }
+  /* (7) tiny icon via CSS pseudo (no images) */
+  .label[data-k="product"]::after{ content:"🛍️"; font-size:12px; opacity:.7; }
+  .label[data-k="eat"]::after{ content:"🍵"; font-size:12px; opacity:.7; }
+  .label[data-k="do"]::after{ content:"⏱️"; font-size:12px; opacity:.7; }
+  .label[data-k="watch"]::after{ content:"🎬"; font-size:12px; opacity:.7; }
 
   .value{
     font-size: 13px;
@@ -265,35 +400,82 @@
   }
   .value.short{ -webkit-line-clamp: 2; }
 
-  a.buylink{
+  /* (3) subtler Amazon link */
+  a.buy-pill{
     display:inline-flex;
     align-items:center;
-    justify-content:center;
     gap:8px;
-    text-decoration:none;
     margin-top:10px;
-    padding:8px 10px;
-    border-radius: 12px;
+    padding:7px 10px;
+    border-radius:999px;
+    text-decoration:none;
     font-weight:950;
     font-size:12px;
-    letter-spacing:.01em;
-    color: rgba(23,26,34,0.92);
-    background: linear-gradient(90deg, rgba(255,255,255,0.52), rgba(255,255,255,0.30));
-    border: 1px solid rgba(23,26,34,0.12);
-    box-shadow: 0 10px 20px rgba(23,26,34,0.08);
-    transition: transform .12s ease, filter .12s ease, box-shadow .12s ease, border-color .12s ease;
+    color: rgba(23,26,34,0.86);
+    background: rgba(255,255,255,0.46);
+    border:1px solid rgba(23,26,34,0.10);
+    transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+    width: fit-content;
   }
-  a.buylink:hover{
+  a.buy-pill:hover{
     transform: translateY(-1px);
-    filter: brightness(1.02);
-    box-shadow: 0 14px 28px rgba(23,26,34,0.12);
     border-color: rgba(23,26,34,0.16);
+    box-shadow: 0 12px 22px rgba(23,26,34,0.10);
+  }
+  .buy-ic{
+    width:18px; height:18px; border-radius:7px;
+    background: linear-gradient(135deg, var(--mood-accent), var(--mood-accent2));
+    box-shadow: 0 10px 18px rgba(23,26,34,0.10);
+    flex:0 0 auto;
   }
 
-  /* ===== Bottom block: Playlist Picks ===== */
+  /* (2) Highlight card styles */
+  .card.highlight{
+    outline: 2px solid rgba(23,26,34,0.06);
+    border-color: rgba(23,26,34,0.14);
+  }
+  .top-pick{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    margin-top:-2px;
+  }
+  .top-pick .tp{
+    font-weight:980;
+    font-size:12px;
+    color: rgba(23,26,34,0.82);
+    letter-spacing:.01em;
+  }
+  .tp-pill{
+    font-size:11px;
+    font-weight:950;
+    padding:6px 10px;
+    border-radius:999px;
+    border:1px solid rgba(23,26,34,0.12);
+    background: linear-gradient(90deg, rgba(255,255,255,0.52), rgba(255,255,255,0.32));
+    color: rgba(23,26,34,0.70);
+    white-space:nowrap;
+  }
+  .why{
+    border-radius: 18px;
+    border:1px solid rgba(23,26,34,0.08);
+    background: rgba(255,255,255,0.38);
+    padding: 10px 12px;
+  }
+  .why .wlabel{
+    font-weight:950; font-size:11px; color: rgba(23,26,34,0.70);
+    margin-bottom:6px;
+  }
+  .why .wtext{
+    margin:0;
+    font-weight:900;
+    font-size:13px;
+    color: rgba(23,26,34,0.90);
+    line-height:1.35;
+  }
+
+  /* ===== Bottom block: Playlist Picks (4) ===== */
   .fun{
     position:relative;
-    margin: 6px 0 10px;
+    margin: 8px 0 10px;
     border-radius: 28px;
     border: 1px solid rgba(23,26,34,0.10);
     background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.50));
@@ -307,8 +489,8 @@
     position:absolute;
     inset:-140px;
     background:
-      radial-gradient(800px 520px at 22% 20%, var(--mood-wash), transparent 62%),
-      radial-gradient(800px 520px at 80% 85%, rgba(70,216,190,0.08), transparent 62%);
+      radial-gradient(900px 560px at 22% 20%, var(--mood-wash), transparent 62%),
+      radial-gradient(900px 560px at 80% 85%, rgba(70,216,190,0.08), transparent 62%);
     opacity:.95;
     animation: drift2 10s ease-in-out infinite alternate;
   }
@@ -320,7 +502,7 @@
   .fun-inner{
     position:relative; z-index:1;
     display:grid;
-    grid-template-columns: 1.5fr 1fr;
+    grid-template-columns: 1.6fr 1fr;
     gap:16px;
     align-items:stretch;
   }
@@ -332,6 +514,7 @@
     background: rgba(255,255,255,0.46);
     padding: 14px;
   }
+
   .fun-title{
     display:flex;
     align-items:center;
@@ -355,6 +538,30 @@
     background: rgba(255,255,255,0.56);
     color: rgba(23,26,34,0.70);
     white-space:nowrap;
+  }
+
+  .fun-actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  .mini-btn{
+    padding:8px 10px;
+    border-radius:999px;
+    border:1px solid rgba(23,26,34,0.12);
+    background: rgba(255,255,255,0.52);
+    cursor:pointer;
+    font-weight:950;
+    font-size:12px;
+    color: rgba(23,26,34,0.78);
+    transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+    user-select:none;
+  }
+  .mini-btn:hover{
+    transform: translateY(-1px);
+    border-color: rgba(23,26,34,0.16);
+    box-shadow: 0 10px 18px rgba(23,26,34,0.10);
   }
 
   .songs{
@@ -400,11 +607,7 @@
   }
   .song a:hover{ color: rgba(23,26,34,0.92); }
 
-  .boost{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-  }
+  .boost{ display:flex; flex-direction:column; gap:10px; }
   .quote{
     border-radius: 20px;
     border: 1px solid rgba(23,26,34,0.10);
@@ -418,13 +621,7 @@
     line-height: 1.35;
     color: rgba(23,26,34,0.90);
   }
-  .sub{
-    margin:8px 0 0;
-    color: rgba(23,26,34,0.62);
-    font-size: 12px;
-    font-weight: 850;
-    line-height: 1.45;
-  }
+  .sub{ margin:8px 0 0; color: rgba(23,26,34,0.62); font-size: 12px; font-weight: 850; line-height: 1.45; }
 
   .meter{
     border-radius: 20px;
@@ -449,6 +646,30 @@
   .meter-row .t{ font-weight: 950; color: rgba(23,26,34,0.84); font-size: 12px; }
   .meter-row .x{ font-weight: 950; color: rgba(23,26,34,0.62); font-size: 12px; }
 
+  .toast{
+    position:fixed;
+    left:50%;
+    bottom:18px;
+    transform: translateX(-50%);
+    z-index:99;
+    padding:10px 12px;
+    border-radius:999px;
+    border:1px solid rgba(23,26,34,0.12);
+    background: rgba(255,255,255,0.70);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 18px 40px rgba(23,26,34,0.14);
+    font-weight:950;
+    font-size:12px;
+    color: rgba(23,26,34,0.84);
+    opacity:0;
+    pointer-events:none;
+    transition: opacity .18s ease, transform .18s ease;
+  }
+  .toast.show{
+    opacity:1;
+    transform: translateX(-50%) translateY(-4px);
+  }
+
   .footer-wrap{
     position:relative; z-index:3;
     padding:18px 20px;
@@ -457,7 +678,7 @@
     backdrop-filter: blur(10px);
   }
   .footer{
-    max-width:1240px;
+    max-width:1380px;
     margin:0 auto;
     font-size:12px;
     color: rgba(23,26,34,0.62);
@@ -465,7 +686,18 @@
     text-align:center;
   }
 
-  .pillbtn:focus-visible, a.buylink:focus-visible{
+  /* (7) entrance animation */
+  .enter{
+    opacity:0;
+    transform: translateY(6px);
+  }
+  .enter.show{
+    opacity:1;
+    transform: translateY(0);
+    transition: opacity .22s ease, transform .22s ease;
+  }
+
+  .pillbtn:focus-visible, a.buy-pill:focus-visible, .mini-btn:focus-visible{
     outline:2px solid rgba(23,26,34,0.28);
     outline-offset:2px;
   }
@@ -480,25 +712,61 @@
   <div class="blob b4"></div>
   <div class="grain"></div>
 
+  <div class="toast" id="toast">Gekopieerd</div>
+
   <div class="wrap">
     <div class="container">
       <div class="topbar">
-        <h1>MoodMakerz</h1>
+        <div class="hero">
+          <div>
+            <h1>MoodMakerz</h1>
+            <div class="tagline">Kies je mood → krijg 4 plannen + een playlist.</div>
+            <div class="subline">Druk op <b>Refresh</b> voor nieuwe sets (10×). Je kunt ook alleen de songs shufflen.</div>
+          </div>
+          <div class="hero-right">
+            <div class="statuspill" id="status">Today’s vibe: —</div>
+            <button class="pillbtn ghost" id="reset">Reset 1/10</button>
+            <button class="pillbtn" id="refresh">Refresh</button>
+          </div>
+        </div>
+
         <div class="row">
           <div class="moods" id="moods"></div>
-          <button class="pillbtn" id="shuffle">Refresh</button>
+        </div>
+
+        <div class="meterbar enter" id="meterbar">
+          <div class="metergrid">
+            <div class="meteritem">
+              <div class="mrow"><div class="mname"><span class="mic"></span> Energy</div><div class="mval" id="mEnergy">—</div></div>
+              <div class="track"><div class="fill" id="fEnergy"></div></div>
+            </div>
+            <div class="meteritem">
+              <div class="mrow"><div class="mname"><span class="mic"></span> Calm</div><div class="mval" id="mCalm">—</div></div>
+              <div class="track"><div class="fill" id="fCalm"></div></div>
+            </div>
+            <div class="meteritem">
+              <div class="mrow"><div class="mname"><span class="mic"></span> Focus</div><div class="mval" id="mFocus">—</div></div>
+              <div class="track"><div class="fill" id="fFocus"></div></div>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="grid" id="grid"></div>
 
-      <section class="fun">
+      <section class="fun enter" id="fun">
         <div class="fun-inner">
           <div class="fun-card">
             <div class="fun-title">
               <h2>Playlist Picks</h2>
               <div class="pill" id="funPill">Set 1/10</div>
             </div>
+
+            <div class="fun-actions">
+              <button class="mini-btn" id="shuffleSongs">Shuffle songs</button>
+              <button class="mini-btn" id="copySongs">Copy playlist</button>
+            </div>
+
             <div class="songs" id="songs"></div>
           </div>
 
@@ -537,37 +805,37 @@ const CARDS_PER_REFRESH = 4;
 const MAX_REFRESHES = 10;
 const SONGS_PER_REFRESH = 8;
 
-/** Data */
+/** (8) Content improvements with time hints */
 const DATA = {
   Stressed: {
     products: ["Weighted blanket","Aromatherapy diffuser","Lavender essential oil","Neck and shoulder massager","Heat pad (microwavable)","Acupressure mat","Sleep mask (blackout)","White noise machine","Bath salts","Meditation cushion","Foam roller","Massage ball","Chamomile tea","Scented candle set","Relaxing bath pillow"],
-    eat: ["Kamille- of lavendelthee","Warme havermout met banaan & kaneel","Tomatensoep + volkoren toast","Yoghurt met honing & noten","Banana bread + thee","Rijstwafel met pindakaas","Pure chocolade (klein stukje)","Gemberthee met citroen","Pasta pesto (simpel)","Smoothie: banaan + yoghurt"],
-    do: ["10 min ademhalingsoefening (box breathing)","Warme douche + rustige muziek","Korte wandeling (15–20 min)","Stretch routine (nek/schouders)","Journaling: 5 min dump","Opruim sprint: 10 min één hoek","Voetenbadje + ontspanning","Meditatie (guided)","Mobility: heup/onderrug","Schermpauze: 30 min offline"],
-    watch: ["Modern Family","Brooklyn Nine-Nine","The Office (US)","Parks and Recreation","Chef’s Table","Our Planet","Studio Ghibli (bv. Totoro)","Feel-good romcom","Friends","Ted Lasso"]
+    eat: ["🍵 Kamille- of lavendelthee","🥣 Warme havermout met banaan & kaneel","🍲 Tomatensoep + volkoren toast","🥛 Yoghurt met honing & noten","🍌 Banana bread + thee","🍘 Rijstwafel met pindakaas","🍫 Pure chocolade (klein stukje)","🍵 Gemberthee met citroen","🍝 Pasta pesto (simpel)","🥤 Smoothie: banaan + yoghurt"],
+    do: ["⏱ 10 min ademhaling (box breathing)","⏱ 12 min warme douche + rustige muziek","⏱ 15–20 min korte wandeling","⏱ 8 min stretch (nek/schouders)","⏱ 5 min journaling dump","⏱ 10 min opruim sprint (1 hoek)","⏱ 12 min voetenbadje + ontspanning","⏱ 10 min guided meditatie","⏱ 8 min mobility (heup/onderrug)","⏱ 30 min schermpauze (offline)"],
+    watch: ["🎬 Modern Family (20–25m)","🎬 Brooklyn Nine-Nine (20–25m)","🎬 The Office (US) (20–25m)","🎬 Parks and Recreation (20–25m)","🎬 Chef’s Table (45m)","🎬 Our Planet (45–50m)","🎬 Studio Ghibli (90m)","🎬 Feel-good romcom (90–110m)","🎬 Friends (20–25m)","🎬 Ted Lasso (30m)"]
   },
   Happy: {
     products: ["Instant camera","Bluetooth speaker","String lights (fairy lights)","Board game","Karaoke microphone","Mini projector","Photo frames set","Party lights projector","Scrapbook album","DIY mocktail kit","Waffle maker","Fondue set","LEGO flower bouquet set","Confetti poppers","Picnic blanket"],
-    eat: ["Mocktail (munt + citrus)","Aardbeien met slagroom","Pannenkoeken","Nacho’s met salsa","Sushi-avond","IJs + toppings","Tapas plank","Cupcakes (of bakken)","Fruit salade","Popcorn + film"],
-    do: ["Dans 3 nummers hardop","Bel iemand en plan iets leuks","Mini fotoshoot thuis","Picknick (park/balkon)","Spelletjesavond","Kook/bak iets nieuws","Maak een ‘happy playlist’","Klein tripje: koffietentje ontdekken","DIY: scrapbooking","Korte workout: 15 min"],
-    watch: ["The Grand Budapest Hotel","Paddington 2","Mamma Mia!","Pitch Perfect","The Intern","Spider-Man: Into the Spider-Verse","School of Rock","Chef","The Secret Life of Walter Mitty","Sing"]
+    eat: ["🍹 Mocktail (munt + citrus)","🍓 Aardbeien met slagroom","🥞 Pannenkoeken","🧀 Nacho’s met salsa","🍣 Sushi-avond","🍨 IJs + toppings","🫒 Tapas plank","🧁 Cupcakes (bakken)","🍉 Fruit salade","🍿 Popcorn + film"],
+    do: ["⏱ 9 min dans (3 nummers)","⏱ 3 min app iemand (plan iets)","⏱ 12 min mini fotoshoot thuis","⏱ 45 min picknick (park/balkon)","⏱ 40 min spelletjesavond starter","⏱ 30 min kook/bak iets nieuws","⏱ 10 min maak ‘happy playlist’","⏱ 25 min koffietentje ontdekken","⏱ 20 min DIY: scrapbooking","⏱ 15 min mini workout"],
+    watch: ["🎬 Paddington 2 (100m)","🎬 Mamma Mia! (105m)","🎬 Pitch Perfect (112m)","🎬 The Intern (121m)","🎬 Spider-Verse (117m)","🎬 School of Rock (109m)","🎬 Chef (114m)","🎬 Sing (108m)","🎬 Feel-good comedy (90m)","🎬 Feel-good series (25–30m)"]
   },
   Energetic: {
     products: ["Jump rope","Resistance bands set","Adjustable dumbbells","Kettlebell","Fitness tracker","Running belt","Compression socks","Massage gun","Pull-up bar (doorway)","Workout timer","Shaker bottle","Insulated water bottle","Agility ladder","Boxing gloves","Balance board"],
-    eat: ["Banaan + pindakaas","Griekse yoghurt + granola","Eiwitrijke wrap","Smoothie: bessen + yoghurt","Notenmix (kleine portie)","Volkoren toast + ei","Havermout + honing","Rijst + kip/vega bowl","Koffie (matig)","Electrolyte water"],
-    do: ["HIIT 12 min","Hardlopen/wandelen interval","Kracht: full-body 20 min","Boksen (shadowboxing)","Traplopen challenge","Fietstocht","Touwtje springen 5 min","Core workout 10 min","Mobility cooldown","Koude douche (kort)"],
-    watch: ["Creed","Free Solo","The Last Dance","Top Gun: Maverick","Rush","Rocky","Formula 1: Drive to Survive","John Wick","Mission: Impossible","Spider-Man (actie)"]
+    eat: ["🍌 Banaan + pindakaas","🥣 Griekse yoghurt + granola","🌯 Eiwitrijke wrap","🥤 Smoothie: bessen + yoghurt","🥜 Notenmix (klein)","🍳 Volkoren toast + ei","🥣 Havermout + honing","🍚 Bowl: rijst + kip/vega","☕ Koffie (matig)","💧 Electrolyte water"],
+    do: ["⏱ 12 min HIIT","⏱ 20 min interval (run/walk)","⏱ 20 min full-body kracht","⏱ 10 min shadowboxing","⏱ 8 min traplopen challenge","⏱ 30 min fietstocht","⏱ 5 min touwtje springen","⏱ 10 min core","⏱ 8 min mobility cooldown","⏱ 60 sec koude douche (kort)"],
+    watch: ["🎬 Top Gun: Maverick (130m)","🎬 Creed (133m)","🎬 Rocky (120m)","🎬 Rush (123m)","🎬 The Last Dance (50m)","🎬 Drive to Survive (35–45m)","🎬 John Wick (101m)","🎬 Mission: Impossible (120m)","🎬 Free Solo (100m)","🎬 Action pick (90–120m)"]
   },
   Creative: {
     products: ["Sketchbook","Marker set","Watercolor paint set","Acrylic paint set","Calligraphy set","Sticker pack (art)","Air-dry clay","Embroidery starter kit","Ring light","Photography tripod","Washi tape set","Bead kit","Origami paper set","Miniature house kit","Idea journal"],
-    eat: ["Thee + koekje","Toast met avocado","Fruit + noten","Caprese salade","Matcha latte","Pasta aglio e olio","Kaasplankje (klein)","Smoothie bowl","Wrap met hummus","Chai latte"],
-    do: ["30 min schetsen (zonder gum)","Collage maken met tijdschriften","Schrijf 1 pagina verhaal","Fotowandeling: 10 foto’s","Moodboard maken","Lettering practice 15 min","Kleuren voor volwassenen","Mini-project: clay","DIY: scrapbooking","Muziek maken (1 loop)"],
-    watch: ["Amélie","Abstract: The Art of Design","The Great British Bake Off","Chef’s Table","Julie & Julia","La La Land","Midnight in Paris","The Pixar Story","Kiki’s Delivery Service","Inside Llewyn Davis"]
+    eat: ["🍵 Thee + koekje","🥑 Toast met avocado","🍎 Fruit + noten","🍅 Caprese salade","🍵 Matcha latte","🍝 Pasta aglio e olio","🧀 Kaasplankje (klein)","🥣 Smoothie bowl","🌯 Wrap met hummus","🫖 Chai latte"],
+    do: ["⏱ 30 min schetsen (zonder gum)","⏱ 20 min collage (tijdschrift)","⏱ 15 min schrijf 1 pagina verhaal","⏱ 25 min fotowandeling (10 shots)","⏱ 20 min moodboard maken","⏱ 15 min lettering practice","⏱ 25 min kleuren (adult coloring)","⏱ 30 min mini clay project","⏱ 25 min DIY: scrapbooking","⏱ 15 min muziek: 1 loop"],
+    watch: ["🎬 Abstract: The Art of Design (45m)","🎬 Amélie (122m)","🎬 Julie & Julia (123m)","🎬 La La Land (128m)","🎬 Midnight in Paris (94m)","🎬 The Pixar Story (90m)","🎬 Chef’s Table (45m)","🎬 Bake Off (50m)","🎬 Kiki’s Delivery Service (103m)","🎬 Indie vibe (90–120m)"]
   },
   Tired: {
     products: ["Blackout sleep mask","White noise machine","Sunrise alarm clock","Electric blanket","Memory foam pillow","Lavender pillow spray","Bed wedge pillow","Humidifier","Heating pad","Cozy robe","Slippers","Mug warmer","Blue light blocking glasses","Weighted eye mask","Soft throw blanket"],
-    eat: ["Kruidenthee (cafeïnevrij)","Warme melk (of alternatief)","Soep + brood","Banaan","Rijst + ei","Yoghurt (licht)","Honingthee","Havermout","Toast met kaas","Gemberthee"],
-    do: ["Powernap 20 min","Scherm uit 1 uur voor slapen","Warme douche","Rustige stretch 8 min","Lees 10 pagina’s","Leg kleding klaar voor morgen","Ademhaling 5 min","Kamer donker & koel maken","Licht wandelen","Foam roll zacht"],
-    watch: ["Planet Earth","Our Planet","Friends","The Office (US)","Modern Family","Studio Ghibli (rustig)","Paddington","Chef","Nature documentary","Comfort sitcom"]
+    eat: ["🍵 Kruidenthee (cafeïnevrij)","🥛 Warme melk (of alternatief)","🍲 Soep + brood","🍌 Banaan","🍚 Rijst + ei","🥛 Yoghurt (licht)","🍯 Honingthee","🥣 Havermout","🧀 Toast met kaas","🍵 Gemberthee"],
+    do: ["⏱ 20 min powernap","⏱ 60 min scherm uit voor slapen","⏱ 10 min warme douche","⏱ 8 min rustige stretch","⏱ 10 min lees 10 pagina’s","⏱ 6 min leg kleding klaar","⏱ 5 min ademhaling","⏱ 7 min kamer donker & koel","⏱ 15 min rustig wandelen","⏱ 6 min zacht foam rollen"],
+    watch: ["🎬 Our Planet (45–50m)","🎬 Planet Earth (45–50m)","🎬 Friends (20–25m)","🎬 The Office (US) (20–25m)","🎬 Modern Family (20–25m)","🎬 Studio Ghibli (90m)","🎬 Paddington (95m)","🎬 Chef (114m)","🎬 Nature doc (45m)","🎬 Comfort sitcom (20–25m)"]
   }
 };
 
@@ -587,19 +855,75 @@ const QUOTES = {
   Tired: ["Rust is productief. Je hoeft niet te pushen.","Zacht licht, warme thee, rustig ritme.","Een goede nacht is ook een overwinning."]
 };
 
+/** (5) Mood meter presets */
+const MOOD_METERS = {
+  Stressed:   { energy: 35, calm: 78, focus: 55 },
+  Happy:      { energy: 68, calm: 58, focus: 52 },
+  Energetic:  { energy: 88, calm: 35, focus: 62 },
+  Creative:   { energy: 60, calm: 62, focus: 70 },
+  Tired:      { energy: 28, calm: 70, focus: 45 }
+};
+
+/** (2) "Why it works" reasons */
+const WHY = {
+  Stressed: [
+    "Dit geeft je nervous system een snelle ‘downshift’—rust zonder veel moeite.",
+    "Kleine, zachte input helpt je brein switchen van ‘stress’ naar ‘veilig’.",
+    "Warmte + geur + routine = instant comfort."
+  ],
+  Happy: [
+    "Dit versterkt positieve prikkels: fun, licht, muziek en mini-momenten.",
+    "Eenvoudige dopamine: creatief + sociaal = sneller een goede vibe.",
+    "Maak het ‘mini’ en je doet het echt."
+  ],
+  Energetic: [
+    "Snelle actie gebruikt je energie meteen—dan blijf je in flow.",
+    "Korte intensiteit geeft een kick zonder dat het te groot voelt.",
+    "Beweging + hydration = instant upgrade."
+  ],
+  Creative: [
+    "Lage drempel tools → makkelijker beginnen (en starten is alles).",
+    "Kleine output > perfecte output. Consistentie wint.",
+    "Een mini-project geeft je brein ‘speelruimte’."
+  ],
+  Tired: [
+    "Comfort + rust cues helpen sneller naar ontspanning.",
+    "Zacht ritme → je lichaam volgt vanzelf.",
+    "Kleine voorbereiding maakt de rest van de avond makkelijker."
+  ]
+};
+
 /** UI refs */
 const moodsEl = document.getElementById("moods");
 const grid = document.getElementById("grid");
-const shuffleBtn = document.getElementById("shuffle");
+
+const statusEl = document.getElementById("status");
+const resetBtn = document.getElementById("reset");
+const refreshBtn = document.getElementById("refresh");
+
+const fun = document.getElementById("fun");
 const funPill = document.getElementById("funPill");
 const songsEl = document.getElementById("songs");
+const shuffleSongsBtn = document.getElementById("shuffleSongs");
+const copySongsBtn = document.getElementById("copySongs");
+
 const quoteEl = document.getElementById("quote");
 const quoteSub = document.getElementById("quoteSub");
 const progText = document.getElementById("progText");
 const progBar = document.getElementById("progBar");
 
+const toast = document.getElementById("toast");
+
+const meterbar = document.getElementById("meterbar");
+const mEnergy = document.getElementById("mEnergy");
+const mCalm = document.getElementById("mCalm");
+const mFocus = document.getElementById("mFocus");
+const fEnergy = document.getElementById("fEnergy");
+const fCalm = document.getElementById("fCalm");
+const fFocus = document.getElementById("fFocus");
+
 /** State */
-const STORAGE_KEY = "moodmakerz_pro_haze_v1";
+const STORAGE_KEY = "moodmakerz_all8_v1";
 function loadState(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch(e){ return {}; } }
 function saveState(s){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch(e){} }
 let state = loadState();
@@ -617,6 +941,7 @@ function ensureMoodState(mood){
   if(!ms.order) ms.order = {};
   if(!ms.idx) ms.idx = {};
   if(typeof ms.refreshCount !== "number") ms.refreshCount = 0;
+  if(typeof ms.songSig !== "number") ms.songSig = Math.floor(Math.random()*100000);
 
   for(const cat of ["products","eat","do","watch"]){
     const n = DATA[mood][cat].length;
@@ -688,20 +1013,30 @@ function pickQuote(mood){
   return q[Math.floor(Math.random()*q.length)];
 }
 
+/** Playlist */
 function youtubeSearchUrl(query){
   return "https://www.youtube.com/results?search_query=" + encodeURIComponent(query);
 }
-function pickSongs(mood, n){
+function pickSongs(mood, n, sig){
   const list = (SONGS[mood] || []).slice();
-  shuffleArray(list);
-  return list.slice(0, n);
+  // deterministic-ish shuffle: rotate by sig then shuffle remainder
+  const shift = sig % Math.max(1, list.length);
+  const rotated = list.slice(shift).concat(list.slice(0, shift));
+  shuffleArray(rotated);
+  return rotated.slice(0, n);
 }
+
+let lastSongs = [];
 function renderSongs(mood){
+  ensureMoodState(mood);
+  const ms = state[mood];
+  const picks = pickSongs(mood, SONGS_PER_REFRESH, ms.songSig);
+  lastSongs = picks.slice();
+
   songsEl.innerHTML = "";
-  const picks = pickSongs(mood, SONGS_PER_REFRESH);
   picks.forEach(s=>{
     const el = document.createElement("div");
-    el.className = "song";
+    el.className = "song enter";
     el.innerHTML = `
       <div class="note"></div>
       <div class="meta">
@@ -710,9 +1045,11 @@ function renderSongs(mood){
       </div>
     `;
     songsEl.appendChild(el);
+    requestAnimationFrame(()=>el.classList.add("show"));
   });
 }
 
+/** Mood class */
 function applyMoodClass(mood){
   document.body.className = document.body.className
     .split(" ")
@@ -722,66 +1059,152 @@ function applyMoodClass(mood){
   document.body.classList.add("mood-" + mood);
 }
 
+/** Mood meter render */
+function renderMeters(mood){
+  const base = MOOD_METERS[mood] || {energy:50, calm:50, focus:50};
+  // small jitter for "alive" feeling (deterministic-ish per refresh)
+  const ms = state[mood] || {};
+  const j = (ms.refreshCount || 0) * 3;
+
+  const energy = Math.max(0, Math.min(100, base.energy + (j % 7) - 3));
+  const calm   = Math.max(0, Math.min(100, base.calm + ((j+2) % 7) - 3));
+  const focus  = Math.max(0, Math.min(100, base.focus + ((j+4) % 7) - 3));
+
+  mEnergy.textContent = energy + "%";
+  mCalm.textContent = calm + "%";
+  mFocus.textContent = focus + "%";
+
+  fEnergy.style.width = energy + "%";
+  fCalm.style.width = calm + "%";
+  fFocus.style.width = focus + "%";
+}
+
+/** Toast */
+let toastTimer = null;
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>toast.classList.remove("show"), 1200);
+}
+
+/** Highlight pick reason */
+function pickWhy(mood){
+  const arr = WHY[mood] || ["Goed idee."];
+  return arr[Math.floor(Math.random()*arr.length)];
+}
+
 let currentMood = Object.keys(DATA)[0];
 
-function render(){
+function animateEnter(el){
+  el.classList.add("enter");
+  requestAnimationFrame(()=>el.classList.add("show"));
+}
+
+/** Main render */
+function render(full=true){
   ensureMoodState(currentMood);
   const ms = state[currentMood];
 
-  if(ms.refreshCount >= MAX_REFRESHES){
-    resetMoodRotation(currentMood);
+  // (10 refresh sets)
+  if(full){
+    if(ms.refreshCount >= MAX_REFRESHES){
+      resetMoodRotation(currentMood);
+    }
+    ms.refreshCount += 1;
+    saveState(state);
   }
-  ms.refreshCount += 1;
-  saveState(state);
 
+  // status + hero pills
+  statusEl.textContent = `Today’s vibe: ${currentMood}`;
+  resetBtn.textContent = `Reset ${ms.refreshCount || 1}/${MAX_REFRESHES}`;
+
+  // progress + quote
   funPill.textContent = `Set ${ms.refreshCount}/${MAX_REFRESHES} • ${currentMood}`;
   progText.textContent = `${ms.refreshCount}/${MAX_REFRESHES}`;
   progBar.style.width = Math.max(5, Math.round((ms.refreshCount / MAX_REFRESHES) * 100)) + "%";
-
   quoteEl.textContent = pickQuote(currentMood);
   quoteSub.textContent = "— MoodMakerz";
+
+  // mood meters
+  renderMeters(currentMood);
+
+  // cards (only when full render)
+  if(full){
+    grid.innerHTML = "";
+
+    // quick skeleton flash (7)
+    const skWrap = document.createElement("div");
+    skWrap.style.display = "none"; // (kept simple, no layout jump)
+    grid.appendChild(skWrap);
+
+    const batch = buildBatch(currentMood, CARDS_PER_REFRESH);
+
+    batch.forEach((b, idx) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      animateEnter(card);
+
+      const link = amazonUrl(b.products);
+
+      // highlight first card (2)
+      const isHighlight = (idx === 0);
+      if(isHighlight) card.classList.add("highlight");
+
+      const whyBlock = isHighlight ? `
+        <div class="top-pick">
+          <div class="tp">Top pick</div>
+          <div class="tp-pill">Snelle win</div>
+        </div>
+        <div class="why">
+          <div class="wlabel">Waarom dit werkt</div>
+          <p class="wtext">${esc(pickWhy(currentMood))}</p>
+        </div>
+      ` : ``;
+
+      card.innerHTML = `
+        <div class="cardhead">
+          <div class="badge">${esc(currentMood)}</div>
+          <div class="count">Set ${ms.refreshCount}/${MAX_REFRESHES} • #${idx+1}</div>
+        </div>
+
+        ${whyBlock}
+
+        <div class="stack">
+          <div class="section">
+            <div class="label" data-k="product"><span class="dot"></span> Product</div>
+            <p class="value short">${esc(b.products)}</p>
+            <a class="buy-pill" href="${esc(link)}" target="_blank" rel="noopener">
+              <span class="buy-ic"></span> Amazon.nl
+            </a>
+          </div>
+
+          <div class="section">
+            <div class="label" data-k="eat"><span class="dot"></span> Eten/Drinken</div>
+            <p class="value">${esc(b.eat)}</p>
+          </div>
+
+          <div class="section">
+            <div class="label" data-k="do"><span class="dot"></span> Doen</div>
+            <p class="value">${esc(b.do)}</p>
+          </div>
+
+          <div class="section">
+            <div class="label" data-k="watch"><span class="dot"></span> Serie/Film</div>
+            <p class="value short">${esc(b.watch)}</p>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  // songs render always (and depends on songSig)
   renderSongs(currentMood);
 
-  const batch = buildBatch(currentMood, CARDS_PER_REFRESH);
-  grid.innerHTML = "";
-
-  batch.forEach((b, idx) => {
-    const card = document.createElement("div");
-    card.className = "card";
-
-    const link = amazonUrl(b.products);
-
-    card.innerHTML = `
-      <div class="cardhead">
-        <div class="badge">${esc(currentMood)}</div>
-        <div class="count">Set ${ms.refreshCount}/${MAX_REFRESHES} • #${idx+1}</div>
-      </div>
-
-      <div class="stack">
-        <div class="section">
-          <div class="label" data-k="product"><span class="dot"></span> Product</div>
-          <p class="value short">${esc(b.products)}</p>
-          <a class="buylink" href="${esc(link)}" target="_blank" rel="noopener">Bekijk op Amazon.nl →</a>
-        </div>
-
-        <div class="section">
-          <div class="label" data-k="eat"><span class="dot"></span> Eten/Drinken</div>
-          <p class="value">${esc(b.eat)}</p>
-        </div>
-
-        <div class="section">
-          <div class="label" data-k="do"><span class="dot"></span> Doen</div>
-          <p class="value">${esc(b.do)}</p>
-        </div>
-
-        <div class="section">
-          <div class="label" data-k="watch"><span class="dot"></span> Serie/Film</div>
-          <p class="value short">${esc(b.watch)}</p>
-        </div>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
+  // ensure meter + fun animate in once
+  if(!meterbar.classList.contains("show")) animateEnter(meterbar);
+  if(!fun.classList.contains("show")) animateEnter(fun);
 }
 
 function setMood(mood){
@@ -792,10 +1215,42 @@ function setMood(mood){
   const btn = document.querySelector(`[data-mood="${CSS.escape(mood)}"]`);
   if(btn) btn.classList.add("active");
 
-  render();
+  // keep set count per mood (independent) and render a full set
+  render(true);
 }
 
-/** Build mood buttons */
+/** Buttons */
+resetBtn.onclick = () => {
+  resetMoodRotation(currentMood);
+  // keep songs fresh too
+  ensureMoodState(currentMood);
+  state[currentMood].songSig += 13;
+  saveState(state);
+  render(true);
+};
+
+refreshBtn.onclick = () => render(true);
+
+/** (4) Shuffle songs only */
+shuffleSongsBtn.onclick = () => {
+  ensureMoodState(currentMood);
+  state[currentMood].songSig += 1;
+  saveState(state);
+  render(false);
+};
+
+/** (4) Copy playlist */
+copySongsBtn.onclick = async () => {
+  try{
+    const text = `MoodMakerz — ${currentMood} playlist\n\n` + lastSongs.map((s,i)=>`${i+1}. ${s}`).join("\n");
+    await navigator.clipboard.writeText(text);
+    showToast("Playlist gekopieerd ✅");
+  }catch(e){
+    showToast("Kon niet kopiëren");
+  }
+};
+
+/** Mood buttons */
 Object.keys(DATA).forEach((m,i)=>{
   const b = document.createElement("div");
   b.className = "pillbtn" + (i===0 ? " active" : "");
@@ -805,11 +1260,10 @@ Object.keys(DATA).forEach((m,i)=>{
   moodsEl.appendChild(b);
 });
 
-document.getElementById("shuffle").onclick = render;
-
-/** initial */
+/** Init */
 applyMoodClass(currentMood);
-render();
+ensureMoodState(currentMood);
+render(true);
 </script>
 </body>
 </html>
