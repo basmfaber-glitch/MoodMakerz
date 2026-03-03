@@ -8,17 +8,17 @@
 <style>
   :root{
     --ink:#171a22;
-    --muted:#5a5f6c;
+    --muted: rgba(23,26,34,0.62);
 
-    --shadow: 0 18px 50px rgba(23,26,34,.12);
-    --shadow-soft: 0 10px 26px rgba(23,26,34,.09);
+    --shadow: 0 18px 50px rgba(23,26,34,.10);
+    --shadow-soft: 0 10px 26px rgba(23,26,34,.08);
 
     --r: 22px;
 
-    /* mood defaults */
-    --mood-accent: rgba(125,156,255,0.70);
-    --mood-accent2: rgba(70,216,190,0.55);
-    --mood-wash: rgba(125,156,255,0.12);
+    /* default mood */
+    --mood-accent: rgba(112,132,210,0.65);
+    --mood-accent2: rgba(112,170,156,0.55);
+    --mood-wash: rgba(112,132,210,0.10);
   }
 
   *{ box-sizing:border-box; }
@@ -31,40 +31,37 @@
     background:#fbf6ee;
   }
 
-  /* ===== Aesthetic haze background ===== */
+  /* ===== Professional haze background ===== */
   .haze{
     position:fixed; inset:0; z-index:0; pointer-events:none;
     background:
-      radial-gradient(1100px 680px at 14% 18%, rgba(255, 170, 95, 0.22), transparent 60%),
-      radial-gradient(900px 650px at 86% 22%, rgba(125, 156, 255, 0.18), transparent 60%),
-      radial-gradient(1000px 760px at 50% 108%, rgba(70, 216, 190, 0.14), transparent 62%),
-      radial-gradient(900px 700px at 20% 110%, rgba(236, 120, 200, 0.10), transparent 65%),
-      linear-gradient(180deg, #fbf6ee, #f6ecd9 50%, #f2e3c9);
+      radial-gradient(1100px 700px at 12% 16%, rgba(210, 190, 160, 0.35), transparent 62%),
+      radial-gradient(1000px 720px at 86% 18%, rgba(170, 190, 220, 0.22), transparent 60%),
+      radial-gradient(1100px 780px at 50% 115%, rgba(170, 215, 205, 0.18), transparent 62%),
+      linear-gradient(180deg, #fbf6ee, #f6ecd9 56%, #f2e3c9);
   }
-
   .blob{
     position:fixed;
-    width:560px; height:560px; border-radius:999px;
-    filter: blur(44px);
-    opacity: .55;
+    width:620px; height:620px;
+    border-radius:999px;
+    filter: blur(48px);
+    opacity: .42;
     z-index:1;
     pointer-events:none;
     mix-blend-mode: multiply;
-    animation: drift 12s ease-in-out infinite alternate;
+    animation: drift 14s ease-in-out infinite alternate;
   }
-  .b1{ left:-210px; top:-140px; background: radial-gradient(circle at 30% 30%, rgba(255,170,95,.55), transparent 62%); }
-  .b2{ right:-260px; top:30px; background: radial-gradient(circle at 30% 30%, rgba(125,156,255,.55), transparent 62%); animation-duration: 14s; }
-  .b3{ left:18%; bottom:-300px; background: radial-gradient(circle at 30% 30%, rgba(70,216,190,.48), transparent 62%); animation-duration: 16s; }
-  .b4{ right:10%; bottom:-320px; background: radial-gradient(circle at 30% 30%, rgba(236,120,200,.42), transparent 64%); animation-duration: 18s; }
+  .b1{ left:-260px; top:-170px; background: radial-gradient(circle at 30% 30%, rgba(210,190,160,.70), transparent 66%); }
+  .b2{ right:-300px; top:10px; background: radial-gradient(circle at 30% 30%, rgba(170,190,220,.62), transparent 66%); animation-duration: 16s; }
+  .b3{ left:16%; bottom:-360px; background: radial-gradient(circle at 30% 30%, rgba(170,215,205,.58), transparent 66%); animation-duration: 18s; }
 
   @keyframes drift{
-    from{ transform: translate3d(-10px, -8px, 0) scale(1.02); }
-    to{ transform: translate3d(16px, 12px, 0) scale(1.08); }
+    from{ transform: translate3d(-12px, -10px, 0) scale(1.01); }
+    to{ transform: translate3d(18px, 14px, 0) scale(1.07); }
   }
-
   .grain{
     position:fixed; inset:0; z-index:2; pointer-events:none;
-    opacity:.06;
+    opacity:.055;
     background-image:
       radial-gradient(circle at 20% 30%, rgba(0,0,0,0.40) 0 0.55px, transparent 1px),
       radial-gradient(circle at 80% 40%, rgba(0,0,0,0.40) 0 0.55px, transparent 1px),
@@ -86,11 +83,10 @@
     position:sticky; top:0; z-index:20;
     margin:-26px -22px 16px;
     padding:18px 22px 14px;
-    background: linear-gradient(180deg, rgba(251,246,238,0.86), rgba(251,246,238,0.72) 65%, rgba(251,246,238,0));
+    background: linear-gradient(180deg, rgba(251,246,238,0.88), rgba(251,246,238,0.74) 65%, rgba(251,246,238,0));
     backdrop-filter: blur(14px);
     border-bottom:1px solid rgba(23,26,34,0.06);
   }
-
   .hero{
     display:flex;
     align-items:flex-end;
@@ -98,7 +94,6 @@
     gap:14px;
     flex-wrap:wrap;
   }
-
   h1{
     margin:0;
     font-size:34px;
@@ -107,7 +102,6 @@
     font-weight:950;
     color: rgba(23,26,34,0.92);
   }
-
   .tagline{
     margin:6px 0 0;
     font-weight:900;
@@ -121,7 +115,6 @@
     font-size:12px;
     line-height:1.35;
   }
-
   .hero-right{
     display:flex;
     align-items:center;
@@ -129,7 +122,6 @@
     flex-wrap:wrap;
     justify-content:flex-end;
   }
-
   .row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:12px; }
   .moods{ display:flex; gap:8px; flex-wrap:wrap; }
 
@@ -164,16 +156,15 @@
     height:3px;
     border-radius:999px;
     background: linear-gradient(90deg, var(--mood-accent), var(--mood-accent2));
-    opacity:.65;
+    opacity:.55;
   }
-  .pillbtn.ghost{ background: rgba(255,255,255,0.38); }
 
-  /* ===== Mood palette variables ===== */
-  body.mood-Stressed{ --mood-accent: rgba(125,156,255,0.70); --mood-accent2: rgba(70,216,190,0.55); --mood-wash: rgba(125,156,255,0.12); }
-  body.mood-Happy{ --mood-accent: rgba(255,170,95,0.74); --mood-accent2: rgba(236,120,200,0.46); --mood-wash: rgba(255,170,95,0.12); }
-  body.mood-Energetic{ --mood-accent: rgba(70,216,190,0.70); --mood-accent2: rgba(255,170,95,0.48); --mood-wash: rgba(70,216,190,0.12); }
-  body.mood-Creative{ --mood-accent: rgba(236,120,200,0.62); --mood-accent2: rgba(125,156,255,0.56); --mood-wash: rgba(236,120,200,0.10); }
-  body.mood-Tired{ --mood-accent: rgba(140,150,185,0.62); --mood-accent2: rgba(180,170,210,0.46); --mood-wash: rgba(140,150,185,0.10); }
+  /* ===== Mood palette variables (more muted/pro) ===== */
+  body.mood-Stressed{   --mood-accent: rgba(110,130,205,0.62); --mood-accent2: rgba(120,175,160,0.52); --mood-wash: rgba(110,130,205,0.10); }
+  body.mood-Happy{      --mood-accent: rgba(205,160,110,0.64); --mood-accent2: rgba(195,140,160,0.48); --mood-wash: rgba(205,160,110,0.10); }
+  body.mood-Energetic{  --mood-accent: rgba(90,170,160,0.64);  --mood-accent2: rgba(205,170,110,0.48); --mood-wash: rgba(90,170,160,0.10); }
+  body.mood-Creative{   --mood-accent: rgba(185,140,170,0.58); --mood-accent2: rgba(120,140,205,0.50); --mood-wash: rgba(185,140,170,0.10); }
+  body.mood-Tired{      --mood-accent: rgba(125,135,160,0.56); --mood-accent2: rgba(165,150,185,0.46); --mood-wash: rgba(125,135,160,0.10); }
 
   /* ===== Cards grid ===== */
   .grid{
@@ -187,19 +178,18 @@
   @media (max-width:900px){ .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
   @media (max-width:540px){ .grid{ grid-template-columns: 1fr; } }
 
-  /* ===== Card ===== */
   .card{
     position:relative;
     border-radius: var(--r);
     border:1px solid rgba(23,26,34,0.10);
-    background: linear-gradient(180deg, rgba(255,255,255,0.70), rgba(255,255,255,0.54));
+    background: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,255,255,0.56));
     box-shadow: var(--shadow-soft);
     padding:14px;
     display:flex;
     flex-direction:column;
     gap:12px;
     overflow:hidden;
-    min-height:370px;
+    min-height:372px;
     backdrop-filter: blur(10px);
     transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
   }
@@ -213,8 +203,8 @@
     position:absolute; inset:-2px; pointer-events:none;
     opacity:.95;
     background:
-      radial-gradient(700px 420px at 22% 18%, var(--mood-wash), transparent 62%),
-      radial-gradient(700px 420px at 82% 86%, rgba(255,255,255,0.12), transparent 62%);
+      radial-gradient(740px 460px at 24% 18%, var(--mood-wash), transparent 64%),
+      radial-gradient(760px 460px at 82% 86%, rgba(255,255,255,0.12), transparent 62%);
   }
   .card > *{ position:relative; z-index:1; }
 
@@ -228,7 +218,7 @@
     padding:6px 10px;
     border-radius:999px;
     border:1px solid rgba(23,26,34,0.10);
-    background: rgba(255,255,255,0.55);
+    background: rgba(255,255,255,0.56);
     color: rgba(23,26,34,0.80);
   }
   .count{
@@ -244,7 +234,7 @@
     border-radius: 18px;
     padding: 12px;
     border:1px solid rgba(23,26,34,0.08);
-    background: rgba(255,255,255,0.42);
+    background: rgba(255,255,255,0.44);
     transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease;
   }
   .section:hover{
@@ -263,18 +253,18 @@
     align-items:center;
     gap:8px;
     border: 1px solid rgba(23,26,34,0.10);
-    background: rgba(255,255,255,0.34);
+    background: rgba(255,255,255,0.36);
   }
   .dot{ width:8px; height:8px; border-radius:999px; background: rgba(23,26,34,0.55); }
-  .label[data-k="product"] .dot{ background: rgba(125,156,255,0.85); }
-  .label[data-k="eat"] .dot{ background: rgba(70,216,190,0.85); }
-  .label[data-k="do"] .dot{ background: rgba(255,170,95,0.82); }
-  .label[data-k="watch"] .dot{ background: rgba(236,120,200,0.72); }
+  .label[data-k="product"] .dot{ background: rgba(110,130,205,0.85); }
+  .label[data-k="eat"] .dot{ background: rgba(120,175,160,0.85); }
+  .label[data-k="do"] .dot{ background: rgba(205,160,110,0.82); }
+  .label[data-k="watch"] .dot{ background: rgba(185,140,170,0.78); }
 
-  .label[data-k="product"]::after{ content:"🛍️"; font-size:12px; opacity:.7; }
-  .label[data-k="eat"]::after{ content:"🍵"; font-size:12px; opacity:.7; }
-  .label[data-k="do"]::after{ content:"⏱️"; font-size:12px; opacity:.7; }
-  .label[data-k="watch"]::after{ content:"🎬"; font-size:12px; opacity:.7; }
+  .label[data-k="product"]::after{ content:"🛍️"; font-size:12px; opacity:.65; }
+  .label[data-k="eat"]::after{ content:"🍵"; font-size:12px; opacity:.65; }
+  .label[data-k="do"]::after{ content:"⏱️"; font-size:12px; opacity:.65; }
+  .label[data-k="watch"]::after{ content:"🎬"; font-size:12px; opacity:.65; }
 
   .value{
     font-size: 13px;
@@ -301,7 +291,7 @@
     font-weight:950;
     font-size:12px;
     color: rgba(23,26,34,0.86);
-    background: rgba(255,255,255,0.46);
+    background: rgba(255,255,255,0.50);
     border:1px solid rgba(23,26,34,0.10);
     transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
     width: fit-content;
@@ -318,7 +308,6 @@
     flex:0 0 auto;
   }
 
-  /* Highlight card */
   .card.highlight{
     outline: 2px solid rgba(23,26,34,0.06);
     border-color: rgba(23,26,34,0.14);
@@ -339,14 +328,14 @@
     padding:6px 10px;
     border-radius:999px;
     border:1px solid rgba(23,26,34,0.12);
-    background: linear-gradient(90deg, rgba(255,255,255,0.52), rgba(255,255,255,0.32));
+    background: linear-gradient(90deg, rgba(255,255,255,0.56), rgba(255,255,255,0.34));
     color: rgba(23,26,34,0.70);
     white-space:nowrap;
   }
   .why{
     border-radius: 18px;
     border:1px solid rgba(23,26,34,0.08);
-    background: rgba(255,255,255,0.38);
+    background: rgba(255,255,255,0.40);
     padding: 10px 12px;
   }
   .why .wlabel{
@@ -361,13 +350,13 @@
     line-height:1.35;
   }
 
-  /* ===== Bottom block: Playlist ===== */
+  /* ===== Bottom block ===== */
   .fun{
     position:relative;
     margin: 8px 0 10px;
     border-radius: 28px;
     border: 1px solid rgba(23,26,34,0.10);
-    background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.50));
+    background: linear-gradient(180deg, rgba(255,255,255,0.66), rgba(255,255,255,0.52));
     box-shadow: var(--shadow-soft);
     overflow:hidden;
     padding: 16px 16px;
@@ -379,9 +368,9 @@
     inset:-140px;
     background:
       radial-gradient(900px 560px at 22% 20%, var(--mood-wash), transparent 62%),
-      radial-gradient(900px 560px at 80% 85%, rgba(70,216,190,0.08), transparent 62%);
+      radial-gradient(900px 560px at 80% 85%, rgba(255,255,255,0.10), transparent 62%);
     opacity:.95;
-    animation: drift2 10s ease-in-out infinite alternate;
+    animation: drift2 12s ease-in-out infinite alternate;
   }
   @keyframes drift2{
     from{ transform: translate3d(-10px, -6px, 0) scale(1.02); }
@@ -400,10 +389,9 @@
   .fun-card{
     border-radius: 22px;
     border: 1px solid rgba(23,26,34,0.10);
-    background: rgba(255,255,255,0.46);
+    background: rgba(255,255,255,0.48);
     padding: 14px;
   }
-
   .fun-title{
     display:flex; align-items:center; justify-content:space-between; gap:10px;
     margin-bottom:12px;
@@ -421,11 +409,10 @@
     padding: 6px 10px;
     border-radius: 999px;
     border:1px solid rgba(23,26,34,0.12);
-    background: rgba(255,255,255,0.56);
+    background: rgba(255,255,255,0.60);
     color: rgba(23,26,34,0.70);
     white-space:nowrap;
   }
-
   .fun-actions{
     display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;
   }
@@ -433,7 +420,7 @@
     padding:8px 10px;
     border-radius:999px;
     border:1px solid rgba(23,26,34,0.12);
-    background: rgba(255,255,255,0.52);
+    background: rgba(255,255,255,0.56);
     cursor:pointer;
     font-weight:950;
     font-size:12px;
@@ -446,7 +433,6 @@
     border-color: rgba(23,26,34,0.16);
     box-shadow: 0 10px 18px rgba(23,26,34,0.10);
   }
-
   .songs{
     display:grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -459,7 +445,7 @@
     padding: 10px 12px;
     border-radius: 18px;
     border: 1px solid rgba(23,26,34,0.10);
-    background: rgba(255,255,255,0.52);
+    background: rgba(255,255,255,0.56);
     box-shadow: 0 10px 18px rgba(23,26,34,0.06);
   }
   .song .note{
@@ -488,7 +474,7 @@
   .quote{
     border-radius: 20px;
     border: 1px solid rgba(23,26,34,0.10);
-    background: rgba(255,255,255,0.52);
+    background: rgba(255,255,255,0.56);
     padding: 12px 12px;
   }
   .quote p{
@@ -503,7 +489,7 @@
   .meter{
     border-radius: 20px;
     border: 1px solid rgba(23,26,34,0.10);
-    background: rgba(255,255,255,0.52);
+    background: rgba(255,255,255,0.56);
     padding: 12px;
   }
   .bar{
@@ -530,9 +516,9 @@
     padding:10px 12px;
     border-radius:999px;
     border:1px solid rgba(23,26,34,0.12);
-    background: rgba(255,255,255,0.70);
+    background: rgba(255,255,255,0.78);
     backdrop-filter: blur(10px);
-    box-shadow: 0 18px 40px rgba(23,26,34,0.14);
+    box-shadow: 0 18px 40px rgba(23,26,34,0.12);
     font-weight:950;
     font-size:12px;
     color: rgba(23,26,34,0.84);
@@ -561,12 +547,12 @@
     text-align:center;
   }
 
-  /* entrance animation */
+  /* entrance */
   .enter{ opacity:0; transform: translateY(6px); }
   .enter.show{ opacity:1; transform: translateY(0); transition: opacity .22s ease, transform .22s ease; }
 
   .pillbtn:focus-visible, a.buy-pill:focus-visible, .mini-btn:focus-visible{
-    outline:2px solid rgba(23,26,34,0.28);
+    outline:2px solid rgba(23,26,34,0.26);
     outline-offset:2px;
   }
 </style>
@@ -577,7 +563,6 @@
   <div class="blob b1"></div>
   <div class="blob b2"></div>
   <div class="blob b3"></div>
-  <div class="blob b4"></div>
   <div class="grain"></div>
 
   <div class="toast" id="toast">Gekopieerd</div>
@@ -654,37 +639,233 @@ const CARDS_PER_REFRESH = 4;
 const MAX_REFRESHES = 10;
 const SONGS_PER_REFRESH = 8;
 
-/** Content */
+/**
+ * UNIQUENESS:
+ * - All lists below are curated to be unique across moods within each category.
+ * - Per refresh, we also enforce uniqueness across the 4 cards for each category.
+ */
 const DATA = {
   Stressed: {
-    products: ["Weighted blanket","Aromatherapy diffuser","Lavender essential oil","Neck and shoulder massager","Heat pad (microwavable)","Acupressure mat","Sleep mask (blackout)","White noise machine","Bath salts","Meditation cushion","Foam roller","Massage ball","Chamomile tea","Scented candle set","Relaxing bath pillow"],
-    eat: ["🍵 Kamille- of lavendelthee","🥣 Warme havermout met banaan & kaneel","🍲 Tomatensoep + volkoren toast","🥛 Yoghurt met honing & noten","🍌 Banana bread + thee","🍘 Rijstwafel met pindakaas","🍫 Pure chocolade (klein stukje)","🍵 Gemberthee met citroen","🍝 Pasta pesto (simpel)","🥤 Smoothie: banaan + yoghurt"],
-    do: ["⏱ 10 min ademhaling (box breathing)","⏱ 12 min warme douche + rustige muziek","⏱ 15–20 min korte wandeling","⏱ 8 min stretch (nek/schouders)","⏱ 5 min journaling dump","⏱ 10 min opruim sprint (1 hoek)","⏱ 12 min voetenbadje + ontspanning","⏱ 10 min guided meditatie","⏱ 8 min mobility (heup/onderrug)","⏱ 30 min schermpauze (offline)"],
-    watch: ["🎬 Modern Family (20–25m)","🎬 Brooklyn Nine-Nine (20–25m)","🎬 The Office (US) (20–25m)","🎬 Parks and Recreation (20–25m)","🎬 Chef’s Table (45m)","🎬 Our Planet (45–50m)","🎬 Studio Ghibli (90m)","🎬 Feel-good romcom (90–110m)","🎬 Friends (20–25m)","🎬 Ted Lasso (30m)"]
+    products: [
+      "Aromatherapy diffuser","Lavender essential oil","Acupressure mat","Neck and shoulder massager",
+      "Bath salts","Meditation cushion","Silk pillowcase","Calming room spray","Incense holder",
+      "Stress ball","Eye gel patches","Herbal pillow (lavender)","Scented candle set","Desk fountain"
+    ],
+    eat: [
+      "🍵 Kamille-infusie (cafeïnevrij)",
+      "🥣 Warme havermout met banaan & kaneel",
+      "🍲 Miso soep + rijst (licht)",
+      "🥛 Griekse yoghurt met honing & walnoten",
+      "🍌 Banaanbrood + kruidenthee",
+      "🍘 Rijstwafel met tahin & honing",
+      "🍫 Pure chocolade (1–2 blokjes)",
+      "🫖 Rooibos met vanille",
+      "🥜 Amandelen + gedroogde abrikoos",
+      "🍓 Aardbeien + yoghurt"
+    ],
+    do: [
+      "⏱ 10 min ademhaling (box breathing)",
+      "⏱ 12 min warme douche + rustige muziek",
+      "⏱ 15–20 min rustige wandeling",
+      "⏱ 8 min stretch (nek/schouders)",
+      "⏱ 5 min journaling dump",
+      "⏱ 10 min opruim sprint (1 hoek)",
+      "⏱ 12 min voetenbadje + ontspanning",
+      "⏱ 10 min guided meditatie",
+      "⏱ 8 min mobility (heup/onderrug)",
+      "⏱ 30 min schermpauze (offline)"
+    ],
+    watch: [
+      "🎬 Ted Lasso (Serie, 30m)",
+      "🎬 Schitt's Creek (Serie, 22m)",
+      "🎬 The Good Place (Serie, 22m)",
+      "🎬 The Theory of Everything (Film)",
+      "🎬 About Time (Film)",
+      "🎬 Little Miss Sunshine (Film)",
+      "🎬 Chef's Table (Serie, 50m)",
+      "🎬 Call Me by Your Name (Film)",
+      "🎬 Julie & Julia (Film)",
+      "🎬 Inside Out (Film)"
+    ]
   },
+
   Happy: {
-    products: ["Instant camera","Bluetooth speaker","String lights (fairy lights)","Board game","Karaoke microphone","Mini projector","Photo frames set","Party lights projector","Scrapbook album","DIY mocktail kit","Waffle maker","Fondue set","LEGO flower bouquet set","Confetti poppers","Picnic blanket"],
-    eat: ["🍹 Mocktail (munt + citrus)","🍓 Aardbeien met slagroom","🥞 Pannenkoeken","🧀 Nacho’s met salsa","🍣 Sushi-avond","🍨 IJs + toppings","🫒 Tapas plank","🧁 Cupcakes (bakken)","🍉 Fruit salade","🍿 Popcorn + film"],
-    do: ["⏱ 9 min dans (3 nummers)","⏱ 3 min app iemand (plan iets)","⏱ 12 min mini fotoshoot thuis","⏱ 45 min picknick (park/balkon)","⏱ 40 min spelletjesavond starter","⏱ 30 min kook/bak iets nieuws","⏱ 10 min maak ‘happy playlist’","⏱ 25 min koffietentje ontdekken","⏱ 20 min DIY: scrapbooking","⏱ 15 min mini workout"],
-    watch: ["🎬 Paddington 2 (100m)","🎬 Mamma Mia! (105m)","🎬 Pitch Perfect (112m)","🎬 The Intern (121m)","🎬 Spider-Verse (117m)","🎬 School of Rock (109m)","🎬 Chef (114m)","🎬 Sing (108m)","🎬 Feel-good comedy (90m)","🎬 Feel-good series (25–30m)"]
+    products: [
+      "Instant camera","Mini photo printer (pocket)","String lights (fairy lights)","Bluetooth speaker",
+      "Karaoke microphone","Confetti poppers","Balloon set","Party photo booth props",
+      "Neon sign (small)","Cupcake stand","Waffle maker","DIY mocktail kit","Board game","Popcorn maker"
+    ],
+    eat: [
+      "🍹 Mocktail: munt + limoen + bruiswater",
+      "🍓 Aardbeien met slagroom",
+      "🥞 Pannenkoeken met poedersuiker",
+      "🧀 Nacho’s met salsa & guacamole",
+      "🍣 Sushi-avond (mix box)",
+      "🍨 IJs + toppings bar",
+      "🫒 Tapas plank (klein & gezellig)",
+      "🧁 Cupcakes bakken",
+      "🍉 Fruit salade met munt",
+      "🍿 Popcorn + film"
+    ],
+    do: [
+      "⏱ 9 min dans (3 nummers)",
+      "⏱ 12 min mini fotoshoot thuis",
+      "⏱ 40 min spelletjesavond starter",
+      "⏱ 25 min koffietentje ontdekken",
+      "⏱ 20 min DIY: scrapbooking",
+      "⏱ 15 min balloon/party setup",
+      "⏱ 30 min bak iets zoets",
+      "⏱ 10 min stuur 3 leuke appjes",
+      "⏱ 45 min picknick (park/balkon)",
+      "⏱ 20 min maak een mood-collage"
+    ],
+    watch: [
+      "🎬 Mamma Mia! (Film)",
+      "🎬 Pitch Perfect (Film)",
+      "🎬 Legally Blonde (Film)",
+      "🎬 The Intouchables (Film)",
+      "🎬 The Princess Bride (Film)",
+      "🎬 Sing (Film)",
+      "🎬 The Grand Budapest Hotel (Film)",
+      "🎬 New Girl (Serie, 22m)",
+      "🎬 Queer Eye (Serie, 45m)",
+      "🎬 Crazy Rich Asians (Film)"
+    ]
   },
+
   Energetic: {
-    products: ["Jump rope","Resistance bands set","Adjustable dumbbells","Kettlebell","Fitness tracker","Running belt","Compression socks","Massage gun","Pull-up bar (doorway)","Workout timer","Shaker bottle","Insulated water bottle","Agility ladder","Boxing gloves","Balance board"],
-    eat: ["🍌 Banaan + pindakaas","🥣 Griekse yoghurt + granola","🌯 Eiwitrijke wrap","🥤 Smoothie: bessen + yoghurt","🥜 Notenmix (klein)","🍳 Volkoren toast + ei","🥣 Havermout + honing","🍚 Bowl: rijst + kip/vega","☕ Koffie (matig)","💧 Electrolyte water"],
-    do: ["⏱ 12 min HIIT","⏱ 20 min interval (run/walk)","⏱ 20 min full-body kracht","⏱ 10 min shadowboxing","⏱ 8 min traplopen challenge","⏱ 30 min fietstocht","⏱ 5 min touwtje springen","⏱ 10 min core","⏱ 8 min mobility cooldown","⏱ 60 sec koude douche (kort)"],
-    watch: ["🎬 Top Gun: Maverick (130m)","🎬 Creed (133m)","🎬 Rocky (120m)","🎬 Rush (123m)","🎬 The Last Dance (50m)","🎬 Drive to Survive (35–45m)","🎬 John Wick (101m)","🎬 Mission: Impossible (120m)","🎬 Free Solo (100m)","🎬 Action pick (90–120m)"]
+    products: [
+      "Jump rope","Resistance bands set","Adjustable dumbbells","Kettlebell",
+      "Running belt","Reflective running vest","Heart rate monitor strap","Ankle weights",
+      "Pull-up bar (doorway)","Boxing gloves","Workout timer","Hydration pack",
+      "Massage gun","Shaker bottle"
+    ],
+    eat: [
+      "🍌 Banaan + pindakaas",
+      "🥣 Skyr + granola",
+      "🌯 Eiwitrijke wrap (kip/vega)",
+      "🥤 Smoothie: bessen + yoghurt",
+      "🥜 Notenmix (klein, pre-workout)",
+      "🍳 Volkoren toast + ei",
+      "🍚 Bowl: rijst + zalm/tempeh",
+      "💧 Electrolyte water",
+      "🍏 Appel + cheddar",
+      "🥔 Geroosterde aardappels + kwark dip"
+    ],
+    do: [
+      "⏱ 12 min HIIT",
+      "⏱ 20 min interval (run/walk)",
+      "⏱ 20 min full-body kracht",
+      "⏱ 10 min shadowboxing",
+      "⏱ 8 min traplopen challenge",
+      "⏱ 30 min stevige fietstocht",
+      "⏱ 5 min touwtje springen",
+      "⏱ 10 min core circuit",
+      "⏱ 8 min mobility cooldown",
+      "⏱ 12 min power walk (sneller tempo)"
+    ],
+    watch: [
+      "🎬 Top Gun: Maverick (Film)",
+      "🎬 Mad Max: Fury Road (Film)",
+      "🎬 Creed (Film)",
+      "🎬 John Wick (Film)",
+      "🎬 Mission: Impossible — Fallout (Film)",
+      "🎬 Baby Driver (Film)",
+      "🎬 The Raid (Film)",
+      "🎬 Free Solo (Film)",
+      "🎬 Ford v Ferrari (Film)",
+      "🎬 Kill Bill: Vol. 1 (Film)"
+    ]
   },
+
   Creative: {
-    products: ["Sketchbook","Marker set","Watercolor paint set","Acrylic paint set","Calligraphy set","Sticker pack (art)","Air-dry clay","Embroidery starter kit","Ring light","Photography tripod","Washi tape set","Bead kit","Origami paper set","Miniature house kit","Idea journal"],
-    eat: ["🍵 Thee + koekje","🥑 Toast met avocado","🍎 Fruit + noten","🍅 Caprese salade","🍵 Matcha latte","🍝 Pasta aglio e olio","🧀 Kaasplankje (klein)","🥣 Smoothie bowl","🌯 Wrap met hummus","🫖 Chai latte"],
-    do: ["⏱ 30 min schetsen (zonder gum)","⏱ 20 min collage (tijdschrift)","⏱ 15 min schrijf 1 pagina verhaal","⏱ 25 min fotowandeling (10 shots)","⏱ 20 min moodboard maken","⏱ 15 min lettering practice","⏱ 25 min kleuren (adult coloring)","⏱ 30 min mini clay project","⏱ 25 min DIY: scrapbooking","⏱ 15 min muziek: 1 loop"],
-    watch: ["🎬 Abstract: The Art of Design (45m)","🎬 Amélie (122m)","🎬 Julie & Julia (123m)","🎬 La La Land (128m)","🎬 Midnight in Paris (94m)","🎬 The Pixar Story (90m)","🎬 Chef’s Table (45m)","🎬 Bake Off (50m)","🎬 Kiki’s Delivery Service (103m)","🎬 Indie vibe (90–120m)"]
+    products: [
+      "Watercolor paint set","Acrylic paint set","Canvas panels pack","Brush pens set",
+      "Calligraphy set","Washi tape set","Resin kit","Polymer clay kit",
+      "Embroidery starter kit","Crochet starter kit","Origami paper set","Stamp set",
+      "Wax seal kit","A4 light pad","Idea journal"
+    ],
+    eat: [
+      "🍵 Matcha latte",
+      "🥑 Toast met avocado + chili flakes",
+      "🍎 Appel + amandelboter",
+      "🍅 Caprese salade",
+      "🫖 Chai latte",
+      "🍝 Pasta aglio e olio",
+      "🧀 Kaasplankje (klein)",
+      "🥣 Smoothie bowl (mango)",
+      "🌯 Wrap met hummus & groente",
+      "🍫 Donkere chocolade + espresso (klein)"
+    ],
+    do: [
+      "⏱ 30 min schetsen (zonder gum)",
+      "⏱ 20 min collage (tijdschrift)",
+      "⏱ 15 min schrijf 1 pagina verhaal",
+      "⏱ 25 min fotowandeling (10 shots)",
+      "⏱ 20 min moodboard maken",
+      "⏱ 15 min lettering practice",
+      "⏱ 25 min kleuren (adult coloring)",
+      "⏱ 30 min mini clay project",
+      "⏱ 20 min ‘one-take’ muziek loop",
+      "⏱ 25 min DIY: kaart maken"
+    ],
+    watch: [
+      "🎬 Abstract: The Art of Design (Serie, 45m)",
+      "🎬 Amélie (Film)",
+      "🎬 Midnight in Paris (Film)",
+      "🎬 Frida (Film)",
+      "🎬 Big Eyes (Film)",
+      "🎬 Exit Through the Gift Shop (Film)",
+      "🎬 The Great British Bake Off (Serie, 50m)",
+      "🎬 Howl's Moving Castle (Film)",
+      "🎬 La La Land (Film)",
+      "🎬 The Pixar Story (Film)"
+    ]
   },
+
   Tired: {
-    products: ["Blackout sleep mask","White noise machine","Sunrise alarm clock","Electric blanket","Memory foam pillow","Lavender pillow spray","Bed wedge pillow","Humidifier","Heating pad","Cozy robe","Slippers","Mug warmer","Blue light blocking glasses","Weighted eye mask","Soft throw blanket"],
-    eat: ["🍵 Kruidenthee (cafeïnevrij)","🥛 Warme melk (of alternatief)","🍲 Soep + brood","🍌 Banaan","🍚 Rijst + ei","🥛 Yoghurt (licht)","🍯 Honingthee","🥣 Havermout","🧀 Toast met kaas","🍵 Gemberthee"],
-    do: ["⏱ 20 min powernap","⏱ 60 min scherm uit voor slapen","⏱ 10 min warme douche","⏱ 8 min rustige stretch","⏱ 10 min lees 10 pagina’s","⏱ 6 min leg kleding klaar","⏱ 5 min ademhaling","⏱ 7 min kamer donker & koel","⏱ 15 min rustig wandelen","⏱ 6 min zacht foam rollen"],
-    watch: ["🎬 Our Planet (45–50m)","🎬 Planet Earth (45–50m)","🎬 Friends (20–25m)","🎬 The Office (US) (20–25m)","🎬 Modern Family (20–25m)","🎬 Studio Ghibli (90m)","🎬 Paddington (95m)","🎬 Chef (114m)","🎬 Nature doc (45m)","🎬 Comfort sitcom (20–25m)"]
+    products: [
+      "Sunrise alarm clock","White noise machine","Humidifier","Electric blanket",
+      "Cozy robe","Slippers","Mug warmer","Blue light blocking glasses",
+      "Sleep headphones (headband)","Bedside lamp (warm light)","Mattress topper",
+      "Weighted eye mask","Foot massager","Lavender pillow spray"
+    ],
+    eat: [
+      "🍵 Lindebloesemthee (cafeïnevrij)",
+      "🥛 Warme havermelk met kaneel",
+      "🍲 Groentesoep + toast",
+      "🍌 Banaan + kaneel",
+      "🍚 Rijst + roerei",
+      "🥣 Griesmeelpap (warm)",
+      "🍯 Honing + gember (in warm water)",
+      "🧀 Toast met kaas",
+      "🥛 Yoghurt met blauwe bessen",
+      "🍵 Citroenmelisse-thee"
+    ],
+    do: [
+      "⏱ 20 min powernap",
+      "⏱ 60 min scherm uit (sleep mode)",
+      "⏱ 10 min warme douche",
+      "⏱ 8 min rustige stretch",
+      "⏱ 10 min lees 10 pagina’s",
+      "⏱ 6 min leg kleding klaar",
+      "⏱ 5 min rustige ademhaling",
+      "⏱ 7 min kamer donker & koel",
+      "⏱ 15 min langzaam wandelen",
+      "⏱ 10 min ‘tidy’ in stilte"
+    ],
+    watch: [
+      "🎬 Planet Earth II (Serie, 50m)",
+      "🎬 Blue Planet II (Serie, 50m)",
+      "🎬 The Repair Shop (Serie, 45m)",
+      "🎬 Gilmore Girls (Serie, 42m)",
+      "🎬 Anne with an E (Serie, 45m)",
+      "🎬 Pride & Prejudice (2005) (Film)",
+      "🎬 The Holiday (Film)",
+      "🎬 Before Sunrise (Film)",
+      "🎬 Little Forest (Film)",
+      "🎬 The Great British Sewing Bee (Serie, 60m)"
+    ]
   }
 };
 
@@ -697,38 +878,38 @@ const SONGS = {
 };
 
 const QUOTES = {
-  Stressed: ["Zacht is ook sterk. Doe één kleine stap en adem rustig.","Maak het simpel: warm drankje, kleine wandeling, klaar.","Je hoeft het niet op te lossen. Je mag het even laten zijn."],
-  Happy: ["Maak er een mini-feestje van: muziek aan, lichtjes aan.","Vreugde = gedeeld. Stuur één berichtje en plan iets leuks.","Vandaag is voor herinneringen: foto, snack, lach."],
-  Energetic: ["Gebruik die energie: 12 minuten knallen is genoeg.","Actie maakt motivatie. Start klein, ga door.","Hydrate, move, repeat."],
-  Creative: ["Maak iets kleins af. Kleine projecten geven grote voldoening.","Geen perfectie — alleen nieuwsgierigheid.","Maak het lelijk. Dan wordt het vanzelf mooi."],
-  Tired: ["Rust is productief. Je hoeft niet te pushen.","Zacht licht, warme thee, rustig ritme.","Een goede nacht is ook een overwinning."]
+  Stressed: ["Zacht is ook sterk. Eén kleine stap is genoeg.","Maak het simpel: warm drankje, rustige wandeling, klaar.","Je hoeft het niet op te lossen — alleen te verzachten."],
+  Happy: ["Maak er een mini-feestje van: muziek aan, lachen aan.","Vreugde werkt beter als je ’m deelt.","Vandaag: licht, lucht, en iets leuks."],
+  Energetic: ["Gebruik die energie: kort, scherp, klaar.","Actie maakt motivatie. Start klein, ga door.","Move first. Think later."],
+  Creative: ["Maak iets kleins af. Kleine projecten = grote flow.","Geen perfectie — alleen nieuwsgierigheid.","Maak het lelijk. Dan wordt het vanzelf mooi."],
+  Tired: ["Rust is ook progress. Zacht ritme, warme avond.","Je hoeft niet te pushen. Je mag landen.","Kleine voorbereiding = grote ontspanning."]
 };
 
 const WHY = {
   Stressed: [
-    "Dit geeft je nervous system een snelle ‘downshift’—rust zonder veel moeite.",
-    "Kleine, zachte input helpt je brein switchen van ‘stress’ naar ‘veilig’.",
-    "Warmte + geur + routine = instant comfort."
+    "Zachte input (warmte/geur/routine) helpt je sneller ‘ontladen’.",
+    "Klein + haalbaar = minder frictie, meer rust.",
+    "Je lichaam kalmeert vaak vóór je hoofd het merkt."
   ],
   Happy: [
-    "Dit versterkt positieve prikkels: fun, licht, muziek en mini-momenten.",
-    "Eenvoudige dopamine: creatief + sociaal = sneller een goede vibe.",
-    "Maak het ‘mini’ en je doet het echt."
+    "Kleine ‘fun cues’ geven meteen een lichtere vibe.",
+    "Samen of solo: speelsheid werkt snel.",
+    "Maak het makkelijk om ja te zeggen."
   ],
   Energetic: [
-    "Snelle actie gebruikt je energie meteen—dan blijf je in flow.",
-    "Korte intensiteit geeft een kick zonder dat het te groot voelt.",
-    "Beweging + hydration = instant upgrade."
+    "Korte intensiteit benut je energie zonder dat het ‘te groot’ voelt.",
+    "Beweging + hydratatie = instant upgrade.",
+    "Momentum is het doel — niet perfectie."
   ],
   Creative: [
-    "Lage drempel tools → makkelijker beginnen (en starten is alles).",
-    "Kleine output > perfecte output. Consistentie wint.",
-    "Een mini-project geeft je brein ‘speelruimte’."
+    "Lage drempel tools → makkelijker beginnen (start is alles).",
+    "Kleine output > perfecte output.",
+    "Speelruimte in je brein = betere ideeën."
   ],
   Tired: [
-    "Comfort + rust cues helpen sneller naar ontspanning.",
+    "Comfort + rust cues maken slapen/ontspannen veel makkelijker.",
     "Zacht ritme → je lichaam volgt vanzelf.",
-    "Kleine voorbereiding maakt de rest van de avond makkelijker."
+    "Rust is een keuze die zichzelf terugbetaalt."
   ]
 };
 
@@ -751,7 +932,7 @@ const progBar = document.getElementById("progBar");
 const toast = document.getElementById("toast");
 
 /** State */
-const STORAGE_KEY = "moodmakerz_no_meter_v1";
+const STORAGE_KEY = "moodmakerz_unique_pro_v1";
 function loadState(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch(e){ return {}; } }
 function saveState(s){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch(e){} }
 let state = loadState();
@@ -811,6 +992,10 @@ function nextItem(mood, cat){
   return DATA[mood][cat][pickIndex];
 }
 
+/**
+ * Per refresh uniqueness:
+ * - Within the 4 cards, each category item appears once.
+ */
 function buildBatch(mood, k){
   ensureMoodState(mood);
   const used = { products:new Set(), eat:new Set(), do:new Set(), watch:new Set() };
@@ -820,7 +1005,7 @@ function buildBatch(mood, k){
     for(const cat of ["products","eat","do","watch"]){
       let item = nextItem(mood, cat);
       let safety = 0;
-      while(used[cat].has(item.toLowerCase()) && safety < 30){
+      while(used[cat].has(item.toLowerCase()) && safety < 60){
         item = nextItem(mood, cat);
         safety++;
       }
@@ -839,6 +1024,10 @@ function esc(s){
 function pickQuote(mood){
   const q = QUOTES[mood] || ["Enjoy."];
   return q[Math.floor(Math.random()*q.length)];
+}
+function pickWhy(mood){
+  const arr = WHY[mood] || ["Goed idee."];
+  return arr[Math.floor(Math.random()*arr.length)];
 }
 
 /** Playlist */
@@ -895,14 +1084,7 @@ function showToast(msg){
   toastTimer = setTimeout(()=>toast.classList.remove("show"), 1200);
 }
 
-/** Highlight reason */
-function pickWhy(mood){
-  const arr = WHY[mood] || ["Goed idee."];
-  return arr[Math.floor(Math.random()*arr.length)];
-}
-
 let currentMood = Object.keys(DATA)[0];
-
 function animateEnter(el){
   el.classList.add("enter");
   requestAnimationFrame(()=>el.classList.add("show"));
@@ -921,7 +1103,6 @@ function render(full=true){
     saveState(state);
   }
 
-  // progress + quote
   funPill.textContent = `Set ${ms.refreshCount}/${MAX_REFRESHES} • ${currentMood}`;
   progText.textContent = `${ms.refreshCount}/${MAX_REFRESHES}`;
   progBar.style.width = Math.max(5, Math.round((ms.refreshCount / MAX_REFRESHES) * 100)) + "%";
@@ -938,7 +1119,6 @@ function render(full=true){
       animateEnter(card);
 
       const link = amazonUrl(b.products);
-
       const isHighlight = (idx === 0);
       if(isHighlight) card.classList.add("highlight");
 
@@ -991,7 +1171,6 @@ function render(full=true){
   }
 
   renderSongs(currentMood);
-
   if(!fun.classList.contains("show")) animateEnter(fun);
 }
 
