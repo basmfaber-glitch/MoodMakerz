@@ -9,13 +9,10 @@
   :root{
     --ink:#11131a;
     --muted: rgba(17,19,26,0.62);
-
     --shadow: 0 18px 55px rgba(17,19,26,.10);
     --shadow-soft: 0 10px 26px rgba(17,19,26,.08);
-
     --r: 22px;
 
-    /* default mood */
     --mood-accent: rgba(95,120,200,0.62);
     --mood-accent2: rgba(105,165,150,0.54);
     --mood-wash: rgba(95,120,200,0.10);
@@ -31,7 +28,6 @@
     background:#f3f4f7;
   }
 
-  /* ===== Professional background (stone/grey with haze) ===== */
   .haze{
     position:fixed; inset:0; z-index:0; pointer-events:none;
     background:
@@ -79,7 +75,6 @@
     flex:1;
   }
 
-  /* ===== Topbar ===== */
   .topbar{
     position:sticky; top:0; z-index:20;
     margin:-26px -22px 16px;
@@ -116,7 +111,6 @@
     font-size:12px;
     line-height:1.35;
   }
-
   .hero-right{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
 
   .row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:12px; }
@@ -156,14 +150,14 @@
     opacity:.55;
   }
 
-  /* ===== Mood palettes (muted/pro) ===== */
   body.mood-Stressed{  --mood-accent: rgba(95,120,200,0.60); --mood-accent2: rgba(105,165,150,0.52); --mood-wash: rgba(95,120,200,0.10); }
   body.mood-Happy{     --mood-accent: rgba(200,150,95,0.60); --mood-accent2: rgba(185,130,155,0.46); --mood-wash: rgba(200,150,95,0.10); }
   body.mood-Energetic{ --mood-accent: rgba(85,165,150,0.62); --mood-accent2: rgba(200,160,95,0.46); --mood-wash: rgba(85,165,150,0.10); }
   body.mood-Creative{  --mood-accent: rgba(175,130,160,0.56); --mood-accent2: rgba(110,130,205,0.48); --mood-wash: rgba(175,130,160,0.10); }
   body.mood-Tired{     --mood-accent: rgba(120,130,155,0.54); --mood-accent2: rgba(155,140,180,0.44); --mood-wash: rgba(120,130,155,0.10); }
+  body.mood-Cozy{      --mood-accent: rgba(170,125,95,0.58); --mood-accent2: rgba(145,120,95,0.46); --mood-wash: rgba(170,125,95,0.10); }
+  body.mood-Focused{   --mood-accent: rgba(90,125,150,0.60); --mood-accent2: rgba(110,150,135,0.46); --mood-wash: rgba(90,125,150,0.10); }
 
-  /* ===== Grid ===== */
   .grid{
     margin-top:14px;
     display:grid;
@@ -305,7 +299,6 @@
     flex:0 0 auto;
   }
 
-  /* clickable watch link */
   a.watchlink{
     display:inline-block;
     margin-top:8px;
@@ -359,7 +352,6 @@
     line-height:1.35;
   }
 
-  /* ===== Bottom block ===== */
   .fun{
     position:relative;
     margin: 8px 0 10px;
@@ -557,7 +549,6 @@
     text-align:center;
   }
 
-  /* entrance */
   .enter{ opacity:0; transform: translateY(6px); }
   .enter.show{ opacity:1; transform: translateY(0); transition: opacity .22s ease, transform .22s ease; }
 
@@ -584,7 +575,7 @@
           <div>
             <h1>MoodMakerz</h1>
             <div class="tagline">Kies je mood → krijg 4 plannen + een playlist.</div>
-            <div class="subline">Druk op <b>Refresh</b> voor nieuwe sets (10×). Alles blijft uniek binnen die 10 refreshes.</div>
+            <div class="subline">Druk op <b>Refresh</b> voor nieuwe sets (10×). Trending items kunnen er af en toe tussendoor komen.</div>
           </div>
           <div class="hero-right">
             <button class="pillbtn" id="refresh">Refresh</button>
@@ -639,391 +630,140 @@
   </div>
 
 <script>
-/** Affiliate */
 const TAG="moodmakerz-21";
 const BASE="https://www.amazon.nl/s?k=";
 function amazonUrl(query){ return BASE + encodeURIComponent(query) + "&tag=" + TAG; }
+function watchUrl(title){ return "https://www.google.com/search?q=" + encodeURIComponent(title + " where to watch"); }
 
-/** Watch link (clickable series/film) */
-function watchUrl(title){
-  // "where to watch" is broadly useful (Netflix/Prime/etc.)
-  return "https://www.google.com/search?q=" + encodeURIComponent(title + " where to watch");
-}
-
-/** Config */
 const CARDS_PER_REFRESH = 4;
 const MAX_REFRESHES = 10;
 const SONGS_PER_REFRESH = 8;
 
-/**
- * IMPORTANT:
- * To guarantee "no repeats" within 10 refreshes:
- * Each category list per mood should have >= 40 items.
- * (4 cards * 10 refreshes = 40 unique picks per category)
- */
 const DATA = {
   Stressed: {
     products: [
-      "Aromatherapy diffuser","Lavender essential oil","Acupressure mat","Neck and shoulder massager",
-      "Bath salts","Meditation cushion","Silk pillowcase","Calming room spray","Incense holder",
-      "Stress ball","Eye gel patches","Herbal pillow (lavender)","Scented candle set","Desk fountain",
-      "Weighted eye mask","Sleep earplugs","Humidifier","Shower steamers","Hot water bottle",
-      "Foam roller","Massage ball","Hand cream set","Face mask set (skincare)","Tea infuser",
-      "Ceramic mug","Coaster set","Sleep spray","Aroma reed diffuser","Relaxing bath pillow",
-      "Guided meditation book","Soothing heat wrap","Cooling gel pillow","Mindfulness cards",
-      "Anti-stress fidget cube","Desk humidifier","Cozy socks","Soft throw blanket","LED salt lamp",
-      "Yoga mat","Yoga blocks","Stretching strap","Aromatherapy inhaler sticks","Relaxation incense holder",
-      "Calming essential oil set","Warm fleece blanket","Room humidifier filters","Aroma candle lantern",
-      "Weighted lap pad","Sleep headband","Herbal tea sampler","Relaxation cards","Mini zen garden"
+      "Aromatherapy diffuser","Lavender essential oil","Acupressure mat","Neck and shoulder massager","Bath salts","Meditation cushion","Silk pillowcase","Calming room spray","Incense holder","Stress ball","Eye gel patches","Herbal pillow (lavender)","Scented candle set","Desk fountain","Weighted eye mask","Sleep earplugs","Humidifier","Shower steamers","Hot water bottle","Foam roller","Massage ball","Hand cream set","Face mask set (skincare)","Tea infuser","Ceramic mug","Coaster set","Sleep spray","Aroma reed diffuser","Relaxing bath pillow","Guided meditation book","Soothing heat wrap","Cooling gel pillow","Mindfulness cards","Anti-stress fidget cube","Desk humidifier","Cozy socks","Soft throw blanket","LED salt lamp","Yoga mat","Yoga blocks","Stretching strap","Aromatherapy inhaler sticks","Relaxation incense holder","Calming essential oil set","Warm fleece blanket","Aroma candle lantern","Weighted lap pad","Sleep headband","Herbal tea sampler","Mini zen garden","Lavender pillow spray","Comfort blanket","Warm neck wrap","Cooling face roller","Stress journal","Sleep mask silk"
     ],
     eat: [
-      "🍵 Kamille-infusie (cafeïnevrij)","🥣 Warme havermout met banaan & kaneel","🍲 Miso soep + rijst (licht)","🥛 Griekse yoghurt met honing & walnoten",
-      "🍌 Banaanbrood + kruidenthee","🍘 Rijstwafel met tahin & honing","🍫 Pure chocolade (1–2 blokjes)","🫖 Rooibos met vanille",
-      "🥜 Amandelen + gedroogde abrikoos","🍓 Aardbeien + yoghurt","🍵 Gemberthee met citroen","🥣 Havermout met appel & kaneel",
-      "🍲 Tomatensoep + toast","🥛 Warme melk (of alternatief)","🍯 Honingwater (warm)","🍵 Citroenmelisse-thee",
-      "🥑 Avocado toast (simpel)","🍚 Rijst + roerei","🥣 Skyr + blauwe bessen","🍞 Toast + hummus",
-      "🍵 Groene thee (licht)","🍲 Kippensoep (licht)","🥔 Ovenaardappeltjes + kwark dip","🍎 Appel + amandelboter",
-      "🫖 Chai latte (mild)","🍓 Bessenmix + yoghurt","🥣 Pap (warm)","🍵 Pepermunt-thee","🍌 Banaan + pindakaas (klein)",
-      "🧀 Toast met kaas","🍲 Groentesoep","🥛 Yoghurt + granola (klein)","🍵 Lavendelthee","🍞 Crackers + kaas",
-      "🍲 Bouillon","🍵 Warm water + citroen","🍓 Fruit salade","🥜 Notenmix (klein)","🍫 Cacao (warm)"
+      "🍵 Kamille-infusie (cafeïnevrij)","🥣 Warme havermout met banaan & kaneel","🍲 Miso soep + rijst (licht)","🥛 Griekse yoghurt met honing & walnoten","🍌 Banaanbrood + kruidenthee","🍘 Rijstwafel met tahin & honing","🍫 Pure chocolade (1–2 blokjes)","🫖 Rooibos met vanille","🥜 Amandelen + gedroogde abrikoos","🍓 Aardbeien + yoghurt","🍵 Gemberthee met citroen","🥣 Havermout met appel & kaneel","🍲 Tomatensoep + toast","🥛 Warme melk (of alternatief)","🍯 Honingwater (warm)","🍵 Citroenmelisse-thee","🥑 Avocado toast (simpel)","🍚 Rijst + roerei","🥣 Skyr + blauwe bessen","🍞 Toast + hummus","🍵 Groene thee (licht)","🍲 Kippensoep (licht)","🥔 Ovenaardappeltjes + kwark dip","🍎 Appel + amandelboter","🫖 Chai latte (mild)","🍓 Bessenmix + yoghurt","🥣 Pap (warm)","🍵 Pepermunt-thee","🍌 Banaan + pindakaas (klein)","🧀 Toast met kaas","🍲 Groentesoep","🥛 Yoghurt + granola (klein)","🍵 Lavendelthee","🍞 Crackers + kaas","🍲 Bouillon","🍵 Warm water + citroen","🍓 Fruit salade","🥜 Notenmix (klein)","🍫 Cacao (warm)","🍵 Jasmijnthee","🥣 Rice pudding","🍏 Appelcompote","🍵 Lindebloesemthee","🥔 Aardappelsoep"
     ],
     do: [
-      "⏱ 10 min ademhaling (box breathing)","⏱ 12 min warme douche + rustige muziek","⏱ 15–20 min rustige wandeling","⏱ 8 min stretch (nek/schouders)",
-      "⏱ 5 min journaling dump","⏱ 10 min opruim sprint (1 hoek)","⏱ 12 min voetenbadje + ontspanning","⏱ 10 min guided meditatie",
-      "⏱ 8 min mobility (heup/onderrug)","⏱ 30 min schermpauze (offline)","⏱ 6 min ‘tidy’ in stilte","⏱ 12 min rustige yoga",
-      "⏱ 10 min adem + rek","⏱ 15 min warm bad","⏱ 10 min self-massage (schouders)","⏱ 20 min lezen (comfort boek)",
-      "⏱ 8 min body scan","⏱ 10 min ademhaling 4-7-8","⏱ 15 min thee moment zonder telefoon","⏱ 12 min soft pilates",
-      "⏱ 10 min ‘brain dump’ op papier","⏱ 20 min rustig opruimen (muziek)","⏱ 15 min kaars aan + ontspanning","⏱ 10 min face routine",
-      "⏱ 20 min rustige podcast","⏱ 12 min foam roll (zacht)","⏱ 15 min balkon/raam frisse lucht","⏱ 10 min gratitude lijst",
-      "⏱ 20 min slow walk","⏱ 12 min stretching full body","⏱ 15 min puzzle/kleuren","⏱ 10 min ademhaling met timer",
-      "⏱ 12 min warm kompres","⏱ 15 min muziek luisteren (headphones)","⏱ 10 min declutter (1 lade)","⏱ 12 min neck mobility",
-      "⏱ 20 min rustig koken","⏱ 15 min tea + journaling","⏱ 10 min stilte (geen input)","⏱ 12 min ontspanningsoefening"
+      "⏱ 10 min ademhaling (box breathing)","⏱ 12 min warme douche + rustige muziek","⏱ 15–20 min rustige wandeling","⏱ 8 min stretch (nek/schouders)","⏱ 5 min journaling dump","⏱ 10 min opruim sprint (1 hoek)","⏱ 12 min voetenbadje + ontspanning","⏱ 10 min guided meditatie","⏱ 8 min mobility (heup/onderrug)","⏱ 30 min schermpauze (offline)","⏱ 6 min ‘tidy’ in stilte","⏱ 12 min rustige yoga","⏱ 10 min adem + rek","⏱ 15 min warm bad","⏱ 10 min self-massage (schouders)","⏱ 20 min lezen (comfort boek)","⏱ 8 min body scan","⏱ 10 min ademhaling 4-7-8","⏱ 15 min thee moment zonder telefoon","⏱ 12 min soft pilates","⏱ 10 min ‘brain dump’ op papier","⏱ 20 min rustig opruimen (muziek)","⏱ 15 min kaars aan + ontspanning","⏱ 10 min face routine","⏱ 20 min rustige podcast","⏱ 12 min foam roll (zacht)","⏱ 15 min balkon/raam frisse lucht","⏱ 10 min gratitude lijst","⏱ 20 min slow walk","⏱ 12 min stretching full body","⏱ 15 min puzzle/kleuren","⏱ 10 min ademhaling met timer","⏱ 12 min warm kompres","⏱ 15 min muziek luisteren (headphones)","⏱ 10 min declutter (1 lade)","⏱ 12 min neck mobility","⏱ 20 min rustig koken","⏱ 15 min tea + journaling","⏱ 10 min stilte (geen input)","⏱ 12 min ontspanningsoefening","⏱ 15 min dim light reset","⏱ 10 min handmassage","⏱ 20 min comfort serie 1 episode"
     ],
     watch: [
-      "A Knight of the Seven Kingdoms","The Last of Us (Season 2)","Ted Lasso","Schitt's Creek",
-      "The Good Place","Normal People","About Time","Little Miss Sunshine",
-      "Julie & Julia","Inside Out","Chef's Table","Only Murders in the Building",
-      "The Bear","Fleabag","After Life","The Intern",
-      "Paddington 2","The Holiday","Before Sunrise","Pride & Prejudice (2005)",
-      "The Grand Budapest Hotel","Amélie","Midnight in Paris","Queer Eye",
-      "Planet Earth II","Blue Planet II","The Repair Shop","Gilmore Girls",
-      "Anne with an E","Call Me by Your Name","The Secret Life of Walter Mitty","Her",
-      "The Martian","Jojo Rabbit","The Intouchables","La La Land",
-      "Spirited Away","Howl's Moving Castle","Kiki's Delivery Service","The Pixar Story"
+      "A Knight of the Seven Kingdoms","The Last of Us (Season 2)","Ted Lasso","Schitt's Creek","The Good Place","Normal People","About Time","Little Miss Sunshine","Julie & Julia","Inside Out","Chef's Table","Only Murders in the Building","The Bear","Fleabag","After Life","The Intern","Paddington 2","The Holiday","Before Sunrise","Pride & Prejudice (2005)","The Grand Budapest Hotel","Amélie","Midnight in Paris","Queer Eye","Planet Earth II","Blue Planet II","The Repair Shop","Gilmore Girls","Anne with an E","Call Me by Your Name","The Secret Life of Walter Mitty","Her","The Martian","Jojo Rabbit","The Intouchables","La La Land","Spirited Away","Howl's Moving Castle","Kiki's Delivery Service","The Pixar Story","Heartstopper","Our Planet","Somebody Somewhere","Shrinking","One Day","Past Lives","Soul","Brooklyn","A Man Called Otto"
     ]
   },
 
   Happy: {
     products: [
-      "Instant camera","Mini photo printer (pocket)","String lights (fairy lights)","Bluetooth speaker",
-      "Karaoke microphone","Confetti poppers","Balloon set","Party photo booth props",
-      "Neon sign (small)","Cupcake stand","Waffle maker","DIY mocktail kit",
-      "Board game","Popcorn maker","LED strip lights","Disco ball (tabletop)",
-      "Celebration banner set","Party hats set","Glow sticks","Sticker pack (fun)",
-      "Photo frames set","Scrapbook album","Gift wrap kit","Picnic blanket",
-      "Portable cooler","Mini projector","Ice cream maker","Fondue set",
-      "Cake decorating kit","Cookie cutter set","Chocolate gift box","Gourmet candy mix",
-      "Portable tripod","Friendship bracelet kit","Craft kit","Bubble machine",
-      "Mini lantern lights","Snack platter board","Portable photo backdrop","String clip lights",
-      "Color confetti balloons set","Mini disco light","Party game set","Desktop bubble blower",
-      "Photo booth backdrop curtain","Birthday candles set","Candy gift jar","Portable speaker stand"
+      "Instant camera","Mini photo printer (pocket)","String lights (fairy lights)","Bluetooth speaker","Karaoke microphone","Confetti poppers","Balloon set","Party photo booth props","Neon sign (small)","Cupcake stand","Waffle maker","DIY mocktail kit","Board game","Popcorn maker","LED strip lights","Disco ball (tabletop)","Celebration banner set","Party hats set","Glow sticks","Sticker pack (fun)","Photo frames set","Scrapbook album","Gift wrap kit","Picnic blanket","Portable cooler","Mini projector","Ice cream maker","Fondue set","Cake decorating kit","Cookie cutter set","Chocolate gift box","Gourmet candy mix","Portable tripod","Friendship bracelet kit","Craft kit","Bubble machine","Mini lantern lights","Snack platter board","Portable photo backdrop","String clip lights","Color confetti balloons set","Mini disco light","Party game set","Desktop bubble blower","Photo booth backdrop curtain","Birthday candles set","Candy gift jar","Portable speaker stand","Glow party glasses","Reusable party cups","Mini waffle maker","Photo album corners"
     ],
     eat: [
-      "🍹 Mocktail: munt + limoen + bruiswater","🍓 Aardbeien met slagroom","🥞 Pannenkoeken met poedersuiker","🧀 Nacho’s met salsa & guacamole",
-      "🍣 Sushi-avond (mix box)","🍨 IJs + toppings bar","🫒 Tapas plank (klein & gezellig)","🧁 Cupcakes bakken",
-      "🍉 Fruit salade met munt","🍿 Popcorn + film","🍓 Smoothie bowl (aardbei)","🧇 Wafels + fruit",
-      "🍕 Pizza night","🍫 Brownies","🥨 Pretzels + dip","🧀 Kaasplank (party style)",
-      "🍔 Smashburger (thuis)","🍝 Pasta carbonara (comfort)","🫐 Blauwe bessen pancakes","🍹 Spritz (0.0)",
-      "🍭 Snoepmix","🍩 Donuts","🥗 Caesar salad + croutons","🍰 Cheesecake (stukje)",
-      "🍧 Sorbet","🍇 Druiven + kaas","🍓 Fruitspiesjes","🍜 Ramen (fun bowl)",
-      "🌮 Taco night","🍪 Cookies (bak)","🍫 Hot chocolate + marshmallows","🍨 Affogato",
-      "🍓 Yoghurt parfait","🍟 Loaded fries","🍹 Mango mocktail","🥟 Dumplings",
-      "🍿 Popcorn seasoning test","🍓 Aardbei-melkshake","🍦 Sundae","🍡 Mochi"
+      "🍹 Mocktail: munt + limoen + bruiswater","🍓 Aardbeien met slagroom","🥞 Pannenkoeken met poedersuiker","🧀 Nacho’s met salsa & guacamole","🍣 Sushi-avond (mix box)","🍨 IJs + toppings bar","🫒 Tapas plank (klein & gezellig)","🧁 Cupcakes bakken","🍉 Fruit salade met munt","🍿 Popcorn + film","🍓 Smoothie bowl (aardbei)","🧇 Wafels + fruit","🍕 Pizza night","🍫 Brownies","🥨 Pretzels + dip","🧀 Kaasplank (party style)","🍔 Smashburger (thuis)","🍝 Pasta carbonara (comfort)","🫐 Blauwe bessen pancakes","🍹 Spritz (0.0)","🍭 Snoepmix","🍩 Donuts","🥗 Caesar salad + croutons","🍰 Cheesecake (stukje)","🍧 Sorbet","🍇 Druiven + kaas","🍓 Fruitspiesjes","🍜 Ramen (fun bowl)","🌮 Taco night","🍪 Cookies (bak)","🍫 Hot chocolate + marshmallows","🍨 Affogato","🍓 Yoghurt parfait","🍟 Loaded fries","🍹 Mango mocktail","🥟 Dumplings","🍓 Aardbei-melkshake","🍦 Sundae","🍡 Mochi","🫔 Quesadilla","🍍 Tropical fruit bowl","🍋 Lemon tart"
     ],
     do: [
-      "⏱ 9 min dans (3 nummers)","⏱ 12 min mini fotoshoot thuis","⏱ 40 min spelletjesavond starter","⏱ 25 min koffietentje ontdekken",
-      "⏱ 20 min DIY: scrapbooking","⏱ 15 min balloon/party setup","⏱ 30 min bak iets zoets","⏱ 10 min stuur 3 leuke appjes",
-      "⏱ 45 min picknick (park/balkon)","⏱ 20 min maak een mood-collage","⏱ 25 min karaoke mini-set","⏱ 20 min foto’s printen",
-      "⏱ 15 min outfit/makeup fun","⏱ 30 min citywalk + koffie","⏱ 20 min playlist maken","⏱ 20 min kaartje schrijven",
-      "⏱ 35 min koken met vrienden","⏱ 20 min mini DIY decor","⏱ 15 min gratitude + muziek","⏱ 30 min boardgame (quick)",
-      "⏱ 25 min polaroid wall","⏱ 20 min cake decor","⏱ 10 min ‘compliment’ ronde","⏱ 25 min park chill",
-      "⏱ 20 min dans tutorial","⏱ 30 min film night prep","⏱ 15 min mini photoshoot buiten","⏱ 25 min thrift browse",
-      "⏱ 20 min snack tray bouwen","⏱ 15 min ‘happy calls’","⏱ 25 min bubble walk","⏱ 20 min Lego flowers bouwen",
-      "⏱ 25 min nieuwe recept testen","⏱ 10 min journaling ‘best moments’","⏱ 30 min sunset watch","⏱ 25 min dessert tasting",
-      "⏱ 15 min moodboard fun","⏱ 20 min ‘tiny party’ setup","⏱ 25 min craft","⏱ 20 min ‘photo dump’ selectie"
+      "⏱ 9 min dans (3 nummers)","⏱ 12 min mini fotoshoot thuis","⏱ 40 min spelletjesavond starter","⏱ 25 min koffietentje ontdekken","⏱ 20 min DIY: scrapbooking","⏱ 15 min balloon/party setup","⏱ 30 min bak iets zoets","⏱ 10 min stuur 3 leuke appjes","⏱ 45 min picknick (park/balkon)","⏱ 20 min maak een mood-collage","⏱ 25 min karaoke mini-set","⏱ 20 min foto’s printen","⏱ 15 min outfit/makeup fun","⏱ 30 min citywalk + koffie","⏱ 20 min playlist maken","⏱ 20 min kaartje schrijven","⏱ 35 min koken met vrienden","⏱ 20 min mini DIY decor","⏱ 15 min gratitude + muziek","⏱ 30 min boardgame (quick)","⏱ 25 min polaroid wall","⏱ 20 min cake decor","⏱ 10 min ‘compliment’ ronde","⏱ 25 min park chill","⏱ 20 min dans tutorial","⏱ 30 min film night prep","⏱ 15 min mini photoshoot buiten","⏱ 25 min thrift browse","⏱ 20 min snack tray bouwen","⏱ 15 min ‘happy calls’","⏱ 25 min bubble walk","⏱ 20 min Lego flowers bouwen","⏱ 25 min nieuwe recept testen","⏱ 10 min journaling ‘best moments’","⏱ 30 min sunset watch","⏱ 25 min dessert tasting","⏱ 15 min moodboard fun","⏱ 20 min ‘tiny party’ setup","⏱ 25 min craft","⏱ 20 min ‘photo dump’ selectie"
     ],
     watch: [
-      "Avatar: Fire and Ash","Mamma Mia!","Pitch Perfect","Legally Blonde",
-      "Crazy Rich Asians","Sing","The Princess Bride","New Girl",
-      "Spider-Man: Into the Spider-Verse","The Mitchells vs. the Machines","Brooklyn Nine-Nine","Modern Family",
-      "Parks and Recreation","School of Rock","Chef","The Proposal",
-      "Notting Hill","Bridesmaids","Palm Springs","The Nice Guys",
-      "Knives Out","Glass Onion","Barbie","Wonka",
-      "Guardians of the Galaxy Vol. 3","Dungeons & Dragons: Honor Among Thieves","The Fall Guy","The Super Mario Bros. Movie",
-      "Lilo & Stitch","A Minecraft Movie","Superman","Jurassic World: Rebirth",
-      "Wicked","The Marvels","Elemental","Encanto",
-      "Turning Red","Soul","The Lego Movie","Sing 2"
+      "Avatar: Fire and Ash","Mamma Mia!","Pitch Perfect","Legally Blonde","Crazy Rich Asians","Sing","The Princess Bride","New Girl","Spider-Man: Into the Spider-Verse","The Mitchells vs. the Machines","Brooklyn Nine-Nine","Modern Family","Parks and Recreation","School of Rock","Chef","The Proposal","Notting Hill","Bridesmaids","Palm Springs","The Nice Guys","Knives Out","Glass Onion","Barbie","Wonka","Guardians of the Galaxy Vol. 3","Dungeons & Dragons: Honor Among Thieves","The Fall Guy","The Super Mario Bros. Movie","Lilo & Stitch","A Minecraft Movie","Superman","Jurassic World: Rebirth","Wicked","The Marvels","Elemental","Encanto","Turning Red","Soul","The Lego Movie","Sing 2","Heartstopper","Nobody Wants This","The Studio","Paddington","Mean Girls","Clueless","13 Going on 30","Easy A"
     ]
   },
 
   Energetic: {
     products: [
-      "Jump rope","Resistance bands set","Adjustable dumbbells","Kettlebell",
-      "Running belt","Reflective running vest","Heart rate monitor strap","Ankle weights",
-      "Pull-up bar (doorway)","Boxing gloves","Workout timer","Hydration pack",
-      "Massage gun","Shaker bottle","Compression socks","Training cones set",
-      "Agility ladder","Balance board","Push-up bars","Ab roller",
-      "Mini stepper","Medicine ball","Speed jump rope","Gym gloves",
-      "Gym towel","Insulated water bottle","Running armband","Bike lights set",
-      "Sports earbuds","Yoga blocks","Foam yoga wheel","Lifting straps",
-      "Wrist wraps","Knee sleeves","Core slider discs","Punch mitts",
-      "Hand grip strengthener","Cooling towel","Running cap","Gym bag",
-      "Trail running light","Weighted vest","Portable blender","Exercise mat thick",
-      "Skipping rope counter","Balance disc","Portable pedal exerciser","Pull resistance band"
+      "Jump rope","Resistance bands set","Adjustable dumbbells","Kettlebell","Running belt","Reflective running vest","Heart rate monitor strap","Ankle weights","Pull-up bar (doorway)","Boxing gloves","Workout timer","Hydration pack","Massage gun","Shaker bottle","Compression socks","Training cones set","Agility ladder","Balance board","Push-up bars","Ab roller","Mini stepper","Medicine ball","Speed jump rope","Gym gloves","Gym towel","Insulated water bottle","Running armband","Bike lights set","Sports earbuds","Yoga blocks","Foam yoga wheel","Lifting straps","Wrist wraps","Knee sleeves","Core slider discs","Punch mitts","Hand grip strengthener","Cooling towel","Running cap","Gym bag","Trail running light","Weighted vest","Portable blender","Exercise mat thick","Skipping rope counter","Balance disc","Portable pedal exerciser","Pull resistance band","Mini trampoline","Grip chalk","Bike phone mount"
     ],
     eat: [
-      "🍌 Banaan + pindakaas","🥣 Skyr + granola","🌯 Eiwitrijke wrap (kip/vega)","🥤 Smoothie: bessen + yoghurt",
-      "🥜 Notenmix (klein)","🍳 Volkoren toast + ei","🍚 Bowl: rijst + zalm/tempeh","💧 Electrolyte water",
-      "🍏 Appel + cheddar","🥔 Ovenaardappeltjes + kwark dip","🥣 Havermout + honing","🥛 Protein shake (simpel)",
-      "🍗 Kip/tempeh + groente","🥗 Quinoa salade","🍝 Pasta + tonijn","🍞 Toast + cottage cheese",
-      "🍌 Banaan + yoghurt","🍯 Honing + zout (klein)","🍊 Sinaasappel","🥜 Pinda’s (klein)",
-      "🥣 Overnight oats","🍳 Omelet","🍚 Sushi bowl","🥤 Mango smoothie",
-      "🍞 Bagel + ei","🥗 Caesar wrap","🍠 Zoete aardappel","🥛 Chocomelk (na workout)",
-      "🍓 Yoghurt + fruit","🥣 Granola bowl","🍝 Rijstnoedels + kip","🍲 Ramen (power)",
-      "🥗 Pasta salade","🍌 Banaan + granola","🍳 Scramble + toast","🍚 Rijst + kip",
-      "🥤 Electrolyte lemonade","🍇 Druiven","🍍 Ananas","🥜 Cashews"
+      "🍌 Banaan + pindakaas","🥣 Skyr + granola","🌯 Eiwitrijke wrap (kip/vega)","🥤 Smoothie: bessen + yoghurt","🥜 Notenmix (klein)","🍳 Volkoren toast + ei","🍚 Bowl: rijst + zalm/tempeh","💧 Electrolyte water","🍏 Appel + cheddar","🥔 Ovenaardappeltjes + kwark dip","🥣 Havermout + honing","🥛 Protein shake (simpel)","🍗 Kip/tempeh + groente","🥗 Quinoa salade","🍝 Pasta + tonijn","🍞 Toast + cottage cheese","🍌 Banaan + yoghurt","🍯 Honing + zout (klein)","🍊 Sinaasappel","🥜 Pinda’s (klein)","🥣 Overnight oats","🍳 Omelet","🍚 Sushi bowl","🥤 Mango smoothie","🍞 Bagel + ei","🥗 Caesar wrap","🍠 Zoete aardappel","🥛 Chocomelk (na workout)","🍓 Yoghurt + fruit","🥣 Granola bowl","🍝 Rijstnoedels + kip","🍲 Ramen (power)","🥗 Pasta salade","🍳 Scramble + toast","🍚 Rijst + kip","🥤 Electrolyte lemonade","🍇 Druiven","🍍 Ananas","🥜 Cashews","🥑 Toast + ei","🍗 Chicken rice bowl"
     ],
     do: [
-      "⏱ 12 min HIIT","⏱ 20 min interval (run/walk)","⏱ 20 min full-body kracht","⏱ 10 min shadowboxing",
-      "⏱ 8 min traplopen challenge","⏱ 30 min stevige fietstocht","⏱ 5 min touwtje springen","⏱ 10 min core circuit",
-      "⏱ 8 min mobility cooldown","⏱ 12 min power walk","⏱ 20 min kettlebell circuit","⏱ 15 min sprint intervals",
-      "⏱ 12 min dumbbell EMOM","⏱ 20 min jump rope sets","⏱ 15 min rower/bike (tempo)","⏱ 10 min plank ladder",
-      "⏱ 25 min run (steady)","⏱ 20 min stair master vibe","⏱ 12 min burpee set (light)","⏱ 15 min kettlebell swings",
-      "⏱ 20 min boxing combo","⏱ 12 min glute workout","⏱ 18 min abs + legs","⏱ 20 min dance cardio",
-      "⏱ 25 min hike (short)","⏱ 15 min agility ladder","⏱ 12 min push-up + squat","⏱ 10 min jump squat",
-      "⏱ 20 min strength + stretch","⏱ 15 min sprint walk","⏱ 12 min quick circuit","⏱ 20 min cardio + core",
-      "⏱ 10 min finisher","⏱ 15 min kettlebell flow","⏱ 20 min resistance bands","⏱ 12 min AMRAP",
-      "⏱ 25 min bike outside","⏱ 15 min stair intervals","⏱ 20 min speed walk","⏱ 12 min cooldown + stretch"
+      "⏱ 12 min HIIT","⏱ 20 min interval (run/walk)","⏱ 20 min full-body kracht","⏱ 10 min shadowboxing","⏱ 8 min traplopen challenge","⏱ 30 min stevige fietstocht","⏱ 5 min touwtje springen","⏱ 10 min core circuit","⏱ 8 min mobility cooldown","⏱ 12 min power walk","⏱ 20 min kettlebell circuit","⏱ 15 min sprint intervals","⏱ 12 min dumbbell EMOM","⏱ 20 min jump rope sets","⏱ 15 min rower/bike (tempo)","⏱ 10 min plank ladder","⏱ 25 min run (steady)","⏱ 20 min stair master vibe","⏱ 12 min burpee set (light)","⏱ 15 min kettlebell swings","⏱ 20 min boxing combo","⏱ 12 min glute workout","⏱ 18 min abs + legs","⏱ 20 min dance cardio","⏱ 25 min hike (short)","⏱ 15 min agility ladder","⏱ 12 min push-up + squat","⏱ 10 min jump squat","⏱ 20 min strength + stretch","⏱ 15 min sprint walk","⏱ 12 min quick circuit","⏱ 20 min cardio + core","⏱ 10 min finisher","⏱ 15 min kettlebell flow","⏱ 20 min resistance bands","⏱ 12 min AMRAP","⏱ 25 min bike outside","⏱ 15 min stair intervals","⏱ 20 min speed walk","⏱ 12 min cooldown + stretch"
     ],
     watch: [
-      "Mission: Impossible — Fallout","John Wick","Mad Max: Fury Road","Creed",
-      "Top Gun: Maverick","Baby Driver","The Raid","Free Solo",
-      "Ford v Ferrari","Kill Bill: Vol. 1","Rush","Rocky",
-      "The Last Dance","Drive to Survive","Edge of Tomorrow","Dunkirk",
-      "1917","Sicario","The Bourne Identity","The Bourne Supremacy",
-      "Casino Royale","Skyfall","The Dark Knight","Dune: Part Two",
-      "Oppenheimer","Tenet","The Matrix","Gladiator",
-      "No Time to Die","Extraction","Extraction 2","The Batman",
-      "Spider-Man: Across the Spider-Verse","Fast Five","Furious 7","The Hunger Games: The Ballad of Songbirds & Snakes",
-      "Godzilla x Kong: The New Empire","The Creator","Blade Runner 2049","The Martian"
+      "Mission: Impossible — Fallout","John Wick","Mad Max: Fury Road","Creed","Top Gun: Maverick","Baby Driver","The Raid","Free Solo","Ford v Ferrari","Kill Bill: Vol. 1","Rush","Rocky","The Last Dance","Drive to Survive","Edge of Tomorrow","Dunkirk","1917","Sicario","The Bourne Identity","The Bourne Supremacy","Casino Royale","Skyfall","The Dark Knight","Dune: Part Two","Oppenheimer","Tenet","The Matrix","Gladiator","No Time to Die","Extraction","Extraction 2","The Batman","Spider-Man: Across the Spider-Verse","Fast Five","Furious 7","The Hunger Games: The Ballad of Songbirds & Snakes","Godzilla x Kong: The New Empire","The Creator","Blade Runner 2049","The Martian","Reacher","The Terminal List","Special Ops: Lioness","The Night Agent"
     ]
   },
 
   Creative: {
     products: [
-      "Watercolor paint set","Acrylic paint set","Canvas panels pack","Brush pens set",
-      "Calligraphy set","Washi tape set","Resin kit","Polymer clay kit",
-      "Embroidery starter kit","Crochet starter kit","Origami paper set","Stamp set",
-      "Wax seal kit","A4 light pad","Idea journal","Gouache paint set",
-      "Sketchbook","Marker set","Colored pencils set","Pastel set",
-      "Charcoal drawing set","Craft scissors set","Glue gun","Cutting mat",
-      "Ruler set","Photography tripod","Ring light","Backdrop cloth",
-      "Bead kit","Jewelry making kit","Miniature house kit","3D puzzle kit",
-      "Dot grid notebook","Label maker","Ink pad set","DIY candle making kit",
-      "Soap making kit","Craft storage box","Water brush pens","Paper trimmer",
-      "Acrylic paint markers","Brush cleaning cup","Color mixing palette","Punch needle kit",
-      "Woven yarn set","Sticker printer","Portable sketching kit","Sketching mannequin"
+      "Watercolor paint set","Acrylic paint set","Canvas panels pack","Brush pens set","Calligraphy set","Washi tape set","Resin kit","Polymer clay kit","Embroidery starter kit","Crochet starter kit","Origami paper set","Stamp set","Wax seal kit","A4 light pad","Idea journal","Gouache paint set","Sketchbook","Marker set","Colored pencils set","Pastel set","Charcoal drawing set","Craft scissors set","Glue gun","Cutting mat","Ruler set","Photography tripod","Ring light","Backdrop cloth","Bead kit","Jewelry making kit","Miniature house kit","3D puzzle kit","Dot grid notebook","Label maker","Ink pad set","DIY candle making kit","Soap making kit","Craft storage box","Water brush pens","Paper trimmer","Acrylic paint markers","Brush cleaning cup","Color mixing palette","Punch needle kit","Woven yarn set","Sticker printer","Portable sketching kit","Sketching mannequin","Collage paper pack","Canvas easel","Brush set (fine detail)","Clay tools set"
     ],
     eat: [
-      "🍵 Matcha latte","🥑 Toast met avocado + chili flakes","🍎 Appel + amandelboter","🍅 Caprese salade",
-      "🫖 Chai latte","🍝 Pasta aglio e olio","🧀 Kaasplankje (klein)","🥣 Smoothie bowl (mango)",
-      "🌯 Wrap met hummus & groente","🍫 Donkere chocolade + espresso (klein)","🍓 Yoghurt parfait","🍵 Earl Grey",
-      "🍞 Toast + ricotta + honing","🍲 Pompoensoep","🥗 Couscous salade","🍇 Druiven + kaas",
-      "🍓 Bessen + yoghurt","🍵 Iced matcha","🍞 Bagel + roomkaas","🥑 Avocado bowl",
-      "🍝 Pesto pasta","🥗 Tomaat + burrata","🍫 Cacao nibs","🍵 Jasmin thee",
-      "🍪 Koekjes + thee","🍜 Udon bowl","🥟 Dumplings","🍓 Aardbei smoothie",
-      "🍲 Ramen (mild)","🥗 Poké bowl","🍍 Ananas + yoghurt","🍵 Latte (mild)",
-      "🥣 Granola bowl","🍞 Toast + jam","🥗 Caesar salade","🍫 Brownie (stukje)",
-      "🫖 Rooibos","🍓 Fruitspiesjes","🧀 Crackers + brie","🍵 Mint tea"
+      "🍵 Matcha latte","🥑 Toast met avocado + chili flakes","🍎 Appel + amandelboter","🍅 Caprese salade","🫖 Chai latte","🍝 Pasta aglio e olio","🧀 Kaasplankje (klein)","🥣 Smoothie bowl (mango)","🌯 Wrap met hummus & groente","🍫 Donkere chocolade + espresso (klein)","🍓 Yoghurt parfait","🍵 Earl Grey","🍞 Toast + ricotta + honing","🍲 Pompoensoep","🥗 Couscous salade","🍇 Druiven + kaas","🍓 Bessen + yoghurt","🍵 Iced matcha","🍞 Bagel + roomkaas","🥑 Avocado bowl","🍝 Pesto pasta","🥗 Tomaat + burrata","🍫 Cacao nibs","🍵 Jasmin thee","🍪 Koekjes + thee","🍜 Udon bowl","🥟 Dumplings","🍓 Aardbei smoothie","🍲 Ramen (mild)","🥗 Poké bowl","🍍 Ananas + yoghurt","🍵 Latte (mild)","🥣 Granola bowl","🍞 Toast + jam","🥗 Caesar salade","🍫 Brownie (stukje)","🫖 Rooibos","🍓 Fruitspiesjes","🧀 Crackers + brie","🍵 Mint tea"
     ],
     do: [
-      "⏱ 30 min schetsen (zonder gum)","⏱ 20 min collage (tijdschrift)","⏱ 15 min schrijf 1 pagina verhaal","⏱ 25 min fotowandeling (10 shots)",
-      "⏱ 20 min moodboard maken","⏱ 15 min lettering practice","⏱ 25 min kleuren (adult coloring)","⏱ 30 min mini clay project",
-      "⏱ 20 min ‘one-take’ muziek loop","⏱ 25 min DIY: kaart maken","⏱ 30 min watercolor study","⏱ 15 min logo schets",
-      "⏱ 20 min mini photoshoot props","⏱ 25 min collage poster","⏱ 15 min haiku schrijven","⏱ 30 min make 1 beat",
-      "⏱ 20 min edit 10 foto’s","⏱ 25 min DIY kaars maken","⏱ 20 min resin coaster","⏱ 15 min kleurpalet maken",
-      "⏱ 30 min story outline","⏱ 20 min journaling creatief","⏱ 25 min origami set","⏱ 15 min mood music session",
-      "⏱ 30 min paint abstract","⏱ 20 min type design","⏱ 25 min mini scrapbook","⏱ 15 min doodles",
-      "⏱ 30 min embroidery oefenen","⏱ 20 min crochet rows","⏱ 25 min sticker sheet","⏱ 15 min photo composition",
-      "⏱ 30 min write 1 scene","⏱ 20 min storyboard","⏱ 25 min craft cleanup aesthetic","⏱ 15 min texture study",
-      "⏱ 30 min create playlist cover","⏱ 20 min make a zine","⏱ 25 min DIY frame","⏱ 15 min sketch a room"
+      "⏱ 30 min schetsen (zonder gum)","⏱ 20 min collage (tijdschrift)","⏱ 15 min schrijf 1 pagina verhaal","⏱ 25 min fotowandeling (10 shots)","⏱ 20 min moodboard maken","⏱ 15 min lettering practice","⏱ 25 min kleuren (adult coloring)","⏱ 30 min mini clay project","⏱ 20 min ‘one-take’ muziek loop","⏱ 25 min DIY: kaart maken","⏱ 30 min watercolor study","⏱ 15 min logo schets","⏱ 20 min mini photoshoot props","⏱ 25 min collage poster","⏱ 15 min haiku schrijven","⏱ 30 min make 1 beat","⏱ 20 min edit 10 foto’s","⏱ 25 min DIY kaars maken","⏱ 20 min resin coaster","⏱ 15 min kleurpalet maken","⏱ 30 min story outline","⏱ 20 min journaling creatief","⏱ 25 min origami set","⏱ 15 min mood music session","⏱ 30 min paint abstract","⏱ 20 min type design","⏱ 25 min mini scrapbook","⏱ 15 min doodles","⏱ 30 min embroidery oefenen","⏱ 20 min crochet rows","⏱ 25 min sticker sheet","⏱ 15 min photo composition","⏱ 30 min write 1 scene","⏱ 20 min storyboard","⏱ 25 min craft cleanup aesthetic","⏱ 15 min texture study","⏱ 30 min create playlist cover","⏱ 20 min make a zine","⏱ 25 min DIY frame","⏱ 15 min sketch a room"
     ],
     watch: [
-      "Abstract: The Art of Design","Exit Through the Gift Shop","Frida","Big Eyes",
-      "The Great British Bake Off","The Great British Sewing Bee","Howl's Moving Castle","Spirited Away",
-      "Kiki's Delivery Service","The Pixar Story","Lupin III: The Castle of Cagliostro","Whisper of the Heart",
-      "Fantastic Mr. Fox","Isle of Dogs","The French Dispatch","Wes Anderson: The Style",
-      "Chef","Ratatouille","The Menu","Amadeus",
-      "Whiplash","Begin Again","Sing Street","Sound of Metal",
-      "The Social Network","Steve Jobs","The Imitation Game","Black Swan",
-      "The Artist","Birdman","The Favourite","Poor Things",
-      "Everything Everywhere All at Once","Barbie","Oppenheimer","Dune",
-      "Blade Runner 2049","The Creator","Her","La La Land"
+      "Abstract: The Art of Design","Exit Through the Gift Shop","Frida","Big Eyes","The Great British Bake Off","The Great British Sewing Bee","Howl's Moving Castle","Spirited Away","Kiki's Delivery Service","The Pixar Story","Lupin III: The Castle of Cagliostro","Whisper of the Heart","Fantastic Mr. Fox","Isle of Dogs","The French Dispatch","Chef","Ratatouille","The Menu","Amadeus","Whiplash","Begin Again","Sing Street","Sound of Metal","The Social Network","Steve Jobs","The Imitation Game","Black Swan","The Artist","Birdman","The Favourite","Poor Things","Everything Everywhere All at Once","Barbie","Oppenheimer","Dune","Blade Runner 2049","The Creator","Her","La La Land","Loving Vincent","Portrait of a Lady on Fire","Moonrise Kingdom","Asteroid City","The Bear","Atlanta"
     ]
   },
 
   Tired: {
     products: [
-      "Sunrise alarm clock","White noise machine","Humidifier","Electric blanket",
-      "Cozy robe","Slippers","Mug warmer","Blue light blocking glasses",
-      "Sleep headphones (headband)","Bedside lamp (warm light)","Mattress topper",
-      "Weighted eye mask","Foot massager","Lavender pillow spray",
-      "Sleep tea (caffeine-free)","Bath pillow","Heating pad","Magnesium bath flakes",
-      "Cooling pillowcase","Memory foam pillow","Light-blocking curtains","Night light (motion sensor)",
-      "Bedside organizer","Hand warmers","Foot soak basin","Relaxing candle",
-      "Soft throw blanket","Warm socks","Comfort hoodie blanket","Cervical pillow",
-      "Sleep journal (paper)","Essential oil sampler","Tea infuser","Ceramic mug",
-      "Pillow mist","Warm light bulb set","Relaxing audiobook (CD)","Bed wedge pillow",
-      "Mattress protector","Soft bedside rug","Comforter set","Sleep aromatherapy set"
+      "Sunrise alarm clock","White noise machine","Humidifier","Electric blanket","Cozy robe","Slippers","Mug warmer","Blue light blocking glasses","Sleep headphones (headband)","Bedside lamp (warm light)","Mattress topper","Weighted eye mask","Foot massager","Lavender pillow spray","Sleep tea (caffeine-free)","Bath pillow","Heating pad","Magnesium bath flakes","Cooling pillowcase","Memory foam pillow","Light-blocking curtains","Night light (motion sensor)","Bedside organizer","Hand warmers","Foot soak basin","Relaxing candle","Soft throw blanket","Warm socks","Comfort hoodie blanket","Cervical pillow","Sleep journal (paper)","Essential oil sampler","Tea infuser","Ceramic mug","Pillow mist","Warm light bulb set","Bed wedge pillow","Mattress protector","Soft bedside rug","Comforter set","Sleep aromatherapy set","Warm tea kettle","Sleep mask silk","Cozy blanket basket","Warm pajama set"
     ],
     eat: [
-      "🍵 Lindebloesemthee (cafeïnevrij)","🥛 Warme havermelk met kaneel","🍲 Groentesoep + toast","🍌 Banaan + kaneel",
-      "🍚 Rijst + roerei","🥣 Griesmeelpap (warm)","🍯 Honing + gember (in warm water)","🧀 Toast met kaas",
-      "🥛 Yoghurt met blauwe bessen","🍵 Citroenmelisse-thee","🍵 Pepermunt-thee","🍲 Kippensoep (licht)",
-      "🥣 Havermout (warm)","🍞 Crackers + kaas","🍵 Rooibos","🍵 Warm water + citroen",
-      "🥛 Warme melk","🍌 Banaan (simpel)","🍲 Bouillon","🍞 Toast + jam",
-      "🥣 Skyr (klein)","🍵 Kamille","🍓 Bessen + yoghurt","🍲 Pompoensoep",
-      "🥣 Pap","🍵 Lavendelthee","🍚 Rijst + zalm (klein)","🥔 Aardappel + kwark",
-      "🍵 Chai (mild)","🍞 Toast + hummus","🥛 Cacao (warm)","🍵 Jasmin thee",
-      "🍲 Tomatensoep","🍌 Banaan + yoghurt","🍞 Bagel + roomkaas","🥣 Granola (klein)",
-      "🍵 Citroenthee","🥛 Latte (decaf)","🍓 Fruit salade","🥜 Notenmix (klein)"
+      "🍵 Lindebloesemthee (cafeïnevrij)","🥛 Warme havermelk met kaneel","🍲 Groentesoep + toast","🍌 Banaan + kaneel","🍚 Rijst + roerei","🥣 Griesmeelpap (warm)","🍯 Honing + gember (in warm water)","🧀 Toast met kaas","🥛 Yoghurt met blauwe bessen","🍵 Citroenmelisse-thee","🍵 Pepermunt-thee","🍲 Kippensoep (licht)","🥣 Havermout (warm)","🍞 Crackers + kaas","🍵 Rooibos","🍵 Warm water + citroen","🥛 Warme melk","🍌 Banaan (simpel)","🍲 Bouillon","🍞 Toast + jam","🥣 Skyr (klein)","🍵 Kamille","🍓 Bessen + yoghurt","🍲 Pompoensoep","🥣 Pap","🍵 Lavendelthee","🍚 Rijst + zalm (klein)","🥔 Aardappel + kwark","🍵 Chai (mild)","🍞 Toast + hummus","🥛 Cacao (warm)","🍵 Jasmin thee","🍲 Tomatensoep","🍌 Banaan + yoghurt","🍞 Bagel + roomkaas","🥣 Granola (klein)","🍵 Citroenthee","🥛 Latte (decaf)","🍓 Fruit salade","🥜 Notenmix (klein)"
     ],
     do: [
-      "⏱ 20 min powernap","⏱ 60 min scherm uit (sleep mode)","⏱ 10 min warme douche","⏱ 8 min rustige stretch",
-      "⏱ 10 min lees 10 pagina’s","⏱ 6 min leg kleding klaar","⏱ 5 min rustige ademhaling","⏱ 7 min kamer donker & koel",
-      "⏱ 15 min langzaam wandelen","⏱ 10 min ‘tidy’ in stilte","⏱ 12 min warm voetenbad","⏱ 10 min zachte yoga",
-      "⏱ 8 min body scan","⏱ 15 min lichten dimmen + kaars","⏱ 12 min foam roll (zacht)","⏱ 20 min rustige podcast",
-      "⏱ 10 min skincare routine","⏱ 15 min thee + stilte","⏱ 10 min adem 4-7-8","⏱ 12 min ontspanningsmuziek",
-      "⏱ 20 min journal (kort)","⏱ 10 min ‘tomorrow list’","⏱ 12 min nek/shoulders stretch","⏱ 15 min warme deken + boek",
-      "⏱ 20 min rustige opruim (1 plek)","⏱ 10 min slaapkamer ‘reset’","⏱ 12 min handmassage","⏱ 15 min window fresh air",
-      "⏱ 10 min guided sleep meditation","⏱ 12 min warme kruik","⏱ 15 min ‘slow walk’","⏱ 10 min tea prep",
-      "⏱ 20 min rustige serie (1 ep)","⏱ 10 min adem met timer","⏱ 12 min zachte mobility","⏱ 15 min journaling gratitude",
-      "⏱ 10 min laundry fold","⏱ 12 min warm compress","⏱ 15 min zachte muziek","⏱ 10 min planning licht"
+      "⏱ 20 min powernap","⏱ 60 min scherm uit (sleep mode)","⏱ 10 min warme douche","⏱ 8 min rustige stretch","⏱ 10 min lees 10 pagina’s","⏱ 6 min leg kleding klaar","⏱ 5 min rustige ademhaling","⏱ 7 min kamer donker & koel","⏱ 15 min langzaam wandelen","⏱ 10 min ‘tidy’ in stilte","⏱ 12 min warm voetenbad","⏱ 10 min zachte yoga","⏱ 8 min body scan","⏱ 15 min lichten dimmen + kaars","⏱ 12 min foam roll (zacht)","⏱ 20 min rustige podcast","⏱ 10 min skincare routine","⏱ 15 min thee + stilte","⏱ 10 min adem 4-7-8","⏱ 12 min ontspanningsmuziek","⏱ 20 min journal (kort)","⏱ 10 min ‘tomorrow list’","⏱ 12 min nek/shoulders stretch","⏱ 15 min warme deken + boek","⏱ 20 min rustige opruim (1 plek)","⏱ 10 min slaapkamer ‘reset’","⏱ 12 min handmassage","⏱ 15 min window fresh air","⏱ 10 min guided sleep meditation","⏱ 12 min warme kruik","⏱ 15 min ‘slow walk’","⏱ 10 min tea prep","⏱ 20 min rustige serie (1 ep)","⏱ 10 min adem met timer","⏱ 12 min zachte mobility","⏱ 15 min journaling gratitude","⏱ 10 min laundry fold","⏱ 12 min warm compress","⏱ 15 min zachte muziek","⏱ 10 min planning licht"
     ],
     watch: [
-      "Planet Earth II","Blue Planet II","Our Planet","The Repair Shop",
-      "The Great British Sewing Bee","Call the Midwife","Downton Abbey","The Crown",
-      "The Queen's Gambit","Anne with an E","Gilmore Girls","Pride & Prejudice (2005)",
-      "Before Sunrise","The Holiday","Little Forest","Paddington 2",
-      "Spirited Away","Howl's Moving Castle","Kiki's Delivery Service","Ratatouille",
-      "Inside Out","Soul","Encanto","Turning Red",
-      "The Secret Life of Walter Mitty","Her","Amélie","Midnight in Paris",
-      "The Intern","About Time","Normal People","Ted Lasso",
-      "The Good Place","Schitt's Creek","Julie & Julia","Chef",
-      "The Martian","The Imitation Game","The Social Network","Steve Jobs"
+      "Planet Earth II","Blue Planet II","Our Planet","The Repair Shop","The Great British Sewing Bee","Call the Midwife","Downton Abbey","The Crown","The Queen's Gambit","Anne with an E","Gilmore Girls","Pride & Prejudice (2005)","Before Sunrise","The Holiday","Little Forest","Paddington 2","Spirited Away","Howl's Moving Castle","Kiki's Delivery Service","Ratatouille","Inside Out","Soul","Encanto","Turning Red","The Secret Life of Walter Mitty","Her","Amélie","Midnight in Paris","The Intern","About Time","Normal People","Ted Lasso","The Good Place","Schitt's Creek","Julie & Julia","Chef","Call Me by Your Name","One Day","This Is Us","A Man Called Otto","All Creatures Great and Small","Heartstopper"
     ]
   },
 
   Cozy: {
     products: [
-      "Chunky knit blanket","Ceramic tea pot","Book light","Fluffy slippers",
-      "Knitted throw pillow","Candle warmer lamp","Plaid blanket","Cozy mug set",
-      "Warm socks set","Bed tray table","Hot chocolate set","Fleece hoodie blanket",
-      "Soft reading lamp","Coaster set (wood)","Tea storage tin","Tea sampler box",
-      "Faux fur blanket","Candle holder set","Warm throw scarf","Mini fireplace diffuser",
-      "Book stand","Comfort cushion","Knitted pouf","Soft eye pillow",
-      "Warm neck wrap","Tea mug with infuser","Wooden tray","Sherpa blanket",
-      "Lounge set","Cotton pyjama set","Fuzzy slippers","Chunky mug","Heated slippers",
-      "Warm lap blanket","Wool socks","Cocoa mug warmer","Reading pillow","Tea kettle",
-      "Cozy rug","Bed socks","Aroma candle jar","Plush blanket"
+      "Chunky knit blanket","Ceramic tea pot","Book light","Fluffy slippers","Knitted throw pillow","Candle warmer lamp","Plaid blanket","Cozy mug set","Warm socks set","Bed tray table","Hot chocolate set","Fleece hoodie blanket","Soft reading lamp","Coaster set (wood)","Tea storage tin","Tea sampler box","Faux fur blanket","Candle holder set","Warm throw scarf","Mini fireplace diffuser","Book stand","Comfort cushion","Knitted pouf","Soft eye pillow","Warm neck wrap","Tea mug with infuser","Wooden tray","Sherpa blanket","Lounge set","Cotton pyjama set","Fuzzy slippers","Chunky mug","Heated slippers","Warm lap blanket","Wool socks","Cocoa mug warmer","Reading pillow","Tea kettle","Cozy rug","Bed socks","Aroma candle jar","Plush blanket","Warm lamp shade","Book nook decor","Throw basket","Soft cardigan"
     ],
     eat: [
-      "☕ Hot chocolate met kaneel","🍪 Koekjes + thee","🥧 Appeltaart (stukje)","🫖 Chai latte",
-      "🍞 Toast + boter + kaneel","🍲 Pompoensoep","🍵 Rooibos vanilla","🧀 Crackers + brie",
-      "🍫 Brownie (warm)","🥣 Havermout met appel","🍯 Honing toast","🍓 Aardbeien + chocolade",
-      "🥛 Warme melk + honing","🍵 Earl Grey","🍜 Noodle soup","🥐 Croissant + jam",
-      "🍫 Cacao","🍞 Banana bread","🍠 Zoete aardappel","🫖 Tea biscuits",
-      "🍵 Kamille","🥣 Rice pudding","🍪 Speculaas","🧀 Toasted cheese",
-      "🥔 Aardappelsoep","🍵 Mint tea","🍯 Honey yoghurt","🍫 Chocolade fondue",
-      "🍞 Scones","🍓 Jam toast","🫖 Choco chai","🥣 Warm porridge",
-      "🍪 Ginger cookies","🍵 Citrus tea","🍲 Tomato basil soup","🥛 Oat latte",
-      "🍞 French toast","🍓 Berry compote","🍫 Dark hot cocoa","🥐 Cinnamon roll"
+      "☕ Hot chocolate met kaneel","🍪 Koekjes + thee","🥧 Appeltaart (stukje)","🫖 Chai latte","🍞 Toast + boter + kaneel","🍲 Pompoensoep","🍵 Rooibos vanilla","🧀 Crackers + brie","🍫 Brownie (warm)","🥣 Havermout met appel","🍯 Honing toast","🍓 Aardbeien + chocolade","🥛 Warme melk + honing","🍵 Earl Grey","🍜 Noodle soup","🥐 Croissant + jam","🍫 Cacao","🍞 Banana bread","🍠 Zoete aardappel","🫖 Tea biscuits","🍵 Kamille","🥣 Rice pudding","🍪 Speculaas","🧀 Toasted cheese","🥔 Aardappelsoep","🍵 Mint tea","🍯 Honey yoghurt","🍫 Chocolade fondue","🍞 Scones","🍓 Jam toast","🫖 Choco chai","🥣 Warm porridge","🍪 Ginger cookies","🍵 Citrus tea","🍲 Tomato basil soup","🥛 Oat latte","🍞 French toast","🍓 Berry compote","🍫 Dark hot cocoa","🥐 Cinnamon roll"
     ],
     do: [
-      "⏱ 20 min lezen onder een deken","⏱ 15 min thee zetten + rustig zitten","⏱ 12 min kaarsen aan en lichten dimmen","⏱ 25 min filmhoekje maken",
-      "⏱ 20 min journaling op bed","⏱ 15 min warme douche","⏱ 10 min zachte stretch","⏱ 20 min bak iets warms",
-      "⏱ 15 min dekens en kussens stylen","⏱ 20 min comfort serie kijken","⏱ 10 min rustmuziek luisteren","⏱ 15 min kamer gezellig maken",
-      "⏱ 20 min puzzelen","⏱ 15 min cozy photo dump","⏱ 25 min warme chocolademelk moment","⏱ 10 min raam open + frisse lucht",
-      "⏱ 20 min magazine lezen","⏱ 15 min pyjama + selfcare","⏱ 20 min sokken aan + boek","⏱ 10 min aromatherapie",
-      "⏱ 15 min tea tasting","⏱ 20 min rustige podcast","⏱ 10 min gratitude lijst","⏱ 25 min soft movie prep",
-      "⏱ 20 min knit/crochet starter","⏱ 15 min kaarslicht + stilte","⏱ 10 min cocoa break","⏱ 20 min dekbeddag planning",
-      "⏱ 15 min comfort playlist","⏱ 20 min soup prep","⏱ 10 min warm kompres","⏱ 25 min cozy corner maken",
-      "⏱ 20 min letters schrijven","⏱ 15 min zachte yoga","⏱ 10 min ademhaling","⏱ 20 min sketch + tea",
-      "⏱ 15 min kamer opruimen (zacht)","⏱ 20 min comfort cooking","⏱ 10 min lichten dimmen","⏱ 25 min mini date night thuis"
+      "⏱ 20 min lezen onder een deken","⏱ 15 min thee zetten + rustig zitten","⏱ 12 min kaarsen aan en lichten dimmen","⏱ 25 min filmhoekje maken","⏱ 20 min journaling op bed","⏱ 15 min warme douche","⏱ 10 min zachte stretch","⏱ 20 min bak iets warms","⏱ 15 min dekens en kussens stylen","⏱ 20 min comfort serie kijken","⏱ 10 min rustmuziek luisteren","⏱ 15 min kamer gezellig maken","⏱ 20 min puzzelen","⏱ 15 min cozy photo dump","⏱ 25 min warme chocolademelk moment","⏱ 10 min raam open + frisse lucht","⏱ 20 min magazine lezen","⏱ 15 min pyjama + selfcare","⏱ 20 min sokken aan + boek","⏱ 10 min aromatherapie","⏱ 15 min tea tasting","⏱ 20 min rustige podcast","⏱ 10 min gratitude lijst","⏱ 25 min soft movie prep","⏱ 20 min knit/crochet starter","⏱ 15 min kaarslicht + stilte","⏱ 10 min cocoa break","⏱ 20 min dekbeddag planning","⏱ 15 min comfort playlist","⏱ 20 min soup prep","⏱ 10 min warm kompres","⏱ 25 min cozy corner maken","⏱ 20 min letters schrijven","⏱ 15 min zachte yoga","⏱ 10 min ademhaling","⏱ 20 min sketch + tea","⏱ 15 min kamer opruimen (zacht)","⏱ 20 min comfort cooking","⏱ 10 min lichten dimmen","⏱ 25 min mini date night thuis"
     ],
     watch: [
-      "You've Got Mail","When Harry Met Sally","The Parent Trap","Paddington",
-      "Little Women","Julie & Julia","The Holiday","Notting Hill",
-      "About Time","Pride & Prejudice (2005)","The Secret Garden","Practical Magic",
-      "Gilmore Girls","Downton Abbey","Anne with an E","Call the Midwife",
-      "The Great British Bake Off","The Great Pottery Throw Down","Bridgerton","Emma. (2020)",
-      "Enola Holmes","The Princess Diaries","Sleepless in Seattle","Love, Rosie",
-      "Brooklyn","A Good Year","Under the Tuscan Sun","Chocolat",
-      "Matilda","The Sound of Music","Moonrise Kingdom","Little Forest",
-      "A Man Called Otto","One Day","Heartstopper","The Durrells",
-      "This Is Us","All Creatures Great and Small","Julie and the Phantoms","The Lake House"
+      "You've Got Mail","When Harry Met Sally","The Parent Trap","Paddington","Little Women","Julie & Julia","The Holiday","Notting Hill","About Time","Pride & Prejudice (2005)","The Secret Garden","Practical Magic","Gilmore Girls","Downton Abbey","Anne with an E","Call the Midwife","The Great British Bake Off","The Great Pottery Throw Down","Bridgerton","Emma. (2020)","Enola Holmes","The Princess Diaries","Sleepless in Seattle","Love, Rosie","Brooklyn","A Good Year","Under the Tuscan Sun","Chocolat","Matilda","The Sound of Music","Moonrise Kingdom","Little Forest","A Man Called Otto","One Day","Heartstopper","The Durrells","This Is Us","All Creatures Great and Small","Julie and the Phantoms","The Lake House"
     ]
   },
 
   Focused: {
     products: [
-      "Noise-cancelling earmuffs","Desk timer","Mechanical keyboard","Laptop stand",
-      "Desk organizer","Monitor light bar","Blue light glasses","Pomodoro timer",
-      "Note-taking tablet","Notebook set","Pen set","Sticky notes set",
-      "Cable organizer","Mouse pad XL","Reading lamp","Desk calendar",
-      "Task planner","Whiteboard desk pad","Ergonomic footrest","Standing desk mat",
-      "Desk humidifier","Headphone stand","Minimal desk clock","Table organizer tray",
-      "Fountain pen","Document holder","Book stand","Focus cube",
-      "Screen cleaning kit","Under-desk drawer","Small whiteboard","Productivity journal",
-      "Timer cube","Portable laptop riser","Desk shelf","Monitor stand","Task cards",
-      "Bullet journal","Clip-on reading light","Minimal coaster","Desk plant (artificial)","File organizer"
+      "Noise-cancelling earmuffs","Desk timer","Mechanical keyboard","Laptop stand","Desk organizer","Monitor light bar","Blue light glasses","Pomodoro timer","Note-taking tablet","Notebook set","Pen set","Sticky notes set","Cable organizer","Mouse pad XL","Reading lamp","Desk calendar","Task planner","Whiteboard desk pad","Ergonomic footrest","Standing desk mat","Desk humidifier","Headphone stand","Minimal desk clock","Table organizer tray","Fountain pen","Document holder","Book stand","Focus cube","Screen cleaning kit","Under-desk drawer","Small whiteboard","Productivity journal","Timer cube","Portable laptop riser","Desk shelf","Monitor stand","Task cards","Bullet journal","Clip-on reading light","Minimal coaster","Desk plant (artificial)","File organizer","Desk vacuum","Cable clips","Notebook tabs"
     ],
     eat: [
-      "☕ Koffie (klein)","🍵 Groene thee","🥜 Notenmix","🍎 Appel + pindakaas",
-      "🥣 Skyr + granola","🍳 Ei + toast","🥗 Caesar wrap","🍚 Sushi bowl",
-      "🍌 Banaan","🥤 Smoothie (mild)","🧀 Crackers + kaas","🍇 Druiven",
-      "🥪 Sandwich kip/vega","🍵 Matcha","🥣 Overnight oats","🍓 Yoghurt + fruit",
-      "🍞 Bagel + roomkaas","🥜 Cashews","🍫 Dark chocolate (klein)","🍵 Jasmin thee",
-      "🍗 Kip + rijst","🥗 Quinoa salade","🍲 Tomatensoep","🍞 Toast + avocado",
-      "🥕 Wortels + hummus","🍊 Sinaasappel","🥔 Aardappel + cottage cheese","🥣 Oatmeal",
-      "🍵 Earl Grey","🍏 Appel","🥗 Couscous salade","🥪 Tuna melt",
-      "🥤 Iced coffee (small)","🍚 Egg fried rice","🍜 Udon bowl","🍞 Crackers + hummus",
-      "🥛 Yoghurt","🍌 Banaan + yoghurt","🍓 Fruit bowl","🥜 Almonds"
+      "☕ Koffie (klein)","🍵 Groene thee","🥜 Notenmix","🍎 Appel + pindakaas","🥣 Skyr + granola","🍳 Ei + toast","🥗 Caesar wrap","🍚 Sushi bowl","🍌 Banaan","🥤 Smoothie (mild)","🧀 Crackers + kaas","🍇 Druiven","🥪 Sandwich kip/vega","🍵 Matcha","🥣 Overnight oats","🍓 Yoghurt + fruit","🍞 Bagel + roomkaas","🥜 Cashews","🍫 Dark chocolate (klein)","🍵 Jasmin thee","🍗 Kip + rijst","🥗 Quinoa salade","🍲 Tomatensoep","🍞 Toast + avocado","🥕 Wortels + hummus","🍊 Sinaasappel","🥔 Aardappel + cottage cheese","🥣 Oatmeal","🍵 Earl Grey","🍏 Appel","🥗 Couscous salade","🥪 Tuna melt","🥤 Iced coffee (small)","🍚 Egg fried rice","🍜 Udon bowl","🍞 Crackers + hummus","🥛 Yoghurt","🍌 Banaan + yoghurt","🍓 Fruit bowl","🥜 Almonds"
     ],
     do: [
-      "⏱ 25 min Pomodoro focus blok","⏱ 50 min deep work sprint","⏱ 10 min inbox zero","⏱ 15 min planning voor morgen",
-      "⏱ 20 min chapter reading","⏱ 25 min notes samenvatten","⏱ 15 min desk reset","⏱ 30 min study sprint",
-      "⏱ 20 min schrijven zonder afleiding","⏱ 10 min task list prioriteren","⏱ 25 min onderzoek lezen","⏱ 15 min samenvatting maken",
-      "⏱ 20 min revision cards","⏱ 25 min project outline","⏱ 15 min document ordenen","⏱ 30 min focus playlist + werk",
-      "⏱ 20 min article review","⏱ 10 min planning + water refill","⏱ 25 min rapport schrijven","⏱ 15 min whiteboard brainstorm",
-      "⏱ 20 min notes clean-up","⏱ 30 min coding sprint","⏱ 10 min doelen opschrijven","⏱ 25 min reading block",
-      "⏱ 15 min admin tasks","⏱ 20 min essay structuur","⏱ 25 min spreadsheet work","⏱ 10 min tab cleanup",
-      "⏱ 30 min stille focus","⏱ 15 min references ordenen","⏱ 20 min flashcards","⏱ 25 min lab notes",
-      "⏱ 10 min calendar reset","⏱ 20 min proofreading","⏱ 25 min concept schrijven","⏱ 15 min desk declutter",
-      "⏱ 20 min paper lezen","⏱ 25 min brainstorm zonder telefoon","⏱ 15 min follow-up mails","⏱ 30 min concentrated block"
+      "⏱ 25 min Pomodoro focus blok","⏱ 50 min deep work sprint","⏱ 10 min inbox zero","⏱ 15 min planning voor morgen","⏱ 20 min chapter reading","⏱ 25 min notes samenvatten","⏱ 15 min desk reset","⏱ 30 min study sprint","⏱ 20 min schrijven zonder afleiding","⏱ 10 min task list prioriteren","⏱ 25 min onderzoek lezen","⏱ 15 min samenvatting maken","⏱ 20 min revision cards","⏱ 25 min project outline","⏱ 15 min document ordenen","⏱ 30 min focus playlist + werk","⏱ 20 min article review","⏱ 10 min planning + water refill","⏱ 25 min rapport schrijven","⏱ 15 min whiteboard brainstorm","⏱ 20 min notes clean-up","⏱ 30 min coding sprint","⏱ 10 min doelen opschrijven","⏱ 25 min reading block","⏱ 15 min admin tasks","⏱ 20 min essay structuur","⏱ 25 min spreadsheet work","⏱ 10 min tab cleanup","⏱ 30 min stille focus","⏱ 15 min references ordenen","⏱ 20 min flashcards","⏱ 25 min lab notes","⏱ 10 min calendar reset","⏱ 20 min proofreading","⏱ 25 min concept schrijven","⏱ 15 min desk declutter","⏱ 20 min paper lezen","⏱ 25 min brainstorm zonder telefoon","⏱ 15 min follow-up mails","⏱ 30 min concentrated block"
     ],
     watch: [
-      "Severance","The Pitt","The Studio","Black Mirror",
-      "The Diplomat","Silo","Slow Horses","Andor",
-      "The Bear","Industry","Mr. Robot","The Social Network",
-      "Moneyball","Spotlight","The Imitation Game","Steve Jobs",
-      "The Queen's Gambit","Chernobyl","Mindhunter","Succession",
-      "House of Cards","Sherlock","The West Wing","The Newsroom",
-      "Oppenheimer","The Martian","Arrival","Dune: Part Two",
-      "Hidden Figures","A Beautiful Mind","The Big Short","Tetris",
-      "The Playlist","WeCrashed","Super Pumped","The Dropout",
-      "Dark","Bodies","Suits","The Last of Us"
+      "Severance","The Pitt","The Studio","Black Mirror","The Diplomat","Silo","Slow Horses","Andor","The Bear","Industry","Mr. Robot","The Social Network","Moneyball","Spotlight","The Imitation Game","Steve Jobs","The Queen's Gambit","Chernobyl","Mindhunter","Succession","House of Cards","Sherlock","The West Wing","The Newsroom","Oppenheimer","The Martian","Arrival","Dune: Part Two","Hidden Figures","A Beautiful Mind","The Big Short","Tetris","The Playlist","WeCrashed","Super Pumped","The Dropout","Dark","Bodies","Suits","The Last of Us"
     ]
+  }
+};
+
+const TRENDING = {
+  watch: {
+    Stressed: ["The Pitt","The Madison","Scarpetta","One Piece","Invincible"],
+    Happy: ["Toy Story 5","A Minecraft Movie","Lilo & Stitch","Wicked","The Super Mario Galaxy Movie"],
+    Energetic: ["Masters of the Universe","Mortal Kombat II","Project Hail Mary","The Mandalorian & Grogu","Peaky Blinders: The Immortal Man"],
+    Creative: ["The Studio","Imperfect Women","Toy Story 5","Project Hail Mary","Wicked"],
+    Tired: ["The Madison","Scarpetta","Imperfect Women","The Comeback","One Piece"],
+    Cozy: ["The Madison","Bridgerton","One Piece","Gilmore Girls","The Holiday"],
+    Focused: ["Severance","The Pitt","The Studio","Black Mirror","Andor"]
+  },
+  products: {
+    Stressed: ["Stanley Quencher tumbler","Heated neck massager","Essential oil diffuser premium","Calming weighted blanket premium"],
+    Happy: ["Portable photo printer Instax","LED neon wall sign","Mini karaoke machine","Polaroid camera latest"],
+    Energetic: ["Adjustable dumbbells smart","Fitness smartwatch 2026","Massage gun pro","Electrolyte hydration mix"],
+    Creative: ["iPad drawing tablet","Procreate stylus pen","Acrylic paint master set","DIY candle kit premium"],
+    Tired: ["Sunrise alarm clock smart","Memory foam pillow premium","Sleep mask silk premium","White noise machine pro"],
+    Cozy: ["Chunky knit blanket premium","Luxury candle set","Tea set aesthetic","Warm robe premium"],
+    Focused: ["Noise cancelling headphones","Standing desk adjustable","Productivity timer cube","Desk setup LED light bar"]
   }
 };
 
@@ -1057,7 +797,6 @@ const WHY = {
   Focused: ["Minder frictie = makkelijker beginnen.","Een rustige werkplek maakt diepe focus realistischer.","Kleine structuur geeft sneller momentum."]
 };
 
-/** UI refs */
 const moodsEl = document.getElementById("moods");
 const grid = document.getElementById("grid");
 const refreshBtn = document.getElementById("refresh");
@@ -1075,8 +814,7 @@ const progBar = document.getElementById("progBar");
 
 const toast = document.getElementById("toast");
 
-/** State */
-const STORAGE_KEY = "moodmakerz_extra_moods_unique_v1";
+const STORAGE_KEY = "moodmakerz_full_trending_v1";
 function loadState(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch(e){ return {}; } }
 function saveState(s){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch(e){} }
 let state = loadState();
@@ -1121,24 +859,39 @@ function resetMoodRotation(mood){
   saveState(state);
 }
 
-function nextItem(mood, cat){
+function nextBaseItem(mood, cat){
   ensureMoodState(mood);
   const ms = state[mood];
   const n = DATA[mood][cat].length;
+
   if(ms.idx[cat] >= n){
     ms.order[cat] = Array.from({length:n}, (_,i)=>i);
     shuffleArray(ms.order[cat]);
     ms.idx[cat] = 0;
   }
+
   const pickIndex = ms.order[cat][ms.idx[cat]++];
   saveState(state);
   return DATA[mood][cat][pickIndex];
+}
+
+function nextItem(mood, cat){
+  ensureMoodState(mood);
+
+  if(Math.random() < 0.25 && TRENDING[cat] && TRENDING[cat][mood]){
+    const tList = TRENDING[cat][mood];
+    const tItem = tList[Math.floor(Math.random() * tList.length)];
+    return tItem;
+  }
+
+  return nextBaseItem(mood, cat);
 }
 
 function buildBatch(mood, k){
   ensureMoodState(mood);
   const used = { products:new Set(), eat:new Set(), do:new Set(), watch:new Set() };
   const out = [];
+
   for(let i=0;i<k;i++){
     const row = {};
     for(const cat of ["products","eat","do","watch"]){
@@ -1168,7 +921,6 @@ function pickWhy(mood){
   return arr[Math.floor(Math.random()*arr.length)];
 }
 
-/** Playlist */
 function youtubeSearchUrl(query){
   return "https://www.youtube.com/results?search_query=" + encodeURIComponent(query);
 }
@@ -1221,6 +973,7 @@ function showToast(msg){
 }
 
 let currentMood = Object.keys(DATA)[0];
+
 function animateEnter(el){
   el.classList.add("enter");
   requestAnimationFrame(()=>el.classList.add("show"));
